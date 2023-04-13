@@ -1,9 +1,9 @@
 package com.chic.qh.controller.enquiry;
 
-import com.chic.qh.domain.core.result.ResponseEntity;
-import com.chic.qh.domain.core.service.enquiry.EnquiryService;
-import com.chic.qh.domain.core.service.enquiry.dto.*;
-import com.chic.qh.domain.core.service.enquiry.vo.EnquiryOrderListVO;
+import com.chic.qh.result.ResponseEntity;
+import com.chic.qh.service.enquiry.EnquiryService;
+import com.chic.qh.service.enquiry.dto.*;
+import com.chic.qh.service.enquiry.vo.EnquiryOrderListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

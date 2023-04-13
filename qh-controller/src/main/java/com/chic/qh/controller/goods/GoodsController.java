@@ -1,13 +1,13 @@
 package com.chic.qh.controller.goods;
 
-import com.chic.qh.domain.core.result.ResponseEntity;
-import com.chic.qh.domain.core.service.goods.GoodsService;
-import com.chic.qh.domain.core.service.goods.dto.GoodsAddUpdateDTO;
-import com.chic.qh.domain.core.service.goods.dto.GoodsQueryDTO;
-import com.chic.qh.domain.core.service.goods.dto.SkuAddUpdateDTO;
-import com.chic.qh.domain.core.service.goods.dto.SkuQueryDTO;
-import com.chic.qh.domain.core.service.goods.vo.GoodsListVO;
-import com.chic.qh.domain.core.service.goods.vo.SkuVO;
+import com.chic.qh.result.ResponseEntity;
+import com.chic.qh.service.goods.GoodsService;
+import com.chic.qh.service.goods.dto.GoodsAddUpdateDTO;
+import com.chic.qh.service.goods.dto.GoodsQueryDTO;
+import com.chic.qh.service.goods.dto.SkuAddUpdateDTO;
+import com.chic.qh.service.goods.dto.SkuQueryDTO;
+import com.chic.qh.service.goods.vo.GoodsListVO;
+import com.chic.qh.service.goods.vo.SkuVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

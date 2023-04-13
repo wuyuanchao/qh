@@ -1,0 +1,43 @@
+package com.chic.qh.repository;
+
+import com.chic.qh.domain.dal.mapper.EnquiryOrderGoodsMapper;
+import com.chic.qh.domain.dal.model.EnquiryOrderGoods;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+import static com.chic.qh.domain.dal.mapper.EnquiryOrderGoodsDynamicSqlSupport.enquiryOrderId;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
+
+/**
+ * @Description:
+ * @author: xumingwei
+ * @date: 2023—04—07 14:53
+ */
+@Repository
+public class EnquiryOrderGoodsRepository {
+
+    @Autowired
+    private EnquiryOrderGoodsMapper enquiryOrderGoodsMapper;
+
+    public List<EnquiryOrderGoods> queryOrderGoodsList(Integer _enquiryOrderId) {
+        List<EnquiryOrderGoods> orderGoodsList = enquiryOrderGoodsMapper.selectByExample()
+                .where(enquiryOrderId, isEqualToWhenPresent(_enquiryOrderId))
+                .build()
+                .execute();
+        return orderGoodsList;
+    }
+
+    public void saveEnquiryOrderGoods(EnquiryOrderGoods orderGoods) {
+        enquiryOrderGoodsMapper.insertSelective(orderGoods);
+    }
+
+    public void deleteByPrimaryKey(Integer recId) {
+        enquiryOrderGoodsMapper.deleteByPrimaryKey(recId);
+    }
+
+    public void updateSelectiveByPrimaryKey(EnquiryOrderGoods orderGoods) {
+        enquiryOrderGoodsMapper.updateByPrimaryKeySelective(orderGoods);
+    }
+}

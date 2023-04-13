@@ -1,6 +1,6 @@
 package com.chic.qh.controller.quoted;
 
-import com.chic.qh.domain.core.result.ResponseEntity;
+import com.chic.qh.result.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
