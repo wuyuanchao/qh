@@ -1,55 +1,51 @@
 package com.chic.qh.domain.dal.mapper;
 
 import static com.chic.qh.domain.dal.mapper.SkuRelationDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 import com.chic.qh.domain.dal.model.SkuRelation;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Generated;
-import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
-import org.mybatis.dynamic.sql.SqlBuilder;
-import org.mybatis.dynamic.sql.delete.DeleteDSL;
-import org.mybatis.dynamic.sql.delete.MyBatis3DeleteModelAdapter;
-import org.mybatis.dynamic.sql.delete.render.DeleteStatementProvider;
+import org.mybatis.dynamic.sql.BasicColumn;
+import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
 import org.mybatis.dynamic.sql.insert.render.InsertStatementProvider;
-import org.mybatis.dynamic.sql.render.RenderingStrategy;
-import org.mybatis.dynamic.sql.select.MyBatis3SelectModelAdapter;
-import org.mybatis.dynamic.sql.select.QueryExpressionDSL;
-import org.mybatis.dynamic.sql.select.SelectDSL;
+import org.mybatis.dynamic.sql.select.CountDSLCompleter;
+import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
-import org.mybatis.dynamic.sql.update.MyBatis3UpdateModelAdapter;
 import org.mybatis.dynamic.sql.update.UpdateDSL;
-import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
+import org.mybatis.dynamic.sql.update.UpdateDSLCompleter;
+import org.mybatis.dynamic.sql.update.UpdateModel;
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
+import org.mybatis.dynamic.sql.util.mybatis3.CommonCountMapper;
+import org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper;
+import org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper;
+import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
-public interface SkuRelationMapper {
+public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    @SelectProvider(type=SqlProviderAdapter.class, method="select")
-    long count(SelectStatementProvider selectStatement);
-
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    @DeleteProvider(type=SqlProviderAdapter.class, method="delete")
-    int delete(DeleteStatementProvider deleteStatement);
+    BasicColumn[] selectList = BasicColumn.columnList(skuId, goodsId, skuName, suppName, suppSkuId, link, length, width, height, area, weight, volumeWeight, purPrice, color, size, gmtCreated, gmtModify);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
-    @Options(useGeneratedKeys=true,keyProperty="record.skuId")
+    @Options(useGeneratedKeys=true,keyProperty="row.skuId")
     int insert(InsertStatementProvider<SkuRelation> insertStatement);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    @SelectProvider(type=SqlProviderAdapter.class, method="select")
-    @ResultMap("SkuRelationResult")
-    SkuRelation selectOne(SelectStatementProvider selectStatement);
+    @InsertProvider(type=SqlProviderAdapter.class, method="insertMultipleWithGeneratedKeys")
+    @Options(useGeneratedKeys=true,keyProperty="records.skuId")
+    int insertMultiple(@Param("insertStatement") String insertStatement, @Param("records") List<SkuRelation> records);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
@@ -75,184 +71,203 @@ public interface SkuRelationMapper {
     List<SkuRelation> selectMany(SelectStatementProvider selectStatement);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    @UpdateProvider(type=SqlProviderAdapter.class, method="update")
-    int update(UpdateStatementProvider updateStatement);
+    @SelectProvider(type=SqlProviderAdapter.class, method="select")
+    @ResultMap("SkuRelationResult")
+    Optional<SkuRelation> selectOne(SelectStatementProvider selectStatement);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    default QueryExpressionDSL<MyBatis3SelectModelAdapter<Long>> countByExample() {
-        return SelectDSL.selectWithMapper(this::count, SqlBuilder.count())
-                .from(skuRelation);
+    default long count(CountDSLCompleter completer) {
+        return MyBatis3Utils.countFrom(this::count, skuRelation, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    default DeleteDSL<MyBatis3DeleteModelAdapter<Integer>> deleteByExample() {
-        return DeleteDSL.deleteFromWithMapper(this::delete, skuRelation);
+    default int delete(DeleteDSLCompleter completer) {
+        return MyBatis3Utils.deleteFrom(this::delete, skuRelation, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
     default int deleteByPrimaryKey(Integer skuId_) {
-        return DeleteDSL.deleteFromWithMapper(this::delete, skuRelation)
-                .where(skuId, isEqualTo(skuId_))
-                .build()
-                .execute();
+        return delete(c -> 
+            c.where(skuId, isEqualTo(skuId_))
+        );
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    default int insert(SkuRelation record) {
-        return insert(SqlBuilder.insert(record)
-                .into(skuRelation)
-                .map(goodsId).toProperty("goodsId")
-                .map(skuName).toProperty("skuName")
-                .map(suppName).toProperty("suppName")
-                .map(suppSkuId).toProperty("suppSkuId")
-                .map(link).toProperty("link")
-                .map(length).toProperty("length")
-                .map(width).toProperty("width")
-                .map(height).toProperty("height")
-                .map(area).toProperty("area")
-                .map(weight).toProperty("weight")
-                .map(volumeWeight).toProperty("volumeWeight")
-                .map(purPrice).toProperty("purPrice")
-                .map(color).toProperty("color")
-                .map(size).toProperty("size")
-                .map(gmtCreated).toProperty("gmtCreated")
-                .map(gmtModify).toProperty("gmtModify")
-                .build()
-                .render(RenderingStrategy.MYBATIS3));
+    default int insert(SkuRelation row) {
+        return MyBatis3Utils.insert(this::insert, row, skuRelation, c ->
+            c.map(goodsId).toProperty("goodsId")
+            .map(skuName).toProperty("skuName")
+            .map(suppName).toProperty("suppName")
+            .map(suppSkuId).toProperty("suppSkuId")
+            .map(link).toProperty("link")
+            .map(length).toProperty("length")
+            .map(width).toProperty("width")
+            .map(height).toProperty("height")
+            .map(area).toProperty("area")
+            .map(weight).toProperty("weight")
+            .map(volumeWeight).toProperty("volumeWeight")
+            .map(purPrice).toProperty("purPrice")
+            .map(color).toProperty("color")
+            .map(size).toProperty("size")
+            .map(gmtCreated).toProperty("gmtCreated")
+            .map(gmtModify).toProperty("gmtModify")
+        );
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    default int insertSelective(SkuRelation record) {
-        return insert(SqlBuilder.insert(record)
-                .into(skuRelation)
-                .map(goodsId).toPropertyWhenPresent("goodsId", record::getGoodsId)
-                .map(skuName).toPropertyWhenPresent("skuName", record::getSkuName)
-                .map(suppName).toPropertyWhenPresent("suppName", record::getSuppName)
-                .map(suppSkuId).toPropertyWhenPresent("suppSkuId", record::getSuppSkuId)
-                .map(link).toPropertyWhenPresent("link", record::getLink)
-                .map(length).toPropertyWhenPresent("length", record::getLength)
-                .map(width).toPropertyWhenPresent("width", record::getWidth)
-                .map(height).toPropertyWhenPresent("height", record::getHeight)
-                .map(area).toPropertyWhenPresent("area", record::getArea)
-                .map(weight).toPropertyWhenPresent("weight", record::getWeight)
-                .map(volumeWeight).toPropertyWhenPresent("volumeWeight", record::getVolumeWeight)
-                .map(purPrice).toPropertyWhenPresent("purPrice", record::getPurPrice)
-                .map(color).toPropertyWhenPresent("color", record::getColor)
-                .map(size).toPropertyWhenPresent("size", record::getSize)
-                .map(gmtCreated).toPropertyWhenPresent("gmtCreated", record::getGmtCreated)
-                .map(gmtModify).toPropertyWhenPresent("gmtModify", record::getGmtModify)
-                .build()
-                .render(RenderingStrategy.MYBATIS3));
+    default int insertMultiple(Collection<SkuRelation> records) {
+        return MyBatis3Utils.insertMultipleWithGeneratedKeys(this::insertMultiple, records, skuRelation, c ->
+            c.map(goodsId).toProperty("goodsId")
+            .map(skuName).toProperty("skuName")
+            .map(suppName).toProperty("suppName")
+            .map(suppSkuId).toProperty("suppSkuId")
+            .map(link).toProperty("link")
+            .map(length).toProperty("length")
+            .map(width).toProperty("width")
+            .map(height).toProperty("height")
+            .map(area).toProperty("area")
+            .map(weight).toProperty("weight")
+            .map(volumeWeight).toProperty("volumeWeight")
+            .map(purPrice).toProperty("purPrice")
+            .map(color).toProperty("color")
+            .map(size).toProperty("size")
+            .map(gmtCreated).toProperty("gmtCreated")
+            .map(gmtModify).toProperty("gmtModify")
+        );
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    default QueryExpressionDSL<MyBatis3SelectModelAdapter<List<SkuRelation>>> selectByExample() {
-        return SelectDSL.selectWithMapper(this::selectMany, skuId, goodsId, skuName, suppName, suppSkuId, link, length, width, height, area, weight, volumeWeight, purPrice, color, size, gmtCreated, gmtModify)
-                .from(skuRelation);
+    default int insertSelective(SkuRelation row) {
+        return MyBatis3Utils.insert(this::insert, row, skuRelation, c ->
+            c.map(goodsId).toPropertyWhenPresent("goodsId", row::getGoodsId)
+            .map(skuName).toPropertyWhenPresent("skuName", row::getSkuName)
+            .map(suppName).toPropertyWhenPresent("suppName", row::getSuppName)
+            .map(suppSkuId).toPropertyWhenPresent("suppSkuId", row::getSuppSkuId)
+            .map(link).toPropertyWhenPresent("link", row::getLink)
+            .map(length).toPropertyWhenPresent("length", row::getLength)
+            .map(width).toPropertyWhenPresent("width", row::getWidth)
+            .map(height).toPropertyWhenPresent("height", row::getHeight)
+            .map(area).toPropertyWhenPresent("area", row::getArea)
+            .map(weight).toPropertyWhenPresent("weight", row::getWeight)
+            .map(volumeWeight).toPropertyWhenPresent("volumeWeight", row::getVolumeWeight)
+            .map(purPrice).toPropertyWhenPresent("purPrice", row::getPurPrice)
+            .map(color).toPropertyWhenPresent("color", row::getColor)
+            .map(size).toPropertyWhenPresent("size", row::getSize)
+            .map(gmtCreated).toPropertyWhenPresent("gmtCreated", row::getGmtCreated)
+            .map(gmtModify).toPropertyWhenPresent("gmtModify", row::getGmtModify)
+        );
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    default QueryExpressionDSL<MyBatis3SelectModelAdapter<List<SkuRelation>>> selectDistinctByExample() {
-        return SelectDSL.selectDistinctWithMapper(this::selectMany, skuId, goodsId, skuName, suppName, suppSkuId, link, length, width, height, area, weight, volumeWeight, purPrice, color, size, gmtCreated, gmtModify)
-                .from(skuRelation);
+    default Optional<SkuRelation> selectOne(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectOne(this::selectOne, selectList, skuRelation, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    default SkuRelation selectByPrimaryKey(Integer skuId_) {
-        return SelectDSL.selectWithMapper(this::selectOne, skuId, goodsId, skuName, suppName, suppSkuId, link, length, width, height, area, weight, volumeWeight, purPrice, color, size, gmtCreated, gmtModify)
-                .from(skuRelation)
-                .where(skuId, isEqualTo(skuId_))
-                .build()
-                .execute();
+    default List<SkuRelation> select(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectList(this::selectMany, selectList, skuRelation, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    default UpdateDSL<MyBatis3UpdateModelAdapter<Integer>> updateByExample(SkuRelation record) {
-        return UpdateDSL.updateWithMapper(this::update, skuRelation)
-                .set(goodsId).equalTo(record::getGoodsId)
-                .set(skuName).equalTo(record::getSkuName)
-                .set(suppName).equalTo(record::getSuppName)
-                .set(suppSkuId).equalTo(record::getSuppSkuId)
-                .set(link).equalTo(record::getLink)
-                .set(length).equalTo(record::getLength)
-                .set(width).equalTo(record::getWidth)
-                .set(height).equalTo(record::getHeight)
-                .set(area).equalTo(record::getArea)
-                .set(weight).equalTo(record::getWeight)
-                .set(volumeWeight).equalTo(record::getVolumeWeight)
-                .set(purPrice).equalTo(record::getPurPrice)
-                .set(color).equalTo(record::getColor)
-                .set(size).equalTo(record::getSize)
-                .set(gmtCreated).equalTo(record::getGmtCreated)
-                .set(gmtModify).equalTo(record::getGmtModify);
+    default List<SkuRelation> selectDistinct(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectDistinct(this::selectMany, selectList, skuRelation, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    default UpdateDSL<MyBatis3UpdateModelAdapter<Integer>> updateByExampleSelective(SkuRelation record) {
-        return UpdateDSL.updateWithMapper(this::update, skuRelation)
-                .set(goodsId).equalToWhenPresent(record::getGoodsId)
-                .set(skuName).equalToWhenPresent(record::getSkuName)
-                .set(suppName).equalToWhenPresent(record::getSuppName)
-                .set(suppSkuId).equalToWhenPresent(record::getSuppSkuId)
-                .set(link).equalToWhenPresent(record::getLink)
-                .set(length).equalToWhenPresent(record::getLength)
-                .set(width).equalToWhenPresent(record::getWidth)
-                .set(height).equalToWhenPresent(record::getHeight)
-                .set(area).equalToWhenPresent(record::getArea)
-                .set(weight).equalToWhenPresent(record::getWeight)
-                .set(volumeWeight).equalToWhenPresent(record::getVolumeWeight)
-                .set(purPrice).equalToWhenPresent(record::getPurPrice)
-                .set(color).equalToWhenPresent(record::getColor)
-                .set(size).equalToWhenPresent(record::getSize)
-                .set(gmtCreated).equalToWhenPresent(record::getGmtCreated)
-                .set(gmtModify).equalToWhenPresent(record::getGmtModify);
+    default Optional<SkuRelation> selectByPrimaryKey(Integer skuId_) {
+        return selectOne(c ->
+            c.where(skuId, isEqualTo(skuId_))
+        );
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    default int updateByPrimaryKey(SkuRelation record) {
-        return UpdateDSL.updateWithMapper(this::update, skuRelation)
-                .set(goodsId).equalTo(record::getGoodsId)
-                .set(skuName).equalTo(record::getSkuName)
-                .set(suppName).equalTo(record::getSuppName)
-                .set(suppSkuId).equalTo(record::getSuppSkuId)
-                .set(link).equalTo(record::getLink)
-                .set(length).equalTo(record::getLength)
-                .set(width).equalTo(record::getWidth)
-                .set(height).equalTo(record::getHeight)
-                .set(area).equalTo(record::getArea)
-                .set(weight).equalTo(record::getWeight)
-                .set(volumeWeight).equalTo(record::getVolumeWeight)
-                .set(purPrice).equalTo(record::getPurPrice)
-                .set(color).equalTo(record::getColor)
-                .set(size).equalTo(record::getSize)
-                .set(gmtCreated).equalTo(record::getGmtCreated)
-                .set(gmtModify).equalTo(record::getGmtModify)
-                .where(skuId, isEqualTo(record::getSkuId))
-                .build()
-                .execute();
+    default int update(UpdateDSLCompleter completer) {
+        return MyBatis3Utils.update(this::update, skuRelation, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    default int updateByPrimaryKeySelective(SkuRelation record) {
-        return UpdateDSL.updateWithMapper(this::update, skuRelation)
-                .set(goodsId).equalToWhenPresent(record::getGoodsId)
-                .set(skuName).equalToWhenPresent(record::getSkuName)
-                .set(suppName).equalToWhenPresent(record::getSuppName)
-                .set(suppSkuId).equalToWhenPresent(record::getSuppSkuId)
-                .set(link).equalToWhenPresent(record::getLink)
-                .set(length).equalToWhenPresent(record::getLength)
-                .set(width).equalToWhenPresent(record::getWidth)
-                .set(height).equalToWhenPresent(record::getHeight)
-                .set(area).equalToWhenPresent(record::getArea)
-                .set(weight).equalToWhenPresent(record::getWeight)
-                .set(volumeWeight).equalToWhenPresent(record::getVolumeWeight)
-                .set(purPrice).equalToWhenPresent(record::getPurPrice)
-                .set(color).equalToWhenPresent(record::getColor)
-                .set(size).equalToWhenPresent(record::getSize)
-                .set(gmtCreated).equalToWhenPresent(record::getGmtCreated)
-                .set(gmtModify).equalToWhenPresent(record::getGmtModify)
-                .where(skuId, isEqualTo(record::getSkuId))
-                .build()
-                .execute();
+    static UpdateDSL<UpdateModel> updateAllColumns(SkuRelation row, UpdateDSL<UpdateModel> dsl) {
+        return dsl.set(goodsId).equalTo(row::getGoodsId)
+                .set(skuName).equalTo(row::getSkuName)
+                .set(suppName).equalTo(row::getSuppName)
+                .set(suppSkuId).equalTo(row::getSuppSkuId)
+                .set(link).equalTo(row::getLink)
+                .set(length).equalTo(row::getLength)
+                .set(width).equalTo(row::getWidth)
+                .set(height).equalTo(row::getHeight)
+                .set(area).equalTo(row::getArea)
+                .set(weight).equalTo(row::getWeight)
+                .set(volumeWeight).equalTo(row::getVolumeWeight)
+                .set(purPrice).equalTo(row::getPurPrice)
+                .set(color).equalTo(row::getColor)
+                .set(size).equalTo(row::getSize)
+                .set(gmtCreated).equalTo(row::getGmtCreated)
+                .set(gmtModify).equalTo(row::getGmtModify);
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
+    static UpdateDSL<UpdateModel> updateSelectiveColumns(SkuRelation row, UpdateDSL<UpdateModel> dsl) {
+        return dsl.set(goodsId).equalToWhenPresent(row::getGoodsId)
+                .set(skuName).equalToWhenPresent(row::getSkuName)
+                .set(suppName).equalToWhenPresent(row::getSuppName)
+                .set(suppSkuId).equalToWhenPresent(row::getSuppSkuId)
+                .set(link).equalToWhenPresent(row::getLink)
+                .set(length).equalToWhenPresent(row::getLength)
+                .set(width).equalToWhenPresent(row::getWidth)
+                .set(height).equalToWhenPresent(row::getHeight)
+                .set(area).equalToWhenPresent(row::getArea)
+                .set(weight).equalToWhenPresent(row::getWeight)
+                .set(volumeWeight).equalToWhenPresent(row::getVolumeWeight)
+                .set(purPrice).equalToWhenPresent(row::getPurPrice)
+                .set(color).equalToWhenPresent(row::getColor)
+                .set(size).equalToWhenPresent(row::getSize)
+                .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
+                .set(gmtModify).equalToWhenPresent(row::getGmtModify);
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
+    default int updateByPrimaryKey(SkuRelation row) {
+        return update(c ->
+            c.set(goodsId).equalTo(row::getGoodsId)
+            .set(skuName).equalTo(row::getSkuName)
+            .set(suppName).equalTo(row::getSuppName)
+            .set(suppSkuId).equalTo(row::getSuppSkuId)
+            .set(link).equalTo(row::getLink)
+            .set(length).equalTo(row::getLength)
+            .set(width).equalTo(row::getWidth)
+            .set(height).equalTo(row::getHeight)
+            .set(area).equalTo(row::getArea)
+            .set(weight).equalTo(row::getWeight)
+            .set(volumeWeight).equalTo(row::getVolumeWeight)
+            .set(purPrice).equalTo(row::getPurPrice)
+            .set(color).equalTo(row::getColor)
+            .set(size).equalTo(row::getSize)
+            .set(gmtCreated).equalTo(row::getGmtCreated)
+            .set(gmtModify).equalTo(row::getGmtModify)
+            .where(skuId, isEqualTo(row::getSkuId))
+        );
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
+    default int updateByPrimaryKeySelective(SkuRelation row) {
+        return update(c ->
+            c.set(goodsId).equalToWhenPresent(row::getGoodsId)
+            .set(skuName).equalToWhenPresent(row::getSkuName)
+            .set(suppName).equalToWhenPresent(row::getSuppName)
+            .set(suppSkuId).equalToWhenPresent(row::getSuppSkuId)
+            .set(link).equalToWhenPresent(row::getLink)
+            .set(length).equalToWhenPresent(row::getLength)
+            .set(width).equalToWhenPresent(row::getWidth)
+            .set(height).equalToWhenPresent(row::getHeight)
+            .set(area).equalToWhenPresent(row::getArea)
+            .set(weight).equalToWhenPresent(row::getWeight)
+            .set(volumeWeight).equalToWhenPresent(row::getVolumeWeight)
+            .set(purPrice).equalToWhenPresent(row::getPurPrice)
+            .set(color).equalToWhenPresent(row::getColor)
+            .set(size).equalToWhenPresent(row::getSize)
+            .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
+            .set(gmtModify).equalToWhenPresent(row::getGmtModify)
+            .where(skuId, isEqualTo(row::getSkuId))
+        );
     }
 }

@@ -2,8 +2,8 @@ package com.chic.qh.domain.dal.mapper;
 
 import java.sql.JDBCType;
 import javax.annotation.Generated;
+import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
-import org.mybatis.dynamic.sql.SqlTable;
 
 public final class GoodsDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
@@ -52,7 +52,7 @@ public final class GoodsDynamicSqlSupport {
     public static final SqlColumn<Integer> gmtModify = goods.gmtModify;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    public static final class Goods extends SqlTable {
+    public static final class Goods extends AliasableSqlTable<Goods> {
         public final SqlColumn<Integer> goodsId = column("goods_id", JDBCType.INTEGER);
 
         public final SqlColumn<String> goodsSn = column("goods_sn", JDBCType.VARCHAR);
@@ -66,7 +66,7 @@ public final class GoodsDynamicSqlSupport {
         public final SqlColumn<Integer> gmtModify = column("gmt_modify", JDBCType.INTEGER);
 
         public Goods() {
-            super("qh_goods");
+            super("qh_goods", Goods::new);
         }
     }
 }

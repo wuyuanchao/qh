@@ -24,11 +24,10 @@ public class GoodsRepository {
 
     public Page<Goods> queryPagedList(GoodsQueryDTO dto) {
         return PageHelper.startPage(dto.getPageIndex(), dto.getPageSize()).doSelectPage(
-                () -> goodsMapper.selectByExample()
-                        .where(goodsId, isEqualToWhenPresent(dto.getGoodsId()))
-                        .orderBy(gmtCreated.descending())
-                        .build()
-                        .execute()
+                () -> goodsMapper.select(c->c
+                                .where(goodsId, isEqualToWhenPresent(dto.getGoodsId()))
+                                .orderBy(gmtCreated.descending())
+                        )
         );
     }
 
@@ -37,7 +36,7 @@ public class GoodsRepository {
     }
 
     public Goods getGoods(Integer goodsId){
-        return goodsMapper.selectByPrimaryKey(goodsId);
+        return goodsMapper.selectByPrimaryKey(goodsId).orElse(null);
     }
 
     public void updateGoods(Goods updateGoods) {

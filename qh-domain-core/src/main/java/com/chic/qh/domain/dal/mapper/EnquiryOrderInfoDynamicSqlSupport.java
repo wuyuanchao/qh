@@ -2,8 +2,8 @@ package com.chic.qh.domain.dal.mapper;
 
 import java.sql.JDBCType;
 import javax.annotation.Generated;
+import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
-import org.mybatis.dynamic.sql.SqlTable;
 
 public final class EnquiryOrderInfoDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_enquiry_order_info")
@@ -66,7 +66,7 @@ public final class EnquiryOrderInfoDynamicSqlSupport {
     public static final SqlColumn<Integer> gmtModify = enquiryOrderInfo.gmtModify;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_enquiry_order_info")
-    public static final class EnquiryOrderInfo extends SqlTable {
+    public static final class EnquiryOrderInfo extends AliasableSqlTable<EnquiryOrderInfo> {
         public final SqlColumn<Integer> enquiryOrderId = column("enquiry_order_id", JDBCType.INTEGER);
 
         public final SqlColumn<String> enquiryOrderSn = column("enquiry_order_sn", JDBCType.VARCHAR);
@@ -84,7 +84,7 @@ public final class EnquiryOrderInfoDynamicSqlSupport {
         public final SqlColumn<Integer> gmtModify = column("gmt_modify", JDBCType.INTEGER);
 
         public EnquiryOrderInfo() {
-            super("qh_enquiry_order_info");
+            super("qh_enquiry_order_info", EnquiryOrderInfo::new);
         }
     }
 }

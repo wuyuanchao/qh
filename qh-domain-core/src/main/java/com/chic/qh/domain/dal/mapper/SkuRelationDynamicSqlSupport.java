@@ -3,8 +3,8 @@ package com.chic.qh.domain.dal.mapper;
 import java.math.BigDecimal;
 import java.sql.JDBCType;
 import javax.annotation.Generated;
+import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
-import org.mybatis.dynamic.sql.SqlTable;
 
 public final class SkuRelationDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
@@ -130,7 +130,7 @@ public final class SkuRelationDynamicSqlSupport {
     public static final SqlColumn<Integer> gmtModify = skuRelation.gmtModify;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    public static final class SkuRelation extends SqlTable {
+    public static final class SkuRelation extends AliasableSqlTable<SkuRelation> {
         public final SqlColumn<Integer> skuId = column("sku_id", JDBCType.INTEGER);
 
         public final SqlColumn<Integer> goodsId = column("goods_id", JDBCType.INTEGER);
@@ -166,7 +166,7 @@ public final class SkuRelationDynamicSqlSupport {
         public final SqlColumn<Integer> gmtModify = column("gmt_modify", JDBCType.INTEGER);
 
         public SkuRelation() {
-            super("qh_sku_relation");
+            super("qh_sku_relation", SkuRelation::new);
         }
     }
 }

@@ -1,55 +1,51 @@
 package com.chic.qh.domain.dal.mapper;
 
 import static com.chic.qh.domain.dal.mapper.GoodsDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 import com.chic.qh.domain.dal.model.Goods;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Generated;
-import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
-import org.mybatis.dynamic.sql.SqlBuilder;
-import org.mybatis.dynamic.sql.delete.DeleteDSL;
-import org.mybatis.dynamic.sql.delete.MyBatis3DeleteModelAdapter;
-import org.mybatis.dynamic.sql.delete.render.DeleteStatementProvider;
+import org.mybatis.dynamic.sql.BasicColumn;
+import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
 import org.mybatis.dynamic.sql.insert.render.InsertStatementProvider;
-import org.mybatis.dynamic.sql.render.RenderingStrategy;
-import org.mybatis.dynamic.sql.select.MyBatis3SelectModelAdapter;
-import org.mybatis.dynamic.sql.select.QueryExpressionDSL;
-import org.mybatis.dynamic.sql.select.SelectDSL;
+import org.mybatis.dynamic.sql.select.CountDSLCompleter;
+import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
-import org.mybatis.dynamic.sql.update.MyBatis3UpdateModelAdapter;
 import org.mybatis.dynamic.sql.update.UpdateDSL;
-import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
+import org.mybatis.dynamic.sql.update.UpdateDSLCompleter;
+import org.mybatis.dynamic.sql.update.UpdateModel;
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
+import org.mybatis.dynamic.sql.util.mybatis3.CommonCountMapper;
+import org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper;
+import org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper;
+import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
-public interface GoodsMapper {
+public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    @SelectProvider(type=SqlProviderAdapter.class, method="select")
-    long count(SelectStatementProvider selectStatement);
-
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    @DeleteProvider(type=SqlProviderAdapter.class, method="delete")
-    int delete(DeleteStatementProvider deleteStatement);
+    BasicColumn[] selectList = BasicColumn.columnList(goodsId, goodsSn, goodsName, remark, gmtCreated, gmtModify);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
-    @Options(useGeneratedKeys=true,keyProperty="record.goodsId")
+    @Options(useGeneratedKeys=true,keyProperty="row.goodsId")
     int insert(InsertStatementProvider<Goods> insertStatement);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    @SelectProvider(type=SqlProviderAdapter.class, method="select")
-    @ResultMap("GoodsResult")
-    Goods selectOne(SelectStatementProvider selectStatement);
+    @InsertProvider(type=SqlProviderAdapter.class, method="insertMultipleWithGeneratedKeys")
+    @Options(useGeneratedKeys=true,keyProperty="records.goodsId")
+    int insertMultiple(@Param("insertStatement") String insertStatement, @Param("records") List<Goods> records);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
@@ -64,118 +60,126 @@ public interface GoodsMapper {
     List<Goods> selectMany(SelectStatementProvider selectStatement);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    @UpdateProvider(type=SqlProviderAdapter.class, method="update")
-    int update(UpdateStatementProvider updateStatement);
+    @SelectProvider(type=SqlProviderAdapter.class, method="select")
+    @ResultMap("GoodsResult")
+    Optional<Goods> selectOne(SelectStatementProvider selectStatement);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    default QueryExpressionDSL<MyBatis3SelectModelAdapter<Long>> countByExample() {
-        return SelectDSL.selectWithMapper(this::count, SqlBuilder.count())
-                .from(goods);
+    default long count(CountDSLCompleter completer) {
+        return MyBatis3Utils.countFrom(this::count, goods, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    default DeleteDSL<MyBatis3DeleteModelAdapter<Integer>> deleteByExample() {
-        return DeleteDSL.deleteFromWithMapper(this::delete, goods);
+    default int delete(DeleteDSLCompleter completer) {
+        return MyBatis3Utils.deleteFrom(this::delete, goods, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     default int deleteByPrimaryKey(Integer goodsId_) {
-        return DeleteDSL.deleteFromWithMapper(this::delete, goods)
-                .where(goodsId, isEqualTo(goodsId_))
-                .build()
-                .execute();
+        return delete(c -> 
+            c.where(goodsId, isEqualTo(goodsId_))
+        );
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    default int insert(Goods record) {
-        return insert(SqlBuilder.insert(record)
-                .into(goods)
-                .map(goodsSn).toProperty("goodsSn")
-                .map(goodsName).toProperty("goodsName")
-                .map(remark).toProperty("remark")
-                .map(gmtCreated).toProperty("gmtCreated")
-                .map(gmtModify).toProperty("gmtModify")
-                .build()
-                .render(RenderingStrategy.MYBATIS3));
+    default int insert(Goods row) {
+        return MyBatis3Utils.insert(this::insert, row, goods, c ->
+            c.map(goodsSn).toProperty("goodsSn")
+            .map(goodsName).toProperty("goodsName")
+            .map(remark).toProperty("remark")
+            .map(gmtCreated).toProperty("gmtCreated")
+            .map(gmtModify).toProperty("gmtModify")
+        );
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    default int insertSelective(Goods record) {
-        return insert(SqlBuilder.insert(record)
-                .into(goods)
-                .map(goodsSn).toPropertyWhenPresent("goodsSn", record::getGoodsSn)
-                .map(goodsName).toPropertyWhenPresent("goodsName", record::getGoodsName)
-                .map(remark).toPropertyWhenPresent("remark", record::getRemark)
-                .map(gmtCreated).toPropertyWhenPresent("gmtCreated", record::getGmtCreated)
-                .map(gmtModify).toPropertyWhenPresent("gmtModify", record::getGmtModify)
-                .build()
-                .render(RenderingStrategy.MYBATIS3));
+    default int insertMultiple(Collection<Goods> records) {
+        return MyBatis3Utils.insertMultipleWithGeneratedKeys(this::insertMultiple, records, goods, c ->
+            c.map(goodsSn).toProperty("goodsSn")
+            .map(goodsName).toProperty("goodsName")
+            .map(remark).toProperty("remark")
+            .map(gmtCreated).toProperty("gmtCreated")
+            .map(gmtModify).toProperty("gmtModify")
+        );
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    default QueryExpressionDSL<MyBatis3SelectModelAdapter<List<Goods>>> selectByExample() {
-        return SelectDSL.selectWithMapper(this::selectMany, goodsId, goodsSn, goodsName, remark, gmtCreated, gmtModify)
-                .from(goods);
+    default int insertSelective(Goods row) {
+        return MyBatis3Utils.insert(this::insert, row, goods, c ->
+            c.map(goodsSn).toPropertyWhenPresent("goodsSn", row::getGoodsSn)
+            .map(goodsName).toPropertyWhenPresent("goodsName", row::getGoodsName)
+            .map(remark).toPropertyWhenPresent("remark", row::getRemark)
+            .map(gmtCreated).toPropertyWhenPresent("gmtCreated", row::getGmtCreated)
+            .map(gmtModify).toPropertyWhenPresent("gmtModify", row::getGmtModify)
+        );
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    default QueryExpressionDSL<MyBatis3SelectModelAdapter<List<Goods>>> selectDistinctByExample() {
-        return SelectDSL.selectDistinctWithMapper(this::selectMany, goodsId, goodsSn, goodsName, remark, gmtCreated, gmtModify)
-                .from(goods);
+    default Optional<Goods> selectOne(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectOne(this::selectOne, selectList, goods, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    default Goods selectByPrimaryKey(Integer goodsId_) {
-        return SelectDSL.selectWithMapper(this::selectOne, goodsId, goodsSn, goodsName, remark, gmtCreated, gmtModify)
-                .from(goods)
-                .where(goodsId, isEqualTo(goodsId_))
-                .build()
-                .execute();
+    default List<Goods> select(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectList(this::selectMany, selectList, goods, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    default UpdateDSL<MyBatis3UpdateModelAdapter<Integer>> updateByExample(Goods record) {
-        return UpdateDSL.updateWithMapper(this::update, goods)
-                .set(goodsSn).equalTo(record::getGoodsSn)
-                .set(goodsName).equalTo(record::getGoodsName)
-                .set(remark).equalTo(record::getRemark)
-                .set(gmtCreated).equalTo(record::getGmtCreated)
-                .set(gmtModify).equalTo(record::getGmtModify);
+    default List<Goods> selectDistinct(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectDistinct(this::selectMany, selectList, goods, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    default UpdateDSL<MyBatis3UpdateModelAdapter<Integer>> updateByExampleSelective(Goods record) {
-        return UpdateDSL.updateWithMapper(this::update, goods)
-                .set(goodsSn).equalToWhenPresent(record::getGoodsSn)
-                .set(goodsName).equalToWhenPresent(record::getGoodsName)
-                .set(remark).equalToWhenPresent(record::getRemark)
-                .set(gmtCreated).equalToWhenPresent(record::getGmtCreated)
-                .set(gmtModify).equalToWhenPresent(record::getGmtModify);
+    default Optional<Goods> selectByPrimaryKey(Integer goodsId_) {
+        return selectOne(c ->
+            c.where(goodsId, isEqualTo(goodsId_))
+        );
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    default int updateByPrimaryKey(Goods record) {
-        return UpdateDSL.updateWithMapper(this::update, goods)
-                .set(goodsSn).equalTo(record::getGoodsSn)
-                .set(goodsName).equalTo(record::getGoodsName)
-                .set(remark).equalTo(record::getRemark)
-                .set(gmtCreated).equalTo(record::getGmtCreated)
-                .set(gmtModify).equalTo(record::getGmtModify)
-                .where(goodsId, isEqualTo(record::getGoodsId))
-                .build()
-                .execute();
+    default int update(UpdateDSLCompleter completer) {
+        return MyBatis3Utils.update(this::update, goods, completer);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    default int updateByPrimaryKeySelective(Goods record) {
-        return UpdateDSL.updateWithMapper(this::update, goods)
-                .set(goodsSn).equalToWhenPresent(record::getGoodsSn)
-                .set(goodsName).equalToWhenPresent(record::getGoodsName)
-                .set(remark).equalToWhenPresent(record::getRemark)
-                .set(gmtCreated).equalToWhenPresent(record::getGmtCreated)
-                .set(gmtModify).equalToWhenPresent(record::getGmtModify)
-                .where(goodsId, isEqualTo(record::getGoodsId))
-                .build()
-                .execute();
+    static UpdateDSL<UpdateModel> updateAllColumns(Goods row, UpdateDSL<UpdateModel> dsl) {
+        return dsl.set(goodsSn).equalTo(row::getGoodsSn)
+                .set(goodsName).equalTo(row::getGoodsName)
+                .set(remark).equalTo(row::getRemark)
+                .set(gmtCreated).equalTo(row::getGmtCreated)
+                .set(gmtModify).equalTo(row::getGmtModify);
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
+    static UpdateDSL<UpdateModel> updateSelectiveColumns(Goods row, UpdateDSL<UpdateModel> dsl) {
+        return dsl.set(goodsSn).equalToWhenPresent(row::getGoodsSn)
+                .set(goodsName).equalToWhenPresent(row::getGoodsName)
+                .set(remark).equalToWhenPresent(row::getRemark)
+                .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
+                .set(gmtModify).equalToWhenPresent(row::getGmtModify);
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
+    default int updateByPrimaryKey(Goods row) {
+        return update(c ->
+            c.set(goodsSn).equalTo(row::getGoodsSn)
+            .set(goodsName).equalTo(row::getGoodsName)
+            .set(remark).equalTo(row::getRemark)
+            .set(gmtCreated).equalTo(row::getGmtCreated)
+            .set(gmtModify).equalTo(row::getGmtModify)
+            .where(goodsId, isEqualTo(row::getGoodsId))
+        );
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
+    default int updateByPrimaryKeySelective(Goods row) {
+        return update(c ->
+            c.set(goodsSn).equalToWhenPresent(row::getGoodsSn)
+            .set(goodsName).equalToWhenPresent(row::getGoodsName)
+            .set(remark).equalToWhenPresent(row::getRemark)
+            .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
+            .set(gmtModify).equalToWhenPresent(row::getGmtModify)
+            .where(goodsId, isEqualTo(row::getGoodsId))
+        );
     }
 }

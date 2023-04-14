@@ -22,10 +22,9 @@ public class EnquiryOrderGoodsRepository {
     private EnquiryOrderGoodsMapper enquiryOrderGoodsMapper;
 
     public List<EnquiryOrderGoods> queryOrderGoodsList(Integer _enquiryOrderId) {
-        List<EnquiryOrderGoods> orderGoodsList = enquiryOrderGoodsMapper.selectByExample()
-                .where(enquiryOrderId, isEqualToWhenPresent(_enquiryOrderId))
-                .build()
-                .execute();
+        List<EnquiryOrderGoods> orderGoodsList = enquiryOrderGoodsMapper.select(c->c
+                        .where(enquiryOrderId, isEqualToWhenPresent(_enquiryOrderId))
+                );
         return orderGoodsList;
     }
 

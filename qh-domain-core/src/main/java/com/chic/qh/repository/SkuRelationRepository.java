@@ -22,11 +22,10 @@ public class SkuRelationRepository {
 
 
     public List<SkuRelation> querySkuList(Integer _goodsId) {
-        List<SkuRelation> skuRelationList = skuRelationMapper.selectByExample()
+        List<SkuRelation> skuRelationList = skuRelationMapper.select(c -> c
                 .where(goodsId, isEqualToWhenPresent(_goodsId))
                 .orderBy(gmtCreated.descending())
-                .build()
-                .execute();
+        );
         return skuRelationList;
     }
 
@@ -35,14 +34,11 @@ public class SkuRelationRepository {
     }
 
     public void deleteSkuByGoodsId(Integer _goodsId) {
-        skuRelationMapper.deleteByExample()
-                .where(goodsId, isEqualToWhenPresent(_goodsId))
-                .build()
-                .execute();
+        skuRelationMapper.delete(c->c.where(goodsId, isEqualToWhenPresent(_goodsId)));
     }
 
     public SkuRelation getSku(Integer skuId) {
-        return skuRelationMapper.selectByPrimaryKey(skuId);
+        return skuRelationMapper.selectByPrimaryKey(skuId).orElse(null);
     }
 
     public void updateSkuRelation(SkuRelation updateSku) {

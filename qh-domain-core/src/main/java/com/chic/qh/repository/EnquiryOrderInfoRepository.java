@@ -5,8 +5,11 @@ import com.chic.qh.domain.dal.model.EnquiryOrderInfo;
 import com.chic.qh.service.enquiry.dto.EnquiryOrderQueryDTO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import static com.chic.qh.domain.dal.mapper.EnquiryOrderInfoDynamicSqlSupport.enquiryOrderId;
 import static com.chic.qh.domain.dal.mapper.EnquiryOrderInfoDynamicSqlSupport.gmtCreated;
@@ -23,13 +26,12 @@ public class EnquiryOrderInfoRepository {
     @Autowired
     private EnquiryOrderInfoMapper enquiryOrderInfoMapper;
 
-    public Page<EnquiryOrderInfo> queryPagedList(EnquiryOrderQueryDTO dto) {
-        return PageHelper.startPage(dto.getPageIndex(), dto.getPageSize()).doSelectPage(
-                () -> enquiryOrderInfoMapper.selectByExample()
-                        .where(enquiryOrderId, isEqualToWhenPresent(dto.getEnquiryOrderId()))
-                        .orderBy(gmtCreated.descending())
-                        .build()
-                        .execute()
+    public PageInfo<EnquiryOrderInfo> queryPagedList(EnquiryOrderQueryDTO dto) {
+        return PageHelper.startPage(dto.getPageIndex(), dto.getPageSize()).doSelectPageInfo(
+                () -> enquiryOrderInfoMapper.select(c->c
+                                .where(enquiryOrderId, isEqualToWhenPresent(dto.getEnquiryOrderId()))
+                                .orderBy(gmtCreated.descending())
+                        )
         );
     }
 

@@ -11,10 +11,12 @@ import com.chic.qh.service.enquiry.vo.EnquiryOrderListVO;
 import com.chic.qh.service.enquiry.vo.EnquiryOrderVO;
 import com.chic.qh.utils.DateUtils;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ import java.util.List;
  * @date: 2023—04—07 14:49
  */
 @Service
+@Transactional
 public class EnquiryServiceImpl implements EnquiryService {
 
     @Autowired
@@ -34,9 +37,9 @@ public class EnquiryServiceImpl implements EnquiryService {
 
     @Override
     public EnquiryOrderListVO queryList(EnquiryOrderQueryDTO dto) {
-        Page<EnquiryOrderInfo> enquiryOrderInfoPage = enquiryOrderInfoRepository.queryPagedList(dto);
+        PageInfo<EnquiryOrderInfo> enquiryOrderInfoPage = enquiryOrderInfoRepository.queryPagedList(dto);
         //build vo
-        List<EnquiryOrderVO> orderVOList = buildVO(enquiryOrderInfoPage.getResult());
+        List<EnquiryOrderVO> orderVOList = buildVO(enquiryOrderInfoPage.getList());
         return new EnquiryOrderListVO(enquiryOrderInfoPage.getTotal(), orderVOList);
     }
 

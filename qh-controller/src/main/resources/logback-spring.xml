@@ -8,6 +8,7 @@
             <pattern>${pattern}</pattern>
         </encoder>
     </appender>
+    <logger name="org.mybatis" level="DEBUG"/>
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>

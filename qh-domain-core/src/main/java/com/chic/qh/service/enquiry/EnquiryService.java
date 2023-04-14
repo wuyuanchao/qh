@@ -1,8 +1,7 @@
 package com.chic.qh.service.enquiry;
 
-import com.chic.qh.domain.core.service.enquiry.dto.*;
-import com.chic.qh.service.enquiry.vo.EnquiryOrderListVO;
 import com.chic.qh.service.enquiry.dto.*;
+import com.chic.qh.service.enquiry.vo.EnquiryOrderListVO;
 
 /**
  * @Description:
