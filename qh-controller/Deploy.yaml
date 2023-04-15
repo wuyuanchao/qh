@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qh-ds
+  labels:
+    cattle.io/creator: norman
+    workload.user.cattle.io/workloadselector: deployment-default-qh-ds
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: deployment-default-qh-ds
+  template:
+    metadata:
+      labels:
+        workload.user.cattle.io/workloadselector: deployment-default-qh-ds
+    spec:
+      containers:
+        - name: qh-ds
+          image: core.devtest.com/default/qh:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qh-ds
+  labels:
+    cattle.io/creator: norman
+spec:
+  ports:
+    - name: default
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    workload.user.cattle.io/workloadselector: deployment-default-qh-ds
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: qh-ds-ingress
+spec:
+  rules:
+    - host: ds.jollycorp.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: qh-ds
+                port:
+                  number: 8080
