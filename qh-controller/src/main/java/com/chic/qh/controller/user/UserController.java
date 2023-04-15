@@ -1,9 +1,9 @@
-package com.chic.qh.controller;
+package com.chic.qh.controller.user;
 
-import com.chic.qh.controller.user.CurrentUserResp;
-import com.chic.qh.controller.user.LoginReq;
-import com.chic.qh.controller.user.LoginResp;
-import com.chic.qh.controller.user.User;
+import com.chic.qh.controller.user.dto.CurrentUserResp;
+import com.chic.qh.controller.user.dto.LoginReq;
+import com.chic.qh.controller.user.dto.LoginResp;
+import com.chic.qh.controller.user.dto.UserDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,7 +57,7 @@ public class UserController {
     @GetMapping("/api/currentUser")
     public ResponseEntity currentUser(){
         if(LOGIN_USERS.size() > 0) {
-            return ResponseEntity.ok(new CurrentUserResp(true, new User("桃花仙翁",
+            return ResponseEntity.ok(new CurrentUserResp(true, new UserDTO("桃花仙翁",
                     "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
                     "00000001")));
         }else{

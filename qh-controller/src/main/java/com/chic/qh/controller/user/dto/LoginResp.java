@@ -1,4 +1,4 @@
-package com.chic.qh.controller.user;
+package com.chic.qh.controller.user.dto;
 
 import lombok.Data;
 
