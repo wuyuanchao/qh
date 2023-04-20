@@ -18,6 +18,8 @@ spec:
       containers:
         - name: qh-ds
           image: core.devtest.com/default/qh:latest
+        - name: qh-front
+          image: core.devtest.com/default/qh-front:latest
 ---
 apiVersion: v1
 kind: Service
@@ -28,9 +30,9 @@ metadata:
 spec:
   ports:
     - name: default
-      port: 8080
+      port: 80
       protocol: TCP
-      targetPort: 8080
+      targetPort: 80
   selector:
     workload.user.cattle.io/workloadselector: deployment-default-qh-ds
   type: ClusterIP
@@ -50,4 +52,4 @@ spec:
               service:
                 name: qh-ds
                 port:
-                  number: 8080
+                  number: 80
