@@ -2,6 +2,7 @@ package com.chic.qh.service.enquiry;
 
 import com.chic.qh.service.enquiry.dto.*;
 import com.chic.qh.service.enquiry.vo.EnquiryOrderListVO;
+import com.chic.qh.service.enquiry.vo.EnquiryOrderVO;
 
 /**
  * @Description:
@@ -19,4 +20,6 @@ public interface EnquiryService {
     void deleteEnquiryOrderGoods(EnquiryOrderGoodsDeleteDTO dto);
 
     void updateGoodsSn(EnquiryOrderUpdateDTO dto);
+
+    EnquiryOrderVO queryDetailById(Integer enquiryOrderId);
 }
