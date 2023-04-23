@@ -25,7 +25,7 @@ public class UserController {
 
     private static final Set<String> LOGIN_USERS = new HashSet<>();
 
-    @PostMapping("/api/login/account")
+    @PostMapping("/login/account")
     public LoginResp list(@RequestBody LoginReq req) {
         if(Optional.ofNullable(ACCOUNTS.get(req.getUsername()))
                 .filter(x -> x.getPassword().equals(req.getPassword()))
@@ -46,7 +46,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/api/login/outLogin")
+    @PostMapping("/login/outLogin")
     public ResponseEntity outLogin(){
         LOGIN_USERS.clear();
         Map<String, Object> map = new HashMap<>();
@@ -54,7 +54,7 @@ public class UserController {
         return ResponseEntity.ok(map);
     }
 
-    @GetMapping("/api/currentUser")
+    @GetMapping("/currentUser")
     public ResponseEntity currentUser(){
         if(LOGIN_USERS.size() > 0) {
             return ResponseEntity.ok(new CurrentUserResp(true, new UserDTO("桃花仙翁",
