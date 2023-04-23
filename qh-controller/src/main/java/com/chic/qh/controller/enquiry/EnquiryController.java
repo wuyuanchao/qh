@@ -4,6 +4,7 @@ import com.chic.qh.result.ResponseEntity;
 import com.chic.qh.service.enquiry.EnquiryService;
 import com.chic.qh.service.enquiry.dto.*;
 import com.chic.qh.service.enquiry.vo.EnquiryOrderListVO;
+import com.chic.qh.service.enquiry.vo.EnquiryOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,17 @@ public class EnquiryController {
     @PostMapping("/list")
     public ResponseEntity list(@RequestBody EnquiryOrderQueryDTO dto) {
         EnquiryOrderListVO vo = enquiryService.queryList(dto);
+        return ResponseEntity.ok(vo);
+    }
+
+    /**
+     * 查询询价单详情
+     * @param enquiryOrderId
+     * @return
+     */
+    @GetMapping("/detail/{enquiryOrderId}")
+    public ResponseEntity detail(@PathVariable Integer enquiryOrderId){
+        EnquiryOrderVO vo = enquiryService.queryDetailById(enquiryOrderId);
         return ResponseEntity.ok(vo);
     }
 

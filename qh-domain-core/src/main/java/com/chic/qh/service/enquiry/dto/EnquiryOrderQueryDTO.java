@@ -10,10 +10,16 @@ import lombok.Data;
 @Data
 public class EnquiryOrderQueryDTO {
 
-    private Integer pageIndex;
+    private Integer current;
     private Integer pageSize;
 
     private Integer enquiryOrderId;
+
+    private String enquiryOrderSn;
+
+    private String enquiryOrderName;
+
+    private String customerInfo;
 
 
 }

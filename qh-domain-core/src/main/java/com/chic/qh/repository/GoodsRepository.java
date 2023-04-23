@@ -23,7 +23,7 @@ public class GoodsRepository {
     private GoodsMapper goodsMapper;
 
     public Page<Goods> queryPagedList(GoodsQueryDTO dto) {
-        return PageHelper.startPage(dto.getPageIndex(), dto.getPageSize()).doSelectPage(
+        return PageHelper.startPage(dto.getCurrent(), dto.getPageSize()).doSelectPage(
                 () -> goodsMapper.select(c->c
                                 .where(goodsId, isEqualToWhenPresent(dto.getGoodsId()))
                                 .orderBy(gmtCreated.descending())

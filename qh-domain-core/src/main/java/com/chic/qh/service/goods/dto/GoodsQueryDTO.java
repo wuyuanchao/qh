@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class GoodsQueryDTO {
 
-    private Integer pageIndex;
+    private Integer current;
     private Integer pageSize;
 
     private Integer goodsId;

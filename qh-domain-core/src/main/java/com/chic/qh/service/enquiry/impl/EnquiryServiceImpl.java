@@ -13,6 +13,7 @@ import com.chic.qh.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,30 +38,45 @@ public class EnquiryServiceImpl implements EnquiryService {
 
     @Override
     public EnquiryOrderListVO queryList(EnquiryOrderQueryDTO dto) {
+        dto.setEnquiryOrderName(StringUtils.isBlank(dto.getEnquiryOrderName()) ? null : "%" + dto.getEnquiryOrderName() + "%");
+        dto.setCustomerInfo(StringUtils.isBlank(dto.getCustomerInfo()) ? null : "%" + dto.getCustomerInfo() + "%");
         PageInfo<EnquiryOrderInfo> enquiryOrderInfoPage = enquiryOrderInfoRepository.queryPagedList(dto);
         //build vo
-        List<EnquiryOrderVO> orderVOList = buildVO(enquiryOrderInfoPage.getList());
+        List<EnquiryOrderVO> orderVOList = buildListVO(enquiryOrderInfoPage.getList());
         return new EnquiryOrderListVO(enquiryOrderInfoPage.getTotal(), orderVOList);
     }
 
-    private List<EnquiryOrderVO> buildVO(List<EnquiryOrderInfo> orderInfoList){
+    private List<EnquiryOrderVO> buildListVO(List<EnquiryOrderInfo> orderInfoList){
         List<EnquiryOrderVO> orderVOList = new ArrayList<>();
         for (EnquiryOrderInfo orderInfo : orderInfoList) {
-            EnquiryOrderVO orderVO = new EnquiryOrderVO();
-            BeanUtils.copyProperties(orderInfo, orderVO);
-
-            List<EnquiryOrderGoods> orderGoodsList = enquiryOrderGoodsRepository.queryOrderGoodsList(orderInfo.getEnquiryOrderId());
-            List<EnquiryOrderGoodsVO> orderGoodsVOList = new ArrayList<>(orderGoodsList.size());
-            orderGoodsList.forEach(x->{
-                EnquiryOrderGoodsVO orderGoodsVO = new EnquiryOrderGoodsVO();
-                BeanUtils.copyProperties(x, orderGoodsVO);
-                orderGoodsVOList.add(orderGoodsVO);
-            });
-            orderVO.setOrderGoodsList(orderGoodsVOList);
-
+            EnquiryOrderVO orderVO = buildVO(orderInfo);
             orderVOList.add(orderVO);
         }
         return orderVOList;
+    }
+
+    private EnquiryOrderVO buildVO(EnquiryOrderInfo orderInfo) {
+        EnquiryOrderVO orderVO = new EnquiryOrderVO();
+        BeanUtils.copyProperties(orderInfo, orderVO);
+        List<EnquiryOrderGoods> orderGoodsList = enquiryOrderGoodsRepository.queryOrderGoodsList(orderInfo.getEnquiryOrderId());
+        List<EnquiryOrderGoodsVO> orderGoodsVOList = new ArrayList<>(orderGoodsList.size());
+        orderGoodsList.forEach(x -> {
+            EnquiryOrderGoodsVO orderGoodsVO = new EnquiryOrderGoodsVO();
+            BeanUtils.copyProperties(x, orderGoodsVO);
+            orderGoodsVOList.add(orderGoodsVO);
+        });
+        orderVO.setOrderGoodsList(orderGoodsVOList);
+        return orderVO;
+    }
+
+    @Override
+    public EnquiryOrderVO queryDetailById(Integer enquiryOrderId) {
+        EnquiryOrderInfo enquiryOrderInfo = enquiryOrderInfoRepository.queryById(enquiryOrderId);
+        if(enquiryOrderInfo == null){
+            throw new RuntimeException("询价单找不到！id:" + enquiryOrderId);
+        }
+        EnquiryOrderVO orderVO = buildVO(enquiryOrderInfo);
+        return orderVO;
     }
 
     @Override
