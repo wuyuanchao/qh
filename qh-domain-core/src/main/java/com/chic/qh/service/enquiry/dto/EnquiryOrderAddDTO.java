@@ -12,6 +12,8 @@ import java.util.List;
 @Data
 public class EnquiryOrderAddDTO {
 
+    private String enquiryOrderSn;
+
     private String enquiryOrderName;
 
     private String customerInfo;

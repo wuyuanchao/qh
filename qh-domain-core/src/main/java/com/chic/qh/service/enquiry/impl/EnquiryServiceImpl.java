@@ -84,23 +84,21 @@ public class EnquiryServiceImpl implements EnquiryService {
         EnquiryOrderInfo orderInfo = new EnquiryOrderInfo();
         BeanUtils.copyProperties(dto, orderInfo);
         orderInfo.setGmtCreated(DateUtils.getCurrentSecond());
+        enquiryOrderInfoRepository.saveEnquiryOrder(orderInfo);
 
         List<EnquiryOrderAddDTO.EnquiryOrderGoodsDTO> goodsList = dto.getGoodsList();
-        if(CollectionUtils.isEmpty(goodsList)){
-            throw new RuntimeException("询价单至少需要包含一款商品");
+        //添加询价单的时候，商品列表可以为空，后续慢慢添加商品
+        if(!CollectionUtils.isEmpty(goodsList)){
+            List<EnquiryOrderGoods> orderGoodsList = new ArrayList<>(goodsList.size());
+            goodsList.forEach(x->{
+                EnquiryOrderGoods orderGoods = new EnquiryOrderGoods();
+                BeanUtils.copyProperties(x, orderGoods);
+                orderGoods.setGmtCreated(DateUtils.getCurrentSecond());
+                orderGoods.setEnquiryOrderId(orderInfo.getEnquiryOrderId());
+                orderGoodsList.add(orderGoods);
+            });
+            enquiryOrderGoodsRepository.saveBatch(orderGoodsList);
         }
-        List<EnquiryOrderGoods> orderGoodsList = new ArrayList<>(goodsList.size());
-        goodsList.forEach(x->{
-            EnquiryOrderGoods orderGoods = new EnquiryOrderGoods();
-            BeanUtils.copyProperties(x, orderGoods);
-            orderGoods.setGmtCreated(DateUtils.getCurrentSecond());
-            orderGoodsList.add(orderGoods);
-        });
-        enquiryOrderInfoRepository.saveEnquiryOrder(orderInfo);
-        orderGoodsList.forEach(x->{
-            x.setEnquiryOrderId(orderInfo.getEnquiryOrderId());
-            enquiryOrderGoodsRepository.saveEnquiryOrderGoods(x);
-        });
     }
 
     @Override
