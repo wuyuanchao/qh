@@ -5,6 +5,7 @@ import com.chic.qh.domain.dal.model.EnquiryOrderGoods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.chic.qh.domain.dal.mapper.EnquiryOrderGoodsDynamicSqlSupport.enquiryOrderId;
@@ -18,7 +19,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
 @Repository
 public class EnquiryOrderGoodsRepository {
 
-    @Autowired
+    @Resource
     private EnquiryOrderGoodsMapper enquiryOrderGoodsMapper;
 
     public List<EnquiryOrderGoods> queryOrderGoodsList(Integer _enquiryOrderId) {
@@ -38,5 +39,9 @@ public class EnquiryOrderGoodsRepository {
 
     public void updateSelectiveByPrimaryKey(EnquiryOrderGoods orderGoods) {
         enquiryOrderGoodsMapper.updateByPrimaryKeySelective(orderGoods);
+    }
+
+    public void saveBatch(List<EnquiryOrderGoods> orderGoodsList) {
+        enquiryOrderGoodsMapper.insertMultiple(orderGoodsList);
     }
 }
