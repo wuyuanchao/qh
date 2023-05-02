@@ -9,10 +9,7 @@ import com.chic.qh.service.goods.dto.SkuQueryDTO;
 import com.chic.qh.service.goods.vo.GoodsListVO;
 import com.chic.qh.service.goods.vo.SkuVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,6 +34,19 @@ public class GoodsController {
     public ResponseEntity list(@RequestBody GoodsQueryDTO dto) {
         GoodsListVO vo = goodsService.queryList(dto);
         return ResponseEntity.ok(vo);
+    }
+
+    @GetMapping("/detail/{goodsId}")
+    public ResponseEntity getGoodsDetail(@PathVariable("goodsId") Integer goodsId){
+        GoodsQueryDTO dto = new GoodsQueryDTO();
+        dto.setCurrent(1);
+        dto.setPageSize(1);
+        dto.setGoodsId(goodsId);
+        GoodsListVO vo = goodsService.queryList(dto);
+        if(vo.getTotal() == 0){
+            ResponseEntity.error("找不到商品信息");
+        }
+        return ResponseEntity.ok(vo.getGoodsList().get(0));
     }
 
     /**
@@ -116,4 +126,9 @@ public class GoodsController {
         return ResponseEntity.ok();
     }
 
+    @GetMapping("/{goodsId}/comments")
+    public ResponseEntity getGoodsComments(@PathVariable("goodsId") Integer goodsId){
+        System.out.println(goodsId);
+        return ResponseEntity.ok();
+    }
 }

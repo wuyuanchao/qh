@@ -76,7 +76,9 @@ public class GoodsServiceImpl implements GoodsService {
 
         List<SkuAddUpdateDTO> skuDTOList = dto.getSkuList();
         if(CollectionUtils.isEmpty(skuDTOList)){
-            throw new RuntimeException("商品至少需要包含一个sku");
+            //throw new RuntimeException("商品至少需要包含一个sku");
+            //todo: 商品新增暂时给sku空列表
+            skuDTOList = new ArrayList<>();
         }
 
         List<SkuRelation> skuRelationList = new ArrayList<>(skuDTOList.size());
