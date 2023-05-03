@@ -10,6 +10,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +40,14 @@ public class GoodsRepository {
     }
 
     public Page<Goods> queryPagedList(GoodsQueryDTO dto) {
+        String sn = StringUtils.hasText(dto.getQ()) ? dto.getQ() + "%" : null;
+        String txt = StringUtils.hasText(dto.getQ()) ? "%" + dto.getQ() + "%" : null;
         return PageHelper.startPage(dto.getCurrent(), dto.getPageSize()).doSelectPage(
                 () -> goodsMapper.select(c->c
-                                .where(goodsId, isEqualToWhenPresent(dto.getGoodsId()))
+                                .where(goodsSn, isLikeWhenPresent(sn))
+                                .or(goodsName, isLikeWhenPresent(txt))
+                                .or(goodsName, isLikeWhenPresent(txt))
+                                .or(remark, isLikeWhenPresent(txt))
                                 .orderBy(gmtCreated.descending())
                         )
         );

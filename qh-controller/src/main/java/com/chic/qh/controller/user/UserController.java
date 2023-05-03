@@ -59,7 +59,7 @@ public class UserController {
         if(LOGIN_USERS.size() > 0) {
             return ResponseEntity.ok(new CurrentUserResp(true, new UserDTO("桃花仙翁",
                     "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
-                    "00000001")));
+                    "00000001", "admin")));
         }else{
             Map<String, Object> map = new HashMap<>();
             map.put("errorCode", "401");
