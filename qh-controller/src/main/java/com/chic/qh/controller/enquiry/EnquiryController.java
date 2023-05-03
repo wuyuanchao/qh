@@ -8,6 +8,8 @@ import com.chic.qh.service.enquiry.vo.EnquiryOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 /**
  * @Description: 询价
  * @author: xumingwei
@@ -82,7 +84,11 @@ public class EnquiryController {
      */
     @PostMapping("/updateGoodsSn")
     public ResponseEntity updateGoodsSn(@RequestBody EnquiryOrderUpdateDTO dto) {
-        enquiryService.updateGoodsSn(dto);
-        return ResponseEntity.ok();
+        try {
+            enquiryService.updateGoodsSn(dto);
+            return ResponseEntity.ok();
+        }catch (NoSuchElementException e){
+            return ResponseEntity.error(e.getMessage());
+        }
     }
 }

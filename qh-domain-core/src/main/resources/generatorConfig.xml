@@ -4,12 +4,6 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-
-    <!-- MyBatis3  -->
-    <!-- MyBatis3Simple  -->
-    <!-- MyBatis3DynamicSql  -->
-    <!-- Ibatis2Java2  -->
-    <!-- Ibatis2Java5  -->
     <context id="DB2Tables" targetRuntime="MyBatis3DynamicSql">
         
         <property name="javaFileEncoding" value="utf-8" />
@@ -22,9 +16,9 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/qh"
+                        connectionURL="jdbc:mysql://172.31.0.250:32408/qh"
                         userId="root"
-                        password="root">
+                        password="Test123456">
         </jdbcConnection>
 
         <javaTypeResolver >
@@ -36,12 +30,6 @@
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-
-        <!-- With targetRuntime value MyBatis3DynamicSql,
-        The mappers are generated as annotated mappers regardless of what is specified for the "type" of <javaClientGenerator>.-->
-        <!-- ANNOTATEDMAPPER -->
-        <!-- MIXEDMAPPER -->
-        <!-- XMLMAPPER -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.chic.qh.domain.dal.mapper"  targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
@@ -60,6 +48,10 @@
 
         <table tableName="qh_sku_relation" domainObjectName="SkuRelation" >
             <generatedKey column="sku_id" sqlStatement="JDBC" identity="true" />
+        </table>
+
+        <table tableName="qh_goods_comment" domainObjectName="GoodsComment" >
+            <generatedKey column="rec_id" sqlStatement="JDBC" identity="true" />
         </table>
 
     </context>

@@ -9,6 +9,7 @@ import com.chic.qh.service.enquiry.dto.*;
 import com.chic.qh.service.enquiry.vo.EnquiryOrderGoodsVO;
 import com.chic.qh.service.enquiry.vo.EnquiryOrderListVO;
 import com.chic.qh.service.enquiry.vo.EnquiryOrderVO;
+import com.chic.qh.service.goods.GoodsService;
 import com.chic.qh.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
@@ -18,9 +19,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * @Description: 询价
@@ -35,6 +39,8 @@ public class EnquiryServiceImpl implements EnquiryService {
     private EnquiryOrderInfoRepository enquiryOrderInfoRepository;
     @Autowired
     private EnquiryOrderGoodsRepository enquiryOrderGoodsRepository;
+    @Autowired
+    private GoodsService goodsService;
 
     @Override
     public EnquiryOrderListVO queryList(EnquiryOrderQueryDTO dto) {
@@ -115,11 +121,17 @@ public class EnquiryServiceImpl implements EnquiryService {
 
     @Override
     public void updateGoodsSn(EnquiryOrderUpdateDTO dto) {
+        String goodsSn = dto.getGoodsSn();
+        Assert.hasText(goodsSn,"商品sn不能为空");
+        if(goodsService.getGoodsPOBySn(goodsSn) == null){
+            throw new NoSuchElementException("无效的goodsSn:" + goodsSn);
+        }
+
         EnquiryOrderGoods orderGoods = new EnquiryOrderGoods();
         orderGoods.setRecId(dto.getRecId());
         orderGoods.setGoodsSn(dto.getGoodsSn());
         orderGoods.setRelationType(dto.getRelationType());
-        orderGoods.setGmtModify(DateUtils.getCurrentSecond());
+        orderGoods.setGmtModify((int)Instant.now().getEpochSecond());
         enquiryOrderGoodsRepository.updateSelectiveByPrimaryKey(orderGoods);
     }
 }

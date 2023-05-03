@@ -29,6 +29,9 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        String auth = httpServletRequest.getHeader("Authorization");
+        String uri = httpServletRequest.getRequestURI();
+        logger.info("uri:{} , with auth: {}", uri, auth);
         return true;
     }
 
