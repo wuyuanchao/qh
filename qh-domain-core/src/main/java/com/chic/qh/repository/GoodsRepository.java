@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.chic.qh.domain.dal.mapper.GoodsDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
+import static org.mybatis.dynamic.sql.SqlBuilder.*;
+
 /**
  * @Description:
  * @author: xumingwei
@@ -71,5 +71,9 @@ public class GoodsRepository {
         return goodsCommentMapper.select(c ->
                 c.where(GoodsCommentDynamicSqlSupport.goodsId, isEqualTo(_goodsId))
                         .orderBy(GoodsCommentDynamicSqlSupport.createdAt.descending()));
+    }
+
+    public List<Goods> selectBySnList(List<String> snList) {
+        return goodsMapper.select(c -> c.where(goodsSn, isIn(snList)));
     }
 }

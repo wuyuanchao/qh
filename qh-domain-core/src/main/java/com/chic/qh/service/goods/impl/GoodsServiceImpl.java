@@ -62,6 +62,10 @@ public class GoodsServiceImpl implements GoodsService {
                 .orElseThrow(() -> new NoSuchElementException("找不到Sn为 " + goodsSn + " 的商品"));
     }
 
+    @Override
+    public List<GoodsVO> selectBySnList(List<String> snList){
+        return goodsRepository.selectBySnList(snList).stream().map(x -> buildVO(x)).collect(Collectors.toList());
+    }
 
     @Override
     public Goods getGoodsPOBySn(String goodsSn){

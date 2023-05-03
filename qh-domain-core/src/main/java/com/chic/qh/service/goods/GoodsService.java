@@ -21,6 +21,8 @@ public interface GoodsService {
 
     GoodsListVO queryList(GoodsQueryDTO dto);
 
+    List<GoodsVO> selectBySnList(List<String> snList);
+
     Goods getGoodsPOBySn(String goodsSn);
 
     void addGoods(GoodsAddUpdateDTO dto);
