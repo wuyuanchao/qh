@@ -87,10 +87,13 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsVO;
     }
 
+    private GoodsSnGenerator goodsSnGen = new GoodsSnGenerator(10);
+
     @Override
     public void addGoods(GoodsAddUpdateDTO dto) {
         Goods goods = new Goods();
         BeanUtils.copyProperties(dto, goods);
+        goods.setGoodsSn(goodsSnGen.get());
         goods.setGmtCreated(DateUtils.getCurrentSecond());
 
         List<SkuAddUpdateDTO> skuDTOList = dto.getSkuList();

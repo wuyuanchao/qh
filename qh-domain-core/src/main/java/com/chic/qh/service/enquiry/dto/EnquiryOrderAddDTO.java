@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 public class EnquiryOrderAddDTO {
 
+    //需要服务端自动生成一个唯一的
     private String enquiryOrderSn;
 
     private String enquiryOrderName;
