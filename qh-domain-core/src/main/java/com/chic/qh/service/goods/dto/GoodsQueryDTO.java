@@ -13,7 +13,6 @@ public class GoodsQueryDTO {
     private Integer current;
     private Integer pageSize;
 
-    private Integer goodsId;
-
+    private String q;
 
 }

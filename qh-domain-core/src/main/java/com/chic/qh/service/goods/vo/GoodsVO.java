@@ -20,6 +20,8 @@ public class GoodsVO {
 
     private String remark;
 
+    private String goodsImage;
+
     private List<SkuVO> skuList;
 
 }

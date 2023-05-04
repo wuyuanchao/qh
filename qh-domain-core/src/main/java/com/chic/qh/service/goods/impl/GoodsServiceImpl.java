@@ -1,14 +1,12 @@
 package com.chic.qh.service.goods.impl;
 
 import com.chic.qh.domain.dal.model.Goods;
+import com.chic.qh.domain.dal.model.GoodsComment;
 import com.chic.qh.domain.dal.model.SkuRelation;
 import com.chic.qh.repository.GoodsRepository;
 import com.chic.qh.repository.SkuRelationRepository;
 import com.chic.qh.service.goods.GoodsService;
-import com.chic.qh.service.goods.dto.GoodsAddUpdateDTO;
-import com.chic.qh.service.goods.dto.GoodsQueryDTO;
-import com.chic.qh.service.goods.dto.SkuAddUpdateDTO;
-import com.chic.qh.service.goods.dto.SkuQueryDTO;
+import com.chic.qh.service.goods.dto.*;
 import com.chic.qh.service.goods.vo.GoodsListVO;
 import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
@@ -20,8 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 商品
@@ -44,28 +45,46 @@ public class GoodsServiceImpl implements GoodsService {
     public GoodsListVO queryList(GoodsQueryDTO dto) {
         Page<Goods> goodsPage = goodsRepository.queryPagedList(dto);
         //build vo
-        List<GoodsVO> goodsVOList = buildVO(goodsPage.getResult());
+        List<GoodsVO> goodsVOList = goodsPage.getResult()
+                .stream().map(x -> buildVO(x)).collect(Collectors.toList());
         return new GoodsListVO(goodsPage.getTotal(), goodsVOList);
     }
 
-    private List<GoodsVO> buildVO(List<Goods> goodsList) {
-        List<GoodsVO> goodsVOList = new ArrayList<>(goodsList.size());
-        goodsList.forEach(x->{
-            GoodsVO goodsVO = new GoodsVO();
-            BeanUtils.copyProperties(x, goodsVO);
+    @Override
+    public GoodsVO getGoods(Integer goodsId){
+        return goodsRepository.selectByPrimaryKey(goodsId).map(x -> buildVO(x))
+                .orElseThrow(() -> new NoSuchElementException("找不到id为 " + goodsId + " 的商品"));
+    }
 
-            List<SkuRelation> skuRelationList = skuRelationRepository.querySkuList(x.getGoodsId());
-            List<SkuVO> skuVOList = new ArrayList<>(skuRelationList.size());
-            skuRelationList.forEach(s->{
+    @Override
+    public GoodsVO getGoodsBySn(String goodsSn){
+        return goodsRepository.selectByGoodsSn(goodsSn).map(x -> buildVO(x))
+                .orElseThrow(() -> new NoSuchElementException("找不到Sn为 " + goodsSn + " 的商品"));
+    }
+
+    @Override
+    public List<GoodsVO> selectBySnList(List<String> snList){
+        return goodsRepository.selectBySnList(snList).stream().map(x -> buildVO(x)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Goods getGoodsPOBySn(String goodsSn){
+        return goodsRepository.selectByGoodsSn(goodsSn).orElse(null);
+    }
+
+    private GoodsVO buildVO(Goods goodsPo){
+        GoodsVO goodsVO = new GoodsVO();
+        BeanUtils.copyProperties(goodsPo, goodsVO);
+
+        List<SkuRelation> skuRelationList = skuRelationRepository.querySkuList(goodsPo.getGoodsId());
+        List<SkuVO> skuVOList = skuRelationList.stream().map( s->{
                 SkuVO skuVO = new SkuVO();
                 BeanUtils.copyProperties(s, skuVO);
-                skuVOList.add(skuVO);
-            });
-            goodsVO.setSkuList(skuVOList);
+                return skuVO;
+            }).collect(Collectors.toList());
 
-            goodsVOList.add(goodsVO);
-        });
-        return goodsVOList;
+        goodsVO.setSkuList(skuVOList);
+        return goodsVO;
     }
 
     @Override
@@ -76,7 +95,9 @@ public class GoodsServiceImpl implements GoodsService {
 
         List<SkuAddUpdateDTO> skuDTOList = dto.getSkuList();
         if(CollectionUtils.isEmpty(skuDTOList)){
-            throw new RuntimeException("商品至少需要包含一个sku");
+            //throw new RuntimeException("商品至少需要包含一个sku");
+            //todo: 商品新增暂时给sku空列表
+            skuDTOList = new ArrayList<>();
         }
 
         List<SkuRelation> skuRelationList = new ArrayList<>(skuDTOList.size());
@@ -164,5 +185,22 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public void deleteSku(SkuAddUpdateDTO dto) {
         skuRelationRepository.deleteSkuBySkuId(dto.getSkuId());
+    }
+
+    @Override
+    public List<GoodsCommentDTO> getGoodsComments(Integer goodsId) {
+        return goodsRepository.getComments(goodsId)
+                .stream().map(x -> GoodsCommentDTO.build(x))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addComment(GoodsCommentDTO comment) {
+        GoodsComment commentPO = new GoodsComment();
+        commentPO.setContent(comment.getContent());
+        commentPO.setCreatedAt((int)Instant.now().getEpochSecond());
+        commentPO.setGoodsId(comment.getGoodsId());
+        commentPO.setUser(comment.getUser());
+        goodsRepository.addComment(commentPO);
     }
 }

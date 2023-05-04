@@ -1,10 +1,9 @@
 package com.chic.qh.service.goods;
 
-import com.chic.qh.service.goods.dto.GoodsAddUpdateDTO;
-import com.chic.qh.service.goods.dto.GoodsQueryDTO;
-import com.chic.qh.service.goods.dto.SkuAddUpdateDTO;
-import com.chic.qh.service.goods.dto.SkuQueryDTO;
+import com.chic.qh.domain.dal.model.Goods;
+import com.chic.qh.service.goods.dto.*;
 import com.chic.qh.service.goods.vo.GoodsListVO;
+import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
 
 import java.util.List;
@@ -16,7 +15,15 @@ import java.util.List;
  */
 public interface GoodsService {
 
+    GoodsVO getGoods(Integer goodsId);
+
+    GoodsVO getGoodsBySn(String goodsSn);
+
     GoodsListVO queryList(GoodsQueryDTO dto);
+
+    List<GoodsVO> selectBySnList(List<String> snList);
+
+    Goods getGoodsPOBySn(String goodsSn);
 
     void addGoods(GoodsAddUpdateDTO dto);
 
@@ -31,4 +38,8 @@ public interface GoodsService {
     void updateSku(SkuAddUpdateDTO dto);
 
     void deleteSku(SkuAddUpdateDTO dto);
+
+    List<GoodsCommentDTO> getGoodsComments(Integer goodsId);
+
+    void addComment(GoodsCommentDTO comment);
 }

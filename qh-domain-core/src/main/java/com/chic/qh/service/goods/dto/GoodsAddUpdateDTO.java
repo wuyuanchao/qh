@@ -20,6 +20,8 @@ public class GoodsAddUpdateDTO {
 
     private String remark;
 
+    private String goodsImage;
+
     private List<SkuAddUpdateDTO> skuList;
 
 

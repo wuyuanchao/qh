@@ -50,6 +50,13 @@ public class Goods {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.gmt_modify")
     private Integer gmtModify;
 
+    /**
+     * Database Column Remarks:
+     *   商品主图链接
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_image")
+    private String goodsImage;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_id")
     public Integer getGoodsId() {
         return goodsId;
@@ -110,6 +117,16 @@ public class Goods {
         this.gmtModify = gmtModify;
     }
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_image")
+    public String getGoodsImage() {
+        return goodsImage;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_image")
+    public void setGoodsImage(String goodsImage) {
+        this.goodsImage = goodsImage == null ? null : goodsImage.trim();
+    }
+
     @Override
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     public String toString() {
@@ -123,6 +140,7 @@ public class Goods {
         sb.append(", remark=").append(remark);
         sb.append(", gmtCreated=").append(gmtCreated);
         sb.append(", gmtModify=").append(gmtModify);
+        sb.append(", goodsImage=").append(goodsImage);
         sb.append("]");
         return sb.toString();
     }

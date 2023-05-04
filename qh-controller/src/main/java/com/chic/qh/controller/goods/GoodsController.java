@@ -2,19 +2,14 @@ package com.chic.qh.controller.goods;
 
 import com.chic.qh.result.ResponseEntity;
 import com.chic.qh.service.goods.GoodsService;
-import com.chic.qh.service.goods.dto.GoodsAddUpdateDTO;
-import com.chic.qh.service.goods.dto.GoodsQueryDTO;
-import com.chic.qh.service.goods.dto.SkuAddUpdateDTO;
-import com.chic.qh.service.goods.dto.SkuQueryDTO;
+import com.chic.qh.service.goods.dto.*;
 import com.chic.qh.service.goods.vo.GoodsListVO;
 import com.chic.qh.service.goods.vo.SkuVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * @Description: 商品
@@ -37,6 +32,15 @@ public class GoodsController {
     public ResponseEntity list(@RequestBody GoodsQueryDTO dto) {
         GoodsListVO vo = goodsService.queryList(dto);
         return ResponseEntity.ok(vo);
+    }
+
+    @GetMapping("/detail/{goodsSn}")
+    public ResponseEntity getGoodsDetail(@PathVariable("goodsSn") String goodsSn){
+        try {
+            return ResponseEntity.ok(goodsService.getGoodsBySn(goodsSn));
+        }catch (NoSuchElementException e){
+            return ResponseEntity.error(e.getMessage());
+        }
     }
 
     /**
@@ -116,4 +120,19 @@ public class GoodsController {
         return ResponseEntity.ok();
     }
 
+    @GetMapping("/{goodsId}/comments")
+    public ResponseEntity getGoodsComments(@PathVariable("goodsId") Integer goodsId){
+        List<GoodsCommentDTO> comments = goodsService.getGoodsComments(goodsId);
+        return ResponseEntity.ok(comments);
+    }
+
+    @PostMapping("/{goodsId}/comments")
+    public ResponseEntity addGoodsComments(@PathVariable("goodsId") Integer goodsId, @RequestBody GoodsCommentDTO comment){
+        try {
+            goodsService.addComment(comment);
+            return ResponseEntity.ok();
+        }catch (Exception e){
+            return ResponseEntity.error(e.getMessage());
+        }
+    }
 }
