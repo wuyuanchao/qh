@@ -28,6 +28,9 @@ public class EnquiryOrderVO {
 
     private Integer gmtModify;
 
+    //未关联的商品数量
+    private Integer unRelationGoodsNum;
+
     private List<EnquiryOrderGoodsVO> orderGoodsList;
 
 

@@ -21,5 +21,9 @@ public class EnquiryOrderQueryDTO {
 
     private String customerInfo;
 
+    //创建时间查询
+    private Integer gmtCreatedStart;
+    private Integer gmtCreatedEnd;
+
 
 }

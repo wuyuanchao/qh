@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 import static com.chic.qh.domain.dal.mapper.EnquiryOrderGoodsDynamicSqlSupport.enquiryOrderId;
+import static com.chic.qh.domain.dal.mapper.EnquiryOrderGoodsDynamicSqlSupport.gmtCreated;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
 
 /**
@@ -25,6 +26,7 @@ public class EnquiryOrderGoodsRepository {
     public List<EnquiryOrderGoods> queryOrderGoodsList(Integer _enquiryOrderId) {
         List<EnquiryOrderGoods> orderGoodsList = enquiryOrderGoodsMapper.select(c->c
                         .where(enquiryOrderId, isEqualToWhenPresent(_enquiryOrderId))
+                        .orderBy(gmtCreated)
                 );
         return orderGoodsList;
     }

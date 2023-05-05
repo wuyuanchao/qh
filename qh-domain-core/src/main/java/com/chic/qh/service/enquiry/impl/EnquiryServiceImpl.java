@@ -22,6 +22,7 @@ import org.springframework.util.Assert;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 询价
@@ -41,8 +42,8 @@ public class EnquiryServiceImpl implements EnquiryService {
 
     @Override
     public EnquiryOrderListVO queryList(EnquiryOrderQueryDTO dto) {
-        dto.setEnquiryOrderName(StringUtils.isBlank(dto.getEnquiryOrderName()) ? null : "%" + dto.getEnquiryOrderName() + "%");
-        dto.setCustomerInfo(StringUtils.isBlank(dto.getCustomerInfo()) ? null : "%" + dto.getCustomerInfo() + "%");
+        dto.setEnquiryOrderName(StringUtils.isBlank(dto.getEnquiryOrderName()) ? null : "%" + dto.getEnquiryOrderName().trim() + "%");
+        dto.setCustomerInfo(StringUtils.isBlank(dto.getCustomerInfo()) ? null : "%" + dto.getCustomerInfo().trim() + "%");
         PageInfo<EnquiryOrderInfo> enquiryOrderInfoPage = enquiryOrderInfoRepository.queryPagedList(dto);
         //build vo
         List<EnquiryOrderVO> orderVOList = buildListVO(enquiryOrderInfoPage.getList());
@@ -62,13 +63,21 @@ public class EnquiryServiceImpl implements EnquiryService {
         EnquiryOrderVO orderVO = new EnquiryOrderVO();
         BeanUtils.copyProperties(orderInfo, orderVO);
         List<EnquiryOrderGoods> orderGoodsList = enquiryOrderGoodsRepository.queryOrderGoodsList(orderInfo.getEnquiryOrderId());
-        List<EnquiryOrderGoodsVO> orderGoodsVOList = new ArrayList<>(orderGoodsList.size());
-        orderGoodsList.forEach(x -> {
+        List<EnquiryOrderGoods> enquiryOrderGoodsList = new ArrayList<>(orderGoodsList.size());
+        //确保未关联的商品在前面
+        //未关联的
+        List<EnquiryOrderGoods> unRelationOrderGoodsList = orderGoodsList.stream().filter(x -> x.getRelationType().equals((byte) 0)).collect(Collectors.toList());
+        enquiryOrderGoodsList.addAll(unRelationOrderGoodsList);
+        //已关联的
+        enquiryOrderGoodsList.addAll(orderGoodsList.stream().filter(x -> !x.getRelationType().equals((byte) 0)).collect(Collectors.toList()));
+        List<EnquiryOrderGoodsVO> orderGoodsVOList = new ArrayList<>(enquiryOrderGoodsList.size());
+        enquiryOrderGoodsList.forEach(x -> {
             EnquiryOrderGoodsVO orderGoodsVO = new EnquiryOrderGoodsVO();
             BeanUtils.copyProperties(x, orderGoodsVO);
             orderGoodsVOList.add(orderGoodsVO);
         });
         orderVO.setOrderGoodsList(orderGoodsVOList);
+        orderVO.setUnRelationGoodsNum(unRelationOrderGoodsList.size());
         return orderVO;
     }
 
@@ -110,6 +119,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     public void addEnquiryOrderGoods(EnquiryOrderGoodsAddDTO dto) {
         EnquiryOrderGoods orderGoods = new EnquiryOrderGoods();
         BeanUtils.copyProperties(dto, orderGoods);
+        orderGoods.setGmtCreated(DateUtils.getCurrentSecond());
         enquiryOrderGoodsRepository.saveEnquiryOrderGoods(orderGoods);
     }
 

@@ -33,6 +33,8 @@ public class EnquiryOrderInfoRepository {
                                 .and(enquiryOrderSn, isEqualToWhenPresent(dto.getEnquiryOrderSn()))
                                 .and(enquiryOrderName, isLikeWhenPresent(dto.getEnquiryOrderName()))
                                 .and(customerInfo, isLikeWhenPresent(dto.getCustomerInfo()))
+                                .and(gmtCreated, isGreaterThanOrEqualToWhenPresent(dto.getGmtCreatedStart()))
+                                .and(gmtCreated, isLessThanOrEqualToWhenPresent(dto.getGmtCreatedEnd()))
                                 .orderBy(gmtCreated.descending())
                         )
         );
