@@ -18,6 +18,11 @@ spec:
       containers:
         - name: qh-ds
           image: core.devtest.com/default/qh:latest
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prd
+            - name: TZ
+              value: Asia/Shanghai
         - name: qh-front
           image: core.devtest.com/default/qh-front:latest
 ---
