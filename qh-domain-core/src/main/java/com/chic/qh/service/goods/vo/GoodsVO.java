@@ -2,6 +2,7 @@ package com.chic.qh.service.goods.vo;
 
 import lombok.Data;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,6 +22,10 @@ public class GoodsVO {
     private String remark;
 
     private String goodsImage;
+
+    private Integer goodsType = 2;
+
+    private List<String> goodsTags = Arrays.asList("red", "blue");
 
     private List<SkuVO> skuList;
 

@@ -47,10 +47,11 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
     if (!userDetails.isPresent()) {
       throw new UsernameNotFoundException(String.format("USER_NOT_FOUND '%s'.", username));
     }
+    String userName = userDetails.get();
     return User.builder()
-            .username(userDetails.get())
+            .username(userName)
             .password("$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG")
-            .roles("USER")
+            .roles(userName.equals("admin") ? "ADMIN" : "USER")
             .build();
   }
 
