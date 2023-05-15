@@ -59,7 +59,7 @@ public class Goods {
 
     /**
      * Database Column Remarks:
-     *   商品类型
+     *   商品类型(1-普通;2-带电;3-特货;)
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_type")
     private Integer goodsType;

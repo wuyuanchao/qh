@@ -23,6 +23,7 @@ public class GoodsVO {
 
     private String goodsImage;
 
+    //商品类型(1-普通;2-带电;3-特货;)
     private Integer goodsType = 2;
 
     private List<String> goodsTags = Arrays.asList("red", "blue");

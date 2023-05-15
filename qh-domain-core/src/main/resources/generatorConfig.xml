@@ -54,5 +54,9 @@
             <generatedKey column="rec_id" sqlStatement="JDBC" identity="true" />
         </table>
 
+        <table tableName="qh_user_info" domainObjectName="UserInfo" >
+            <generatedKey column="user_id" sqlStatement="JDBC" identity="true" />
+        </table>
+
     </context>
 </generatorConfiguration>
