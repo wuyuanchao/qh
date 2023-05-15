@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    BasicColumn[] selectList = BasicColumn.columnList(goodsId, goodsSn, goodsName, remark, gmtCreated, gmtModify, goodsImage);
+    BasicColumn[] selectList = BasicColumn.columnList(goodsId, goodsSn, goodsName, remark, gmtCreated, gmtModify, goodsImage, goodsType);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
@@ -56,7 +56,8 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
         @Result(column="remark", property="remark", jdbcType=JdbcType.VARCHAR),
         @Result(column="gmt_created", property="gmtCreated", jdbcType=JdbcType.INTEGER),
         @Result(column="gmt_modify", property="gmtModify", jdbcType=JdbcType.INTEGER),
-        @Result(column="goods_image", property="goodsImage", jdbcType=JdbcType.VARCHAR)
+        @Result(column="goods_image", property="goodsImage", jdbcType=JdbcType.VARCHAR),
+        @Result(column="goods_type", property="goodsType", jdbcType=JdbcType.INTEGER)
     })
     List<Goods> selectMany(SelectStatementProvider selectStatement);
 
@@ -91,6 +92,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .map(gmtCreated).toProperty("gmtCreated")
             .map(gmtModify).toProperty("gmtModify")
             .map(goodsImage).toProperty("goodsImage")
+            .map(goodsType).toProperty("goodsType")
         );
     }
 
@@ -103,6 +105,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .map(gmtCreated).toProperty("gmtCreated")
             .map(gmtModify).toProperty("gmtModify")
             .map(goodsImage).toProperty("goodsImage")
+            .map(goodsType).toProperty("goodsType")
         );
     }
 
@@ -115,6 +118,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .map(gmtCreated).toPropertyWhenPresent("gmtCreated", row::getGmtCreated)
             .map(gmtModify).toPropertyWhenPresent("gmtModify", row::getGmtModify)
             .map(goodsImage).toPropertyWhenPresent("goodsImage", row::getGoodsImage)
+            .map(goodsType).toPropertyWhenPresent("goodsType", row::getGoodsType)
         );
     }
 
@@ -152,7 +156,8 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
                 .set(remark).equalTo(row::getRemark)
                 .set(gmtCreated).equalTo(row::getGmtCreated)
                 .set(gmtModify).equalTo(row::getGmtModify)
-                .set(goodsImage).equalTo(row::getGoodsImage);
+                .set(goodsImage).equalTo(row::getGoodsImage)
+                .set(goodsType).equalTo(row::getGoodsType);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
@@ -162,7 +167,8 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
                 .set(remark).equalToWhenPresent(row::getRemark)
                 .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
                 .set(gmtModify).equalToWhenPresent(row::getGmtModify)
-                .set(goodsImage).equalToWhenPresent(row::getGoodsImage);
+                .set(goodsImage).equalToWhenPresent(row::getGoodsImage)
+                .set(goodsType).equalToWhenPresent(row::getGoodsType);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
@@ -174,6 +180,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .set(gmtCreated).equalTo(row::getGmtCreated)
             .set(gmtModify).equalTo(row::getGmtModify)
             .set(goodsImage).equalTo(row::getGoodsImage)
+            .set(goodsType).equalTo(row::getGoodsType)
             .where(goodsId, isEqualTo(row::getGoodsId))
         );
     }
@@ -187,6 +194,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
             .set(gmtModify).equalToWhenPresent(row::getGmtModify)
             .set(goodsImage).equalToWhenPresent(row::getGoodsImage)
+            .set(goodsType).equalToWhenPresent(row::getGoodsType)
             .where(goodsId, isEqualTo(row::getGoodsId))
         );
     }

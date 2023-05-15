@@ -22,6 +22,9 @@ public class GoodsAddUpdateDTO {
 
     private String goodsImage;
 
+    //商品类型
+    private Integer goodsType;
+
     private List<SkuAddUpdateDTO> skuList;
 
 

@@ -58,6 +58,13 @@ public final class GoodsDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_image")
     public static final SqlColumn<String> goodsImage = goods.goodsImage;
 
+    /**
+     * Database Column Remarks:
+     *   商品类型
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_type")
+    public static final SqlColumn<Integer> goodsType = goods.goodsType;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     public static final class Goods extends AliasableSqlTable<Goods> {
         public final SqlColumn<Integer> goodsId = column("goods_id", JDBCType.INTEGER);
@@ -73,6 +80,8 @@ public final class GoodsDynamicSqlSupport {
         public final SqlColumn<Integer> gmtModify = column("gmt_modify", JDBCType.INTEGER);
 
         public final SqlColumn<String> goodsImage = column("goods_image", JDBCType.VARCHAR);
+
+        public final SqlColumn<Integer> goodsType = column("goods_type", JDBCType.INTEGER);
 
         public Goods() {
             super("qh_goods", Goods::new);

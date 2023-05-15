@@ -57,6 +57,13 @@ public class Goods {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_image")
     private String goodsImage;
 
+    /**
+     * Database Column Remarks:
+     *   商品类型
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_type")
+    private Integer goodsType;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_id")
     public Integer getGoodsId() {
         return goodsId;
@@ -127,6 +134,16 @@ public class Goods {
         this.goodsImage = goodsImage == null ? null : goodsImage.trim();
     }
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_type")
+    public Integer getGoodsType() {
+        return goodsType;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_type")
+    public void setGoodsType(Integer goodsType) {
+        this.goodsType = goodsType;
+    }
+
     @Override
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     public String toString() {
@@ -141,6 +158,7 @@ public class Goods {
         sb.append(", gmtCreated=").append(gmtCreated);
         sb.append(", gmtModify=").append(gmtModify);
         sb.append(", goodsImage=").append(goodsImage);
+        sb.append(", goodsType=").append(goodsType);
         sb.append("]");
         return sb.toString();
     }
