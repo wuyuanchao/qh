@@ -54,19 +54,11 @@ public class UserController {
         return ResponseEntity.ok(vo);
     }
 
-    @PostMapping("/addUser")
-    public ResponseEntity addUser(@RequestBody UserInfoAddUpdateDTO dto){
+    @PostMapping("/addUpdateUser")
+    public ResponseEntity addUpdateUser(@RequestBody UserInfoAddUpdateDTO dto){
         //encoder password
         encodePassword(dto);
-        userInfoService.addUser(dto);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/updateUser")
-    public ResponseEntity updateUser(@RequestBody UserInfoAddUpdateDTO dto){
-        //encoder password
-        encodePassword(dto);
-        userInfoService.updateUser(dto);
+        userInfoService.addUpdateUser(dto);
         return ResponseEntity.ok().build();
     }
 

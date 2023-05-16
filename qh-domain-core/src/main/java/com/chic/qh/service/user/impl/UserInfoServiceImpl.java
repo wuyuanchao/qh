@@ -49,7 +49,17 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void addUser(UserInfoAddUpdateDTO dto) {
+    public void addUpdateUser(UserInfoAddUpdateDTO dto) {
+        if(dto.getUserId() != null && dto.getUserId() > 0){
+            log.info("新增用户: dto:{}", JSONObject.toJSONString(dto));
+            processUpdateUser(dto);
+        }else{
+            log.info("新增用户: dto:{}", JSONObject.toJSONString(dto));
+            processAddUser(dto);
+        }
+    }
+
+    private void processAddUser(UserInfoAddUpdateDTO dto){
         if(StringUtils.isBlank(dto.getUsername())
                 || StringUtils.isBlank(dto.getPassword())
                 || StringUtils.isBlank(dto.getRoleName())){
@@ -69,10 +79,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         userRepository.saveSelective(userInfo);
     }
 
-    @Override
-    public void updateUser(UserInfoAddUpdateDTO dto) {
+    private void processUpdateUser(UserInfoAddUpdateDTO dto) {
         Optional<UserInfo> userInfoOptional = userRepository.getById(dto.getUserId());
-        if(userInfoOptional.isPresent()){
+        if(!userInfoOptional.isPresent()){
             log.warn("编辑用户：用户不存在！username:{}", dto.getUserId());
             throw new RuntimeException("用户不存在:" + dto.getUserId());
         }

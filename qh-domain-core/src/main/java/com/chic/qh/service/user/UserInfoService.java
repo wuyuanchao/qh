@@ -14,7 +14,6 @@ public interface UserInfoService {
 
     UserInfoListVO queryList(UserInfoQueryDTO dto);
 
-    void addUser(UserInfoAddUpdateDTO dto);
+    void addUpdateUser(UserInfoAddUpdateDTO dto);
 
-    void updateUser(UserInfoAddUpdateDTO dto);
 }
