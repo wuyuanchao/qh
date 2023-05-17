@@ -1,5 +1,6 @@
 package com.chic.qh.service.user;
 
+import com.chic.qh.domain.dal.model.UserInfo;
 import com.chic.qh.service.user.dto.UserInfoAddUpdateDTO;
 import com.chic.qh.service.user.dto.UserInfoQueryDTO;
 import com.chic.qh.service.user.vo.UserInfoListVO;
@@ -16,4 +17,5 @@ public interface UserInfoService {
 
     void addUpdateUser(UserInfoAddUpdateDTO dto);
 
+    UserInfo queryUserByUserName(String name);
 }

@@ -73,6 +73,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(dto, userInfo);
+        if(StringUtils.isBlank(dto.getAvatar())){
+            //默认头像
+            userInfo.setAvatar("https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png");
+        }
         userInfo.setStatus((byte)1);
         userInfo.setGmtCreated(DateUtils.getCurrentSecond());
         userInfo.setGmtModify(DateUtils.getCurrentSecond());
@@ -96,5 +100,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         userInfo.setGmtModify(DateUtils.getCurrentSecond());
         userRepository.updateByPrimaryKeySelective(userInfo);
+    }
+
+    @Override
+    public UserInfo queryUserByUserName(String name) {
+        return userRepository.getByUsername(name).orElse(null);
     }
 }

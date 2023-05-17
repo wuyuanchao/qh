@@ -4,6 +4,7 @@ import com.chic.qh.controller.user.dto.CurrentUserResp;
 import com.chic.qh.controller.user.dto.LoginReq;
 import com.chic.qh.controller.user.dto.LoginResp;
 import com.chic.qh.controller.user.dto.UserDTO;
+import com.chic.qh.domain.dal.model.UserInfo;
 import com.chic.qh.service.enquiry.vo.EnquiryOrderListVO;
 import com.chic.qh.service.user.UserInfoService;
 import com.chic.qh.service.user.dto.UserInfoAddUpdateDTO;
@@ -43,9 +44,10 @@ public class UserController {
 
     @GetMapping("/currentUser")
     public ResponseEntity currentUser(Authentication authentication){
+        UserInfo userInfo = userInfoService.queryUserByUserName(authentication.getName());
         return ResponseEntity.ok(new CurrentUserResp(true, new UserDTO(authentication.getName(),
-                "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
-                "00000001", authentication.getAuthorities().toString())));
+                userInfo.getAvatar(),
+                String.valueOf(userInfo.getUserId()), authentication.getAuthorities().toString())));
     }
 
     @GetMapping("/users")
