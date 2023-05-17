@@ -25,6 +25,10 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
       throw new UsernameNotFoundException(String.format("USER_NOT_FOUND '%s'.", username));
     }
     UserInfo userInfo = userDetails.get();
+    //用户非启用状态
+    if(!userInfo.getStatus().equals((byte)1)){
+      throw new UsernameNotFoundException(String.format("USER_NOT_FOUND '%s'.", username));
+    }
     return User.builder()
             .username(userInfo.getUsername())
             .password(userInfo.getPassword())
