@@ -27,8 +27,7 @@ spec:
           image: core.devtest.com/default/qh-front:latest
           volumeMounts:
             - name: nginx-config-volume
-              mountPath: /etc/nginx/nginx.conf
-              subPath: nginx.conf
+              mountPath: /etc/nginx/conf.d
       volumes:
         - name: nginx-config-volume
           configMap:
@@ -72,10 +71,19 @@ kind: ConfigMap
 metadata:
   name: qh-nginx-config
 data:
-  nginx.conf: |
+  qh.conf: |
     server {
       listen 80;
       server_name localhost;
+      access_log /var/log/nginx/host.access.log main;
+      error_log /var/log/nginx/error.log error;
+      location / {
+          root /usr/share/nginx/html;
+          index index.html index.htm;
+          try_files $uri $uri/ /index.html;
+      }
+
+      error_page 500 502 503 504 /50x.html;
       location /api {
         proxy_pass http://127.0.0.1:8082;
       }
