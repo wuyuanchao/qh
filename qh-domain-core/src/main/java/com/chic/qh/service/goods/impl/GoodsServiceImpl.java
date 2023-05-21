@@ -94,6 +94,7 @@ public class GoodsServiceImpl implements GoodsService {
         Goods goods = new Goods();
         BeanUtils.copyProperties(dto, goods);
         goods.setGoodsSn(goodsSnGen.get());
+        goods.setStatus((byte)1);
         goods.setGmtCreated(DateUtils.getCurrentSecond());
 
         List<SkuAddUpdateDTO> skuDTOList = dto.getSkuList();
@@ -131,7 +132,9 @@ public class GoodsServiceImpl implements GoodsService {
 
         List<SkuAddUpdateDTO> skuDTOList = dto.getSkuList();
         if(CollectionUtils.isEmpty(skuDTOList)){
-            throw new RuntimeException("商品至少需要包含一个sku");
+            //throw new RuntimeException("商品至少需要包含一个sku");
+            //todo: 商品编辑暂时给sku空列表
+            skuDTOList = new ArrayList<>();
         }
 
         List<SkuRelation> skuRelationList = new ArrayList<>(skuDTOList.size());
@@ -151,7 +154,11 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public void deleteGoods(GoodsAddUpdateDTO dto) {
-        goodsRepository.deleteGoods(dto.getGoodsId());
+        Goods updateGoods = new Goods();
+        updateGoods.setGoodsId(dto.getGoodsId());
+        updateGoods.setStatus((byte)3);
+        updateGoods.setGmtModify(DateUtils.getCurrentSecond());
+        goodsRepository.updateGoods(updateGoods);
     }
 
     @Override

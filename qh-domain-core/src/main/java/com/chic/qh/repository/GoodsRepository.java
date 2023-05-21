@@ -45,6 +45,7 @@ public class GoodsRepository {
         return PageHelper.startPage(dto.getCurrent(), dto.getPageSize()).doSelectPage(
                 () -> goodsMapper.select(c->c
                                 .where(goodsSn, isLikeWhenPresent(sn))
+                                .and(status, isNotEqualTo((byte)3))
                                 .or(goodsName, isLikeWhenPresent(txt))
                                 .or(goodsName, isLikeWhenPresent(txt))
                                 .or(remark, isLikeWhenPresent(txt))
