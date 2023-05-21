@@ -65,6 +65,9 @@ public final class GoodsDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_type")
     public static final SqlColumn<Integer> goodsType = goods.goodsType;
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.depot")
+    public static final SqlColumn<String> depot = goods.depot;
+
     /**
      * Database Column Remarks:
      *   状态(1-启用;2-禁用;3-删除)
@@ -89,6 +92,8 @@ public final class GoodsDynamicSqlSupport {
         public final SqlColumn<String> goodsImage = column("goods_image", JDBCType.VARCHAR);
 
         public final SqlColumn<Integer> goodsType = column("goods_type", JDBCType.INTEGER);
+
+        public final SqlColumn<String> depot = column("depot", JDBCType.VARCHAR);
 
         public final SqlColumn<Byte> status = column("status", JDBCType.TINYINT);
 
