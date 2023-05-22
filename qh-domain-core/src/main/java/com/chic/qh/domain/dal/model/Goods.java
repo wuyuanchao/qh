@@ -64,6 +64,9 @@ public class Goods {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_type")
     private Integer goodsType;
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.depot")
+    private String depot;
+
     /**
      * Database Column Remarks:
      *   状态(1-启用;2-禁用;3-删除)
@@ -151,6 +154,16 @@ public class Goods {
         this.goodsType = goodsType;
     }
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.depot")
+    public String getDepot() {
+        return depot;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.depot")
+    public void setDepot(String depot) {
+        this.depot = depot == null ? null : depot.trim();
+    }
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.status")
     public Byte getStatus() {
         return status;
@@ -176,6 +189,7 @@ public class Goods {
         sb.append(", gmtModify=").append(gmtModify);
         sb.append(", goodsImage=").append(goodsImage);
         sb.append(", goodsType=").append(goodsType);
+        sb.append(", depot=").append(depot);
         sb.append(", status=").append(status);
         sb.append("]");
         return sb.toString();

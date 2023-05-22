@@ -25,6 +25,9 @@ public class GoodsAddUpdateDTO {
     //商品类型(1-普通;2-带电;3-特货;)
     private Integer goodsType;
 
+    //收获仓库
+    private String depot;
+
     private List<SkuAddUpdateDTO> skuList;
 
 

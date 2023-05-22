@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    BasicColumn[] selectList = BasicColumn.columnList(goodsId, goodsSn, goodsName, remark, gmtCreated, gmtModify, goodsImage, goodsType, status);
+    BasicColumn[] selectList = BasicColumn.columnList(goodsId, goodsSn, goodsName, remark, gmtCreated, gmtModify, goodsImage, goodsType, depot, status);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
@@ -58,6 +58,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
         @Result(column="gmt_modify", property="gmtModify", jdbcType=JdbcType.INTEGER),
         @Result(column="goods_image", property="goodsImage", jdbcType=JdbcType.VARCHAR),
         @Result(column="goods_type", property="goodsType", jdbcType=JdbcType.INTEGER),
+        @Result(column="depot", property="depot", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.TINYINT)
     })
     List<Goods> selectMany(SelectStatementProvider selectStatement);
@@ -94,6 +95,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .map(gmtModify).toProperty("gmtModify")
             .map(goodsImage).toProperty("goodsImage")
             .map(goodsType).toProperty("goodsType")
+            .map(depot).toProperty("depot")
             .map(status).toProperty("status")
         );
     }
@@ -108,6 +110,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .map(gmtModify).toProperty("gmtModify")
             .map(goodsImage).toProperty("goodsImage")
             .map(goodsType).toProperty("goodsType")
+            .map(depot).toProperty("depot")
             .map(status).toProperty("status")
         );
     }
@@ -122,6 +125,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .map(gmtModify).toPropertyWhenPresent("gmtModify", row::getGmtModify)
             .map(goodsImage).toPropertyWhenPresent("goodsImage", row::getGoodsImage)
             .map(goodsType).toPropertyWhenPresent("goodsType", row::getGoodsType)
+            .map(depot).toPropertyWhenPresent("depot", row::getDepot)
             .map(status).toPropertyWhenPresent("status", row::getStatus)
         );
     }
@@ -162,6 +166,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
                 .set(gmtModify).equalTo(row::getGmtModify)
                 .set(goodsImage).equalTo(row::getGoodsImage)
                 .set(goodsType).equalTo(row::getGoodsType)
+                .set(depot).equalTo(row::getDepot)
                 .set(status).equalTo(row::getStatus);
     }
 
@@ -174,6 +179,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
                 .set(gmtModify).equalToWhenPresent(row::getGmtModify)
                 .set(goodsImage).equalToWhenPresent(row::getGoodsImage)
                 .set(goodsType).equalToWhenPresent(row::getGoodsType)
+                .set(depot).equalToWhenPresent(row::getDepot)
                 .set(status).equalToWhenPresent(row::getStatus);
     }
 
@@ -187,6 +193,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .set(gmtModify).equalTo(row::getGmtModify)
             .set(goodsImage).equalTo(row::getGoodsImage)
             .set(goodsType).equalTo(row::getGoodsType)
+            .set(depot).equalTo(row::getDepot)
             .set(status).equalTo(row::getStatus)
             .where(goodsId, isEqualTo(row::getGoodsId))
         );
@@ -202,6 +209,7 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .set(gmtModify).equalToWhenPresent(row::getGmtModify)
             .set(goodsImage).equalToWhenPresent(row::getGoodsImage)
             .set(goodsType).equalToWhenPresent(row::getGoodsType)
+            .set(depot).equalToWhenPresent(row::getDepot)
             .set(status).equalToWhenPresent(row::getStatus)
             .where(goodsId, isEqualTo(row::getGoodsId))
         );
