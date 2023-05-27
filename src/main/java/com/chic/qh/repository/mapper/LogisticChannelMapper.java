@@ -10,6 +10,7 @@ import java.util.Optional;
 import javax.annotation.Generated;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
@@ -38,10 +39,12 @@ public interface LogisticChannelMapper extends CommonCountMapper, CommonDeleteMa
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_logistic_channel")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
+    @Options(useGeneratedKeys=true,keyProperty="row.recId")
     int insert(InsertStatementProvider<LogisticChannel> insertStatement);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_logistic_channel")
     @InsertProvider(type=SqlProviderAdapter.class, method="insertMultipleWithGeneratedKeys")
+    @Options(useGeneratedKeys=true,keyProperty="records.recId")
     int insertMultiple(@Param("insertStatement") String insertStatement, @Param("records") List<LogisticChannel> records);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_logistic_channel")
@@ -81,8 +84,7 @@ public interface LogisticChannelMapper extends CommonCountMapper, CommonDeleteMa
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_logistic_channel")
     default int insert(LogisticChannel row) {
         return MyBatis3Utils.insert(this::insert, row, logisticChannel, c ->
-            c.map(recId).toProperty("recId")
-            .map(name).toProperty("name")
+            c.map(name).toProperty("name")
             .map(code).toProperty("code")
             .map(company).toProperty("company")
             .map(cutOffTime).toProperty("cutOffTime")
@@ -93,8 +95,7 @@ public interface LogisticChannelMapper extends CommonCountMapper, CommonDeleteMa
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_logistic_channel")
     default int insertMultiple(Collection<LogisticChannel> records) {
         return MyBatis3Utils.insertMultipleWithGeneratedKeys(this::insertMultiple, records, logisticChannel, c ->
-            c.map(recId).toProperty("recId")
-            .map(name).toProperty("name")
+            c.map(name).toProperty("name")
             .map(code).toProperty("code")
             .map(company).toProperty("company")
             .map(cutOffTime).toProperty("cutOffTime")
@@ -105,8 +106,7 @@ public interface LogisticChannelMapper extends CommonCountMapper, CommonDeleteMa
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_logistic_channel")
     default int insertSelective(LogisticChannel row) {
         return MyBatis3Utils.insert(this::insert, row, logisticChannel, c ->
-            c.map(recId).toPropertyWhenPresent("recId", row::getRecId)
-            .map(name).toPropertyWhenPresent("name", row::getName)
+            c.map(name).toPropertyWhenPresent("name", row::getName)
             .map(code).toPropertyWhenPresent("code", row::getCode)
             .map(company).toPropertyWhenPresent("company", row::getCompany)
             .map(cutOffTime).toPropertyWhenPresent("cutOffTime", row::getCutOffTime)
@@ -143,8 +143,7 @@ public interface LogisticChannelMapper extends CommonCountMapper, CommonDeleteMa
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_logistic_channel")
     static UpdateDSL<UpdateModel> updateAllColumns(LogisticChannel row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(recId).equalTo(row::getRecId)
-                .set(name).equalTo(row::getName)
+        return dsl.set(name).equalTo(row::getName)
                 .set(code).equalTo(row::getCode)
                 .set(company).equalTo(row::getCompany)
                 .set(cutOffTime).equalTo(row::getCutOffTime)
@@ -153,8 +152,7 @@ public interface LogisticChannelMapper extends CommonCountMapper, CommonDeleteMa
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_logistic_channel")
     static UpdateDSL<UpdateModel> updateSelectiveColumns(LogisticChannel row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(recId).equalToWhenPresent(row::getRecId)
-                .set(name).equalToWhenPresent(row::getName)
+        return dsl.set(name).equalToWhenPresent(row::getName)
                 .set(code).equalToWhenPresent(row::getCode)
                 .set(company).equalToWhenPresent(row::getCompany)
                 .set(cutOffTime).equalToWhenPresent(row::getCutOffTime)

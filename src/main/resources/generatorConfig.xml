@@ -59,7 +59,7 @@
         </table>
 
         <table tableName="qh_logistic_channel" domainObjectName="LogisticChannel" >
-            <generatedKey column="user_id" sqlStatement="JDBC" identity="true" />
+            <generatedKey column="rec_id" sqlStatement="JDBC" identity="true" />
         </table>
     </context>
 </generatorConfiguration>
