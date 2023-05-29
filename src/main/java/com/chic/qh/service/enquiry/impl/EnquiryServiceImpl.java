@@ -92,6 +92,11 @@ public class EnquiryServiceImpl implements EnquiryService {
         return orderVO;
     }
 
+    @Override
+    public int deleteEnquiryOrders(List<Integer> ids) {
+        return enquiryOrderInfoRepository.deleteEnquiryOrders(ids);
+    }
+
     private OrderSnGenerator enquiryOrderSnGen = new OrderSnGenerator();
     @Override
     public void addEnquiryOrder(EnquiryOrderAddDTO dto) {

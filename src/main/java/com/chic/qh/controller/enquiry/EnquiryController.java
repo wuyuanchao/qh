@@ -63,6 +63,12 @@ public class EnquiryController {
         return enquiryService.queryDetailById(enquiryOrderId);
     }
 
+    @RespWrap
+    @PostMapping("deleteEnquiryOrders")
+    public int deleteEnquiryOrders(@RequestBody deleteEnquiryOrdersDTO dto){
+        return enquiryService.deleteEnquiryOrders(dto.getIds());
+    }
+
     /**
      * 新建询价单
      * @param dto

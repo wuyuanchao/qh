@@ -128,27 +128,24 @@ public class GoodsServiceImpl implements GoodsService {
         BeanUtils.copyProperties(dto, updateGoods);
         updateGoods.setGmtModify((int)Instant.now().getEpochSecond());
 
-
+        //todo: 目前商品编辑暂时给sku空列表，不对sku进行编辑
         List<SkuAddUpdateDTO> skuDTOList = dto.getSkuList();
-        if(CollectionUtils.isEmpty(skuDTOList)){
-            //throw new RuntimeException("商品至少需要包含一个sku");
-            //todo: 商品编辑暂时给sku空列表
-            skuDTOList = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(skuDTOList)){
+            List<SkuRelation> skuRelationList = new ArrayList<>(skuDTOList.size());
+            skuDTOList.forEach(x->{
+                SkuRelation skuInfo = new SkuRelation();
+                BeanUtils.copyProperties(x, skuInfo);
+                skuInfo.setGoodsId(updateGoods.getGoodsId());
+                skuInfo.setGmtCreated((int)Instant.now().getEpochSecond());
+                skuRelationList.add(skuInfo);
+            });
+            goodsRepository.updateGoods(updateGoods);
+            skuRelationRepository.deleteSkuByGoodsId(updateGoods.getGoodsId());
+            skuRelationList.forEach(x->{
+                skuRelationRepository.saveSkuRelation(x);
+            });
         }
 
-        List<SkuRelation> skuRelationList = new ArrayList<>(skuDTOList.size());
-        skuDTOList.forEach(x->{
-            SkuRelation skuInfo = new SkuRelation();
-            BeanUtils.copyProperties(x, skuInfo);
-            skuInfo.setGoodsId(updateGoods.getGoodsId());
-            skuInfo.setGmtCreated((int)Instant.now().getEpochSecond());
-            skuRelationList.add(skuInfo);
-        });
-        goodsRepository.updateGoods(updateGoods);
-        skuRelationRepository.deleteSkuByGoodsId(updateGoods.getGoodsId());
-        skuRelationList.forEach(x->{
-            skuRelationRepository.saveSkuRelation(x);
-        });
     }
 
     @Override

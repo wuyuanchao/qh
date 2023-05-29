@@ -4,6 +4,8 @@ import com.chic.qh.service.enquiry.dto.*;
 import com.chic.qh.service.enquiry.vo.EnquiryOrderListVO;
 import com.chic.qh.service.enquiry.vo.EnquiryOrderVO;
 
+import java.util.List;
+
 /**
  * @Description:
  * @author: xumingwei
@@ -22,4 +24,6 @@ public interface EnquiryService {
     void updateGoodsSn(EnquiryOrderUpdateDTO dto);
 
     EnquiryOrderVO queryDetailById(Integer enquiryOrderId);
+
+    int deleteEnquiryOrders(List<Integer> ids);
 }
