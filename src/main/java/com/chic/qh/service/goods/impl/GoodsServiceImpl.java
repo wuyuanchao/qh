@@ -127,6 +127,7 @@ public class GoodsServiceImpl implements GoodsService {
         Goods updateGoods = new Goods();
         BeanUtils.copyProperties(dto, updateGoods);
         updateGoods.setGmtModify((int)Instant.now().getEpochSecond());
+        goodsRepository.updateGoods(updateGoods);
 
         //todo: 目前商品编辑暂时给sku空列表，不对sku进行编辑
         List<SkuAddUpdateDTO> skuDTOList = dto.getSkuList();
@@ -139,7 +140,6 @@ public class GoodsServiceImpl implements GoodsService {
                 skuInfo.setGmtCreated((int)Instant.now().getEpochSecond());
                 skuRelationList.add(skuInfo);
             });
-            goodsRepository.updateGoods(updateGoods);
             skuRelationRepository.deleteSkuByGoodsId(updateGoods.getGoodsId());
             skuRelationList.forEach(x->{
                 skuRelationRepository.saveSkuRelation(x);
