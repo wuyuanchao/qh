@@ -7,6 +7,7 @@ import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
 import com.chic.qh.support.web.RespWrap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -118,13 +119,19 @@ public class GoodsController {
 
     @RespWrap
     @GetMapping("/{goodsId}/comments")
-    public List<GoodsCommentDTO> getGoodsComments(@PathVariable("goodsId") Integer goodsId){
-        return goodsService.getGoodsComments(goodsId);
+    public List<GoodsCommentDTO> getGoodsComments(@PathVariable("goodsId") Integer goodsId, Authentication authentication){
+        return goodsService.getGoodsComments(goodsId, authentication.getName());
     }
 
     @RespWrap
     @PostMapping("/{goodsId}/comments")
     public void addGoodsComments(@PathVariable("goodsId") Integer goodsId, @RequestBody GoodsCommentDTO comment){
         goodsService.addComment(comment);
+    }
+
+    @RespWrap
+    @PostMapping("/deleteComment")
+    public void deleteGoodsComment(@RequestBody GoodsCommentDTO comment, Authentication authentication){
+        goodsService.deleteComment(comment.getRecId(), authentication.getName());
     }
 }

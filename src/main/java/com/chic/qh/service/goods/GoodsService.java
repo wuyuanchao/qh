@@ -39,7 +39,9 @@ public interface GoodsService {
 
     void deleteSku(SkuAddUpdateDTO dto);
 
-    List<GoodsCommentDTO> getGoodsComments(Integer goodsId);
+    List<GoodsCommentDTO> getGoodsComments(Integer goodsId, String name);
 
     void addComment(GoodsCommentDTO comment);
+
+    void deleteComment(Integer commentId, String name);
 }

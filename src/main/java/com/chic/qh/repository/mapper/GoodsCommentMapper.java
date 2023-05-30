@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface GoodsCommentMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_comment")
-    BasicColumn[] selectList = BasicColumn.columnList(recId, goodsId, content, user, createdAt);
+    BasicColumn[] selectList = BasicColumn.columnList(recId, goodsId, user, createdAt, status, updatedAt, content);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_comment")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
@@ -52,9 +52,11 @@ public interface GoodsCommentMapper extends CommonCountMapper, CommonDeleteMappe
     @Results(id="GoodsCommentResult", value = {
         @Result(column="rec_id", property="recId", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="goods_id", property="goodsId", jdbcType=JdbcType.INTEGER),
-        @Result(column="content", property="content", jdbcType=JdbcType.VARCHAR),
         @Result(column="user", property="user", jdbcType=JdbcType.VARCHAR),
-        @Result(column="created_at", property="createdAt", jdbcType=JdbcType.INTEGER)
+        @Result(column="created_at", property="createdAt", jdbcType=JdbcType.INTEGER),
+        @Result(column="status", property="status", jdbcType=JdbcType.TINYINT),
+        @Result(column="updated_at", property="updatedAt", jdbcType=JdbcType.INTEGER),
+        @Result(column="content", property="content", jdbcType=JdbcType.LONGVARCHAR)
     })
     List<GoodsComment> selectMany(SelectStatementProvider selectStatement);
 
@@ -84,9 +86,11 @@ public interface GoodsCommentMapper extends CommonCountMapper, CommonDeleteMappe
     default int insert(GoodsComment row) {
         return MyBatis3Utils.insert(this::insert, row, goodsComment, c ->
             c.map(goodsId).toProperty("goodsId")
-            .map(content).toProperty("content")
             .map(user).toProperty("user")
             .map(createdAt).toProperty("createdAt")
+            .map(status).toProperty("status")
+            .map(updatedAt).toProperty("updatedAt")
+            .map(content).toProperty("content")
         );
     }
 
@@ -94,9 +98,11 @@ public interface GoodsCommentMapper extends CommonCountMapper, CommonDeleteMappe
     default int insertMultiple(Collection<GoodsComment> records) {
         return MyBatis3Utils.insertMultipleWithGeneratedKeys(this::insertMultiple, records, goodsComment, c ->
             c.map(goodsId).toProperty("goodsId")
-            .map(content).toProperty("content")
             .map(user).toProperty("user")
             .map(createdAt).toProperty("createdAt")
+            .map(status).toProperty("status")
+            .map(updatedAt).toProperty("updatedAt")
+            .map(content).toProperty("content")
         );
     }
 
@@ -104,9 +110,11 @@ public interface GoodsCommentMapper extends CommonCountMapper, CommonDeleteMappe
     default int insertSelective(GoodsComment row) {
         return MyBatis3Utils.insert(this::insert, row, goodsComment, c ->
             c.map(goodsId).toPropertyWhenPresent("goodsId", row::getGoodsId)
-            .map(content).toPropertyWhenPresent("content", row::getContent)
             .map(user).toPropertyWhenPresent("user", row::getUser)
             .map(createdAt).toPropertyWhenPresent("createdAt", row::getCreatedAt)
+            .map(status).toPropertyWhenPresent("status", row::getStatus)
+            .map(updatedAt).toPropertyWhenPresent("updatedAt", row::getUpdatedAt)
+            .map(content).toPropertyWhenPresent("content", row::getContent)
         );
     }
 
@@ -140,26 +148,32 @@ public interface GoodsCommentMapper extends CommonCountMapper, CommonDeleteMappe
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_comment")
     static UpdateDSL<UpdateModel> updateAllColumns(GoodsComment row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(goodsId).equalTo(row::getGoodsId)
-                .set(content).equalTo(row::getContent)
                 .set(user).equalTo(row::getUser)
-                .set(createdAt).equalTo(row::getCreatedAt);
+                .set(createdAt).equalTo(row::getCreatedAt)
+                .set(status).equalTo(row::getStatus)
+                .set(updatedAt).equalTo(row::getUpdatedAt)
+                .set(content).equalTo(row::getContent);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_comment")
     static UpdateDSL<UpdateModel> updateSelectiveColumns(GoodsComment row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(goodsId).equalToWhenPresent(row::getGoodsId)
-                .set(content).equalToWhenPresent(row::getContent)
                 .set(user).equalToWhenPresent(row::getUser)
-                .set(createdAt).equalToWhenPresent(row::getCreatedAt);
+                .set(createdAt).equalToWhenPresent(row::getCreatedAt)
+                .set(status).equalToWhenPresent(row::getStatus)
+                .set(updatedAt).equalToWhenPresent(row::getUpdatedAt)
+                .set(content).equalToWhenPresent(row::getContent);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_comment")
     default int updateByPrimaryKey(GoodsComment row) {
         return update(c ->
             c.set(goodsId).equalTo(row::getGoodsId)
-            .set(content).equalTo(row::getContent)
             .set(user).equalTo(row::getUser)
             .set(createdAt).equalTo(row::getCreatedAt)
+            .set(status).equalTo(row::getStatus)
+            .set(updatedAt).equalTo(row::getUpdatedAt)
+            .set(content).equalTo(row::getContent)
             .where(recId, isEqualTo(row::getRecId))
         );
     }
@@ -168,9 +182,11 @@ public interface GoodsCommentMapper extends CommonCountMapper, CommonDeleteMappe
     default int updateByPrimaryKeySelective(GoodsComment row) {
         return update(c ->
             c.set(goodsId).equalToWhenPresent(row::getGoodsId)
-            .set(content).equalToWhenPresent(row::getContent)
             .set(user).equalToWhenPresent(row::getUser)
             .set(createdAt).equalToWhenPresent(row::getCreatedAt)
+            .set(status).equalToWhenPresent(row::getStatus)
+            .set(updatedAt).equalToWhenPresent(row::getUpdatedAt)
+            .set(content).equalToWhenPresent(row::getContent)
             .where(recId, isEqualTo(row::getRecId))
         );
     }

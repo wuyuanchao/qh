@@ -194,9 +194,9 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<GoodsCommentDTO> getGoodsComments(Integer goodsId) {
+    public List<GoodsCommentDTO> getGoodsComments(Integer goodsId, String name) {
         return goodsRepository.getComments(goodsId)
-                .stream().map(x -> GoodsCommentDTO.build(x))
+                .stream().map(x -> GoodsCommentDTO.build(x, name))
                 .collect(Collectors.toList());
     }
 
@@ -207,6 +207,20 @@ public class GoodsServiceImpl implements GoodsService {
         commentPO.setCreatedAt((int)Instant.now().getEpochSecond());
         commentPO.setGoodsId(comment.getGoodsId());
         commentPO.setUser(comment.getUser());
+        commentPO.setStatus((byte)1);
         goodsRepository.addComment(commentPO);
+    }
+
+    @Override
+    public void deleteComment(Integer commentId, String name) {
+        GoodsComment comment = goodsRepository.getComment(commentId);
+        if(comment == null){
+            throw new RuntimeException("商品记录不存在!commentId:" + commentId);
+        }
+        if(!comment.getUser().equals(name)){
+            throw new RuntimeException("没有权限删除商品记录!commentId:" + commentId);
+        }
+        goodsRepository.deleteComment(commentId);
+
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,16 +72,29 @@ public class GoodsRepository {
     }
 
     public int addComment(GoodsComment comment){
-        return goodsCommentMapper.insert(comment);
+        return goodsCommentMapper.insertSelective(comment);
     }
 
     public List<GoodsComment> getComments(Integer _goodsId){
         return goodsCommentMapper.select(c ->
                 c.where(GoodsCommentDynamicSqlSupport.goodsId, isEqualTo(_goodsId))
+                        .and(GoodsCommentDynamicSqlSupport.status, isEqualTo((byte)1))
                         .orderBy(GoodsCommentDynamicSqlSupport.createdAt.descending()));
     }
 
     public List<Goods> selectBySnList(List<String> snList) {
         return goodsMapper.select(c -> c.where(goodsSn, isIn(snList)));
+    }
+
+    public GoodsComment getComment(Integer commentId) {
+        return goodsCommentMapper.selectByPrimaryKey(commentId).orElse(null);
+    }
+
+    public int deleteComment(Integer commentId) {
+        GoodsComment goodsComment = new GoodsComment();
+        goodsComment.setRecId(commentId);
+        goodsComment.setStatus((byte)2);
+        goodsComment.setUpdatedAt((int) Instant.now().getEpochSecond());
+        return goodsCommentMapper.updateByPrimaryKeySelective(goodsComment);
     }
 }
