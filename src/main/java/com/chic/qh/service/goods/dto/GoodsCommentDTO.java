@@ -12,11 +12,13 @@ public class GoodsCommentDTO {
     private String user;
     private String avatar;
     private Integer createdAt;
+    private Boolean owner;
 
-    public static GoodsCommentDTO build(GoodsComment commentPO){
+    public static GoodsCommentDTO build(GoodsComment commentPO, String name){
         GoodsCommentDTO dto = new GoodsCommentDTO();
         BeanUtils.copyProperties(commentPO, dto);
         dto.setAvatar("https://xsgames.co/randomusers/avatar.php?g=pixel&key=" + dto.user);
+        dto.setOwner(commentPO.getUser().equals(name));
         return dto;
     }
 }

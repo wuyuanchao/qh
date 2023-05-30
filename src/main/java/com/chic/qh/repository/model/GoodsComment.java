@@ -14,14 +14,28 @@ public class GoodsComment {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.goods_id")
     private Integer goodsId;
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.content")
-    private String content;
-
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.user")
     private String user;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.created_at")
     private Integer createdAt;
+
+    /**
+     * Database Column Remarks:
+     *   状态（1-正常;2-删除;）
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.status")
+    private Byte status;
+
+    /**
+     * Database Column Remarks:
+     *   修改时间
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.updated_at")
+    private Integer updatedAt;
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.content")
+    private String content;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.rec_id")
     public Integer getRecId() {
@@ -41,16 +55,6 @@ public class GoodsComment {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.goods_id")
     public void setGoodsId(Integer goodsId) {
         this.goodsId = goodsId;
-    }
-
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.content")
-    public String getContent() {
-        return content;
-    }
-
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.content")
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.user")
@@ -73,6 +77,36 @@ public class GoodsComment {
         this.createdAt = createdAt;
     }
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.status")
+    public Byte getStatus() {
+        return status;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.status")
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.updated_at")
+    public Integer getUpdatedAt() {
+        return updatedAt;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.updated_at")
+    public void setUpdatedAt(Integer updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.content")
+    public String getContent() {
+        return content;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_comment.content")
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
     @Override
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_comment")
     public String toString() {
@@ -82,9 +116,11 @@ public class GoodsComment {
         sb.append("Hash = ").append(hashCode());
         sb.append(", recId=").append(recId);
         sb.append(", goodsId=").append(goodsId);
-        sb.append(", content=").append(content);
         sb.append(", user=").append(user);
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", status=").append(status);
+        sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", content=").append(content);
         sb.append("]");
         return sb.toString();
     }
