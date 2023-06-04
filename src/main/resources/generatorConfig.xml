@@ -61,5 +61,9 @@
         <table tableName="qh_logistic_channel" domainObjectName="LogisticChannel" >
             <generatedKey column="rec_id" sqlStatement="JDBC" identity="true" />
         </table>
+
+        <table tableName="qh_logistic_channel_detail" domainObjectName="LogisticChannelDetail" >
+            <generatedKey column="rec_id" sqlStatement="JDBC" identity="true" />
+        </table>
     </context>
 </generatorConfiguration>
