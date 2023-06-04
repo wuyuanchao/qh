@@ -33,9 +33,12 @@ public class LogisticServiceImpl implements LogisticService{
     @Autowired
     private LogisticChannelDetailMapper logisticChannelDetailMapper;
     @Override
-    public Page<LogisticChannel> getChannelList(Integer pageNum, Integer pageSize) {
+    public Page<LogisticChannel> getChannelList(String _company, String _code, Integer pageNum, Integer pageSize) {
         return PageHelper.startPage(pageNum, pageSize).doSelectPage(() ->
-                logisticChannelMapper.select(c -> c.orderBy(LogisticChannelDynamicSqlSupport.recId.descending())));
+                logisticChannelMapper.select(c -> c
+                        .where(LogisticChannelDynamicSqlSupport.company, SqlBuilder.isEqualToWhenPresent(_company))
+                        .and(LogisticChannelDynamicSqlSupport.code, SqlBuilder.isEqualToWhenPresent(_code))
+                        .orderBy(LogisticChannelDynamicSqlSupport.recId.descending())));
     }
 
     @Override
@@ -154,5 +157,15 @@ public class LogisticServiceImpl implements LogisticService{
             BeanUtils.copyProperties(x, vo);
             return vo;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public int deleteChannel(Integer channelId) {
+        return logisticChannelMapper.deleteByPrimaryKey(channelId);
+    }
+
+    @Override
+    public int updateChannel(LogisticChannel logisticChannel) {
+        return logisticChannelMapper.updateByPrimaryKeySelective(logisticChannel);
     }
 }

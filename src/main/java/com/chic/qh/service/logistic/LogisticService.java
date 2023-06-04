@@ -8,11 +8,15 @@ import com.github.pagehelper.Page;
 import java.util.List;
 
 public interface LogisticService {
-    Page<LogisticChannel> getChannelList(Integer pageNum, Integer pageSize);
+    Page<LogisticChannel> getChannelList(String company, String code, Integer pageNum, Integer pageSize);
 
     void addChannel(LogisticChannel logisticChannel);
 
     List<LogisticConfigDTO> getChannelDetail(Integer channelId);
+
+    int deleteChannel(Integer channelId);
+
+    int updateChannel(LogisticChannel logisticChannel);
 
     void processImportChannelDetail(Integer channelId, List<ChannelDetailExcelVO> dataList);
 
