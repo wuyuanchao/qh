@@ -45,5 +45,7 @@ public class SkuAddUpdateDTO {
 
     private String size;
 
+    private String remark;
+
 
 }

@@ -128,6 +128,13 @@ public class SkuRelation {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.gmt_modify")
     private Integer gmtModify;
 
+    /**
+     * Database Column Remarks:
+     *   备注
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.remark")
+    private String remark;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_id")
     public Integer getSkuId() {
         return skuId;
@@ -298,6 +305,16 @@ public class SkuRelation {
         this.gmtModify = gmtModify;
     }
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.remark")
+    public String getRemark() {
+        return remark;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.remark")
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
     @Override
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
     public String toString() {
@@ -322,6 +339,7 @@ public class SkuRelation {
         sb.append(", size=").append(size);
         sb.append(", gmtCreated=").append(gmtCreated);
         sb.append(", gmtModify=").append(gmtModify);
+        sb.append(", remark=").append(remark);
         sb.append("]");
         return sb.toString();
     }

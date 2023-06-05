@@ -49,4 +49,6 @@ public class SkuVO {
 
     private Integer gmtModify;
 
+    private String remark;
+
 }

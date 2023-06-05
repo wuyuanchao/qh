@@ -129,6 +129,13 @@ public final class SkuRelationDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.gmt_modify")
     public static final SqlColumn<Integer> gmtModify = skuRelation.gmtModify;
 
+    /**
+     * Database Column Remarks:
+     *   备注
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.remark")
+    public static final SqlColumn<String> remark = skuRelation.remark;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
     public static final class SkuRelation extends AliasableSqlTable<SkuRelation> {
         public final SqlColumn<Integer> skuId = column("sku_id", JDBCType.INTEGER);
@@ -164,6 +171,8 @@ public final class SkuRelationDynamicSqlSupport {
         public final SqlColumn<Integer> gmtCreated = column("gmt_created", JDBCType.INTEGER);
 
         public final SqlColumn<Integer> gmtModify = column("gmt_modify", JDBCType.INTEGER);
+
+        public final SqlColumn<String> remark = column("remark", JDBCType.VARCHAR);
 
         public SkuRelation() {
             super("qh_sku_relation", SkuRelation::new);
