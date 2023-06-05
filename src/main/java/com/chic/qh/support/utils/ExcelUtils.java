@@ -1,6 +1,7 @@
 package com.chic.qh.support.utils;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -37,13 +38,14 @@ public class ExcelUtils {
      */
     public static <T> List<T> importExcel(MultipartFile file, Class<T> dataClass, String sheetName) {
         try {
-            if (StringUtils.isBlank(sheetName)) {
-                sheetName = DEFAULT_SHEET_NAME;
-            }
             // 实例化实现了AnalysisEventListener接口的类
             NoModelDataListener listener = new NoModelDataListener();
             InputStream io = file.getInputStream();
-            EasyExcel.read(io, dataClass , listener).sheet().sheetName(sheetName).doRead();
+            ExcelReaderSheetBuilder builder = EasyExcel.read(io, dataClass, listener).sheet();
+            if (StringUtils.isNotBlank(sheetName)) {
+                builder.sheetName(sheetName);
+            }
+            builder.doRead();
             // 获取数据
             return listener.getList().stream().map(x-> JSONObject.parseObject(JSONObject.toJSONString(x), dataClass)).collect(Collectors.toList());
         } catch (IOException e) {

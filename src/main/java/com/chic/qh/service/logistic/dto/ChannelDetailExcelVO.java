@@ -16,52 +16,52 @@ import java.math.BigDecimal;
  * @date 2023-06-04 23:22:29
  */
 @Data
-@ContentRowHeight(20)
+@ContentRowHeight(17)
 @HeadRowHeight(20)
-@ColumnWidth(15)
+@ColumnWidth(22)
 public class ChannelDetailExcelVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 *   国家
 	 */
-	@ExcelProperty(value = "country", index = 0)
+	@ExcelProperty(value = "国家/地区", index = 0)
 	private String country;
-
-	/**
-	 *   物流时效
-	 */
-	@ExcelProperty(value = "shippingTime", index = 1)
-	private String shippingTime;
 
 	/**
 	 *   计抛比
 	 */
-	@ExcelProperty(value = "volWeightRate", index = 2)
+	@ExcelProperty(value = "记抛比", index = 1)
 	private BigDecimal volWeightRate;
+
+	/**
+	 *   物流时效
+	 */
+	@ExcelProperty(value = "参考时效", index = 2)
+	private String shippingTime;
 
 	/**
 	 *   重量左值
 	 */
-	@ExcelProperty(value = "weightLeft", index = 3)
+	@ExcelProperty(value = "重量左值(>)", index = 3)
 	private BigDecimal weightLeft;
 
 	/**
 	 *   重量右值
 	 */
-	@ExcelProperty(value = "weightRight", index = 4)
+	@ExcelProperty(value = "重量右值(<=)", index = 4)
 	private BigDecimal weightRight;
 
 	/**
 	 *   运费
 	 */
-	@ExcelProperty(value = "shippingFee", index = 5)
+	@ExcelProperty(value = "运费(RMB/KG)", index = 5)
 	private BigDecimal shippingFee;
 
 	/**
 	 *   挂号费
 	 */
-	@ExcelProperty(value = "extraFee", index = 6)
+	@ExcelProperty(value = "挂号费(RMB/票)", index = 6)
 	private BigDecimal extraFee;
 
 

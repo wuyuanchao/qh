@@ -152,11 +152,22 @@ public class LogisticServiceImpl implements LogisticService{
                 c.where(LogisticChannelDetailDynamicSqlSupport.channelId, SqlBuilder.isEqualTo(channelId))
                         .orderBy(LogisticChannelDetailDynamicSqlSupport.weightLeft,LogisticChannelDetailDynamicSqlSupport.recId)
         );
-        return channelDetails.stream().map(x -> {
-            ChannelDetailExcelVO vo = new ChannelDetailExcelVO();
-            BeanUtils.copyProperties(x, vo);
-            return vo;
-        }).collect(Collectors.toList());
+
+        ArrayListMultimap<LogisticChannelDetailUniKey, LogisticChannelDetail> channelDetailListMap = ArrayListMultimap.create();
+        channelDetails.forEach(x->{
+            channelDetailListMap.put(new LogisticChannelDetailUniKey(x.getCountry(), x.getShippingTime(), x.getVolWeightRate()), x);
+        });
+
+        List<ChannelDetailExcelVO> voList = new ArrayList<>();
+        channelDetailListMap.keySet().forEach(x->{
+            List<LogisticChannelDetail> details = channelDetailListMap.get(x);
+            details.forEach(c->{
+                ChannelDetailExcelVO vo = new ChannelDetailExcelVO();
+                BeanUtils.copyProperties(c, vo);
+                voList.add(vo);
+            });
+        });
+        return voList;
     }
 
     @Override
