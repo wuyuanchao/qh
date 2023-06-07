@@ -125,7 +125,10 @@ public class GoodsController {
 
     @RespWrap
     @PostMapping("/{goodsId}/comments")
-    public void addGoodsComments(@PathVariable("goodsId") Integer goodsId, @RequestBody GoodsCommentDTO comment){
+    public void addGoodsComments(@PathVariable("goodsId") Integer goodsId,
+                                 @RequestBody GoodsCommentDTO comment,
+                                 Authentication authentication){
+        comment.setUser(authentication.getName());
         goodsService.addComment(comment);
     }
 
