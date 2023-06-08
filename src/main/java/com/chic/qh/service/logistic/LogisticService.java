@@ -21,4 +21,6 @@ public interface LogisticService {
     void processImportChannelDetail(Integer channelId, List<ChannelDetailExcelVO> dataList);
 
     List<ChannelDetailExcelVO> exportChannelDetail(Integer channelId);
+
+    LogisticChannel getChannelInfo(Integer channelId);
 }
