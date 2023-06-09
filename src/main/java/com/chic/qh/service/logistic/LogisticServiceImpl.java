@@ -171,6 +171,11 @@ public class LogisticServiceImpl implements LogisticService{
     }
 
     @Override
+    public LogisticChannel getChannelInfo(Integer channelId) {
+        return logisticChannelMapper.selectByPrimaryKey(channelId).orElse(null);
+    }
+
+    @Override
     public int deleteChannel(Integer channelId) {
         return logisticChannelMapper.deleteByPrimaryKey(channelId);
     }

@@ -32,6 +32,12 @@ public class LogisticController {
     }
 
     @RespWrap
+    @GetMapping("channel/{channelId}")
+    public LogisticChannel getChannel(@PathVariable("channelId") Integer channelId) {
+        return logisticService.getChannelInfo(channelId);
+    }
+
+    @RespWrap
     @PostMapping("addChannel")
     public void addChannel(@RequestBody LogisticChannel logisticChannel) {
         logisticService.addChannel(logisticChannel);
