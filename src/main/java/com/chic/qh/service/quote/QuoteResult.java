@@ -1,4 +1,4 @@
-package com.chic.qh.service.quoted;
+package com.chic.qh.service.quote;
 
 import java.math.BigDecimal;
 
