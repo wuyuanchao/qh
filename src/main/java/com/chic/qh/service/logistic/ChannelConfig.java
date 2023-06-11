@@ -52,7 +52,9 @@ public class ChannelConfig {
     }
 
     public LogisticChannelDetail getConfig(String country, BigDecimal weight){
-        return configMap.get(country).getEntry(weight).getValue();
+        return configMap.get(country)
+                .getEntry(weight)
+                .getValue();
     }
 
     public BigDecimal getVolWeightRate(String country){

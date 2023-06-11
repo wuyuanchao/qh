@@ -10,5 +10,5 @@ import com.chic.qh.service.goods.vo.SkuVO;
  */
 public interface QuoteService {
 
-    QuoteResult quote(String country, GoodsVO goodsVO, SkuVO skuVo);
+    QuoteResult quote(String country, GoodsVO goodsVO, SkuVO skuVo, Integer quantity);
 }

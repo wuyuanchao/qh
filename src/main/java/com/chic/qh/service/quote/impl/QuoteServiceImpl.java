@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @Description: 报价
@@ -27,8 +28,8 @@ public class QuoteServiceImpl implements QuoteService {
     private LogisticService logisticService;
 
     @Override
-    public QuoteResult quote(String country, GoodsVO goodsVO, SkuVO skuVo){
-        ChannelConfig config = logisticService.getChannelConfig(13);
+    public QuoteResult quote(String country, GoodsVO goodsVO, SkuVO skuVo, Integer quantity){
+        ChannelConfig config = logisticService.getChannelConfig(1);
         VolumetricWeight volWeight = null;
         if(skuVo.getLength() != null && skuVo.getWidth() != null && skuVo.getHeight() != null) {
             volWeight = new VolumetricWeight(skuVo.getLength(), skuVo.getWidth(), skuVo.getHeight(),
@@ -39,16 +40,18 @@ public class QuoteServiceImpl implements QuoteService {
 
         BigDecimal shippingFee = detail.getShippingFee()
                 .multiply(new BigDecimal(billingWeight.getValue()).divide(new BigDecimal("100")))
-                .add(detail.getExtraFee())
-                .add(new BigDecimal("3"));
-        BigDecimal cost = skuVo.getPurPrice().add(shippingFee);
+                .add(detail.getExtraFee());
+        BigDecimal cost = skuVo.getPurPrice().add(shippingFee).multiply(new BigDecimal(quantity));
+        BigDecimal total = cost.add(new BigDecimal("3"))
+                .multiply(new BigDecimal("1.15"))
+                .divide(new BigDecimal("6.5"), 2, RoundingMode.HALF_UP);
         LogisticChannel channel = config.getLogisticChannel();
-        QuoteResult result = new QuoteResult(channel.getCompany(), skuVo.getSkuName(), false, false,
+        QuoteResult result = new QuoteResult(channel.getCompany() + "(" + channel.getCode() +")", skuVo.getSkuName(), false, false,
                 new BigDecimal(billingWeight.getValue()),
                 new BigDecimal(billingWeight.getActWeight()),
                 new BigDecimal(billingWeight.getVolWeight()),
                 billingWeight.getWeightType(),
-                cost, skuVo.getPurPrice(), shippingFee, detail.getShippingTime());
+                total, skuVo.getPurPrice(), cost, detail.getShippingTime());
         return result;
     }
 }
