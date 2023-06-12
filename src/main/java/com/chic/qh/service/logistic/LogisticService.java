@@ -23,4 +23,6 @@ public interface LogisticService {
     List<ChannelDetailExcelVO> exportChannelDetail(Integer channelId);
 
     LogisticChannel getChannelInfo(Integer channelId);
+
+    ChannelConfig getChannelConfig(Integer channelId);
 }

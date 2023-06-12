@@ -1,4 +1,6 @@
-package com.chic.qh.service.quoted;
+package com.chic.qh.service.quote;
+
+import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -51,4 +53,17 @@ public class BillingWeight {
         return new BigDecimal(value).multiply(kiloRate).setScale(3, RoundingMode.HALF_UP);
     }
 
+    public static BillingWeight build(BigDecimal orderWeight, @Nullable VolumetricWeight volWeight){
+        Integer gramOrderWeight = orderWeight.multiply(new BigDecimal("1000")).intValue();
+        if(volWeight == null){
+            return new BillingWeight(gramOrderWeight, null, WeightType.ACTUAL_WEIGHT);
+        }
+        //体积重计算精确到克(g), 订单实重单位是千克(kg),需要把单位统一再进行比较
+        //如果 体积重 大于 实重 则使用体积重
+        if(new BigDecimal(volWeight.getValue()).compareTo(new BigDecimal(gramOrderWeight)) > 0){
+            return new BillingWeight(gramOrderWeight, volWeight.getValue(), WeightType.VOL_WEIGHT);
+        }else{
+            return new BillingWeight(gramOrderWeight, volWeight.getValue(), WeightType.ACTUAL_WEIGHT);
+        }
+    }
 }

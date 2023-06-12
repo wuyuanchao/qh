@@ -1,4 +1,4 @@
-package com.chic.qh.service.quoted;
+package com.chic.qh.service.quote;
 
 /**
  * Volumetric weight refers to the overall size of a parcel and is measured in volumetric kilograms.

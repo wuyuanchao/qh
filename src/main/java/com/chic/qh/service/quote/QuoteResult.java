@@ -1,4 +1,4 @@
-package com.chic.qh.service.quoted;
+package com.chic.qh.service.quote;
 
 import java.math.BigDecimal;
 
@@ -9,7 +9,6 @@ import java.math.BigDecimal;
  * operationFee	decimal(10, 2)
  */
 public class QuoteResult {
-
     private String carrierName;
     private String productCode;
     private Boolean isElectronic;

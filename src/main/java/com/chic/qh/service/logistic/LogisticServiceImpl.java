@@ -18,10 +18,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -48,18 +46,10 @@ public class LogisticServiceImpl implements LogisticService{
 
     @Override
     public List<LogisticConfigDTO> getChannelDetail(Integer channelId) {
-        List<LogisticChannelDetail> channelDetails = logisticChannelDetailMapper.select(c ->
-                c.where(LogisticChannelDetailDynamicSqlSupport.channelId, SqlBuilder.isEqualTo(channelId))
-                        .orderBy(LogisticChannelDetailDynamicSqlSupport.weightLeft,LogisticChannelDetailDynamicSqlSupport.recId)
-        );
-
-        ArrayListMultimap<LogisticChannelDetailUniKey, LogisticChannelDetail> channelDetailListMap = ArrayListMultimap.create();
-        channelDetails.forEach(x->{
-            channelDetailListMap.put(new LogisticChannelDetailUniKey(x.getCountry(), x.getShippingTime(), x.getVolWeightRate()), x);
-        });
-
-        List<LogisticConfigDTO> dtoList = new ArrayList<>(channelDetailListMap.keySet().size());
         Integer index = 1;
+        ArrayListMultimap<LogisticChannelDetailUniKey, LogisticChannelDetail> channelDetailListMap = getChannelDetailListMap(channelId);
+        List<LogisticConfigDTO> dtoList = new ArrayList<>(channelDetailListMap.keySet().size());
+
         for (LogisticChannelDetailUniKey uniKey : channelDetailListMap.keySet()) {
             List<LogisticChannelDetail> details = channelDetailListMap.get(uniKey);
             LogisticConfigDTO dto = new LogisticConfigDTO();
@@ -87,46 +77,19 @@ public class LogisticServiceImpl implements LogisticService{
         return dtoList;
     }
 
+    private ArrayListMultimap<LogisticChannelDetailUniKey, LogisticChannelDetail> getChannelDetailListMap(Integer channelId){
+        List<LogisticChannelDetail> channelDetails = logisticChannelDetailMapper.select(c ->
+                c.where(LogisticChannelDetailDynamicSqlSupport.channelId, SqlBuilder.isEqualTo(channelId))
+                        .orderBy(LogisticChannelDetailDynamicSqlSupport.weightLeft,LogisticChannelDetailDynamicSqlSupport.recId)
+        );
 
-    private static class LogisticChannelDetailUniKey{
-        private String country;
-        private String shippingTime;
-        private BigDecimal volWeightRate;
-
-        public String getCountry() {
-            return country;
-        }
-
-        public String getShippingTime() {
-            return shippingTime;
-        }
-
-        public BigDecimal getVolWeightRate() {
-            return volWeightRate;
-        }
-
-        public LogisticChannelDetailUniKey(String country, String shippingTime, BigDecimal volWeightRate) {
-            this.country = country;
-            this.shippingTime = shippingTime;
-            this.volWeightRate = volWeightRate;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            LogisticChannelDetailUniKey that = (LogisticChannelDetailUniKey) o;
-            return country.equals(that.country) &&
-                    shippingTime.equals(that.shippingTime) &&
-                    volWeightRate.compareTo(that.volWeightRate) == 0;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(country, shippingTime, volWeightRate);
-        }
-
+        ArrayListMultimap<LogisticChannelDetailUniKey, LogisticChannelDetail> channelDetailListMap = ArrayListMultimap.create();
+        channelDetails.forEach(x->{
+            channelDetailListMap.put(new LogisticChannelDetailUniKey(x.getCountry(), x.getShippingTime(), x.getVolWeightRate()), x);
+        });
+        return channelDetailListMap;
     }
+
 
     @Override
     public void processImportChannelDetail(Integer channelId, List<ChannelDetailExcelVO> dataList) {
@@ -148,16 +111,7 @@ public class LogisticServiceImpl implements LogisticService{
 
     @Override
     public List<ChannelDetailExcelVO> exportChannelDetail(Integer channelId) {
-        List<LogisticChannelDetail> channelDetails = logisticChannelDetailMapper.select(c ->
-                c.where(LogisticChannelDetailDynamicSqlSupport.channelId, SqlBuilder.isEqualTo(channelId))
-                        .orderBy(LogisticChannelDetailDynamicSqlSupport.weightLeft,LogisticChannelDetailDynamicSqlSupport.recId)
-        );
-
-        ArrayListMultimap<LogisticChannelDetailUniKey, LogisticChannelDetail> channelDetailListMap = ArrayListMultimap.create();
-        channelDetails.forEach(x->{
-            channelDetailListMap.put(new LogisticChannelDetailUniKey(x.getCountry(), x.getShippingTime(), x.getVolWeightRate()), x);
-        });
-
+        ArrayListMultimap<LogisticChannelDetailUniKey, LogisticChannelDetail> channelDetailListMap = getChannelDetailListMap(channelId);
         List<ChannelDetailExcelVO> voList = new ArrayList<>();
         channelDetailListMap.keySet().forEach(x->{
             List<LogisticChannelDetail> details = channelDetailListMap.get(x);
@@ -183,5 +137,14 @@ public class LogisticServiceImpl implements LogisticService{
     @Override
     public int updateChannel(LogisticChannel logisticChannel) {
         return logisticChannelMapper.updateByPrimaryKeySelective(logisticChannel);
+    }
+
+    @Override
+    public ChannelConfig getChannelConfig(Integer channelId) {
+        LogisticChannel channelInfo = getChannelInfo(channelId);
+        if(channelInfo == null){
+            return null;
+        }
+        return new ChannelConfig(channelInfo, getChannelDetailListMap(channelId));
     }
 }
