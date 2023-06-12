@@ -38,6 +38,9 @@ public class UserController {
     @RespWrap
     @GetMapping("/currentUser")
     public UserDTO currentUser(Authentication authentication){
+        if(authentication == null){
+            return null;
+        }
         UserInfo userInfo = userInfoService.queryUserByUserName(authentication.getName());
         return new UserDTO(authentication.getName(),
                 userInfo.getAvatar(),
