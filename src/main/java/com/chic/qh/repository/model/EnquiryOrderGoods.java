@@ -48,13 +48,6 @@ public class EnquiryOrderGoods {
 
     /**
      * Database Column Remarks:
-     *   备注
-     */
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.remark")
-    private String remark;
-
-    /**
-     * Database Column Remarks:
      *   创建时间
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.gmt_created")
@@ -66,6 +59,13 @@ public class EnquiryOrderGoods {
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.gmt_modify")
     private Integer gmtModify;
+
+    /**
+     * Database Column Remarks:
+     *   备注
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.remark")
+    private String remark;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.rec_id")
     public Integer getRecId() {
@@ -127,16 +127,6 @@ public class EnquiryOrderGoods {
         this.relationType = relationType;
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.remark")
-    public String getRemark() {
-        return remark;
-    }
-
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.remark")
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.gmt_created")
     public Integer getGmtCreated() {
         return gmtCreated;
@@ -157,6 +147,16 @@ public class EnquiryOrderGoods {
         this.gmtModify = gmtModify;
     }
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.remark")
+    public String getRemark() {
+        return remark;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.remark")
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
     @Override
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_enquiry_order_goods")
     public String toString() {
@@ -170,9 +170,9 @@ public class EnquiryOrderGoods {
         sb.append(", goodsSn=").append(goodsSn);
         sb.append(", link=").append(link);
         sb.append(", relationType=").append(relationType);
-        sb.append(", remark=").append(remark);
         sb.append(", gmtCreated=").append(gmtCreated);
         sb.append(", gmtModify=").append(gmtModify);
+        sb.append(", remark=").append(remark);
         sb.append("]");
         return sb.toString();
     }

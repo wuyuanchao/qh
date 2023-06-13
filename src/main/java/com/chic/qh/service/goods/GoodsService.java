@@ -44,4 +44,6 @@ public interface GoodsService {
     void addComment(GoodsCommentDTO comment);
 
     void deleteComment(Integer commentId, String name);
+
+    List<SkuListExcelVO> exportSkuList(Integer goodsId);
 }

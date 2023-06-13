@@ -1,22 +1,28 @@
 package com.chic.qh.service.goods.impl;
 
+import com.alibaba.excel.metadata.data.HyperlinkData;
+import com.alibaba.excel.metadata.data.WriteCellData;
+import com.chic.qh.repository.GoodsRepository;
+import com.chic.qh.repository.SkuRelationRepository;
 import com.chic.qh.repository.model.Goods;
 import com.chic.qh.repository.model.GoodsComment;
 import com.chic.qh.repository.model.SkuRelation;
-import com.chic.qh.repository.GoodsRepository;
-import com.chic.qh.repository.SkuRelationRepository;
 import com.chic.qh.service.goods.GoodsService;
 import com.chic.qh.service.goods.dto.*;
 import com.chic.qh.service.goods.vo.GoodsListVO;
 import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
 import com.github.pagehelper.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +34,7 @@ import java.util.stream.Collectors;
  * @author: xumingwei
  * @date: 2023—04—09 12:25
  */
+@Slf4j
 @Service
 @Transactional
 public class GoodsServiceImpl implements GoodsService {
@@ -222,5 +229,38 @@ public class GoodsServiceImpl implements GoodsService {
         }
         goodsRepository.deleteComment(commentId);
 
+    }
+
+    @Override
+    public List<SkuListExcelVO> exportSkuList(Integer goodsId) {
+        List<SkuRelation> skuRelationList = skuRelationRepository.querySkuList(goodsId);
+        List<SkuListExcelVO> voList = new ArrayList<>();
+        skuRelationList.forEach(x -> {
+            SkuListExcelVO vo = new SkuListExcelVO();
+            BeanUtils.copyProperties(x, vo);
+            //sku图片
+            if(StringUtils.isNotBlank(x.getSkuImage())) {
+                try {
+                    vo.setUrl(new URL(x.getSkuImage()));
+                } catch (MalformedURLException e) {
+                    log.warn("sku列表导出：图片不合法:{}", x.getSkuImage(), e);
+                }
+            }
+            //计费体积
+            int totalArea = x.getLength() * x.getWidth() * x.getHeight();
+            vo.setVolume(totalArea + "cm³(" + x.getLength() + "*" + x.getWidth() + "*" + x.getHeight() + ")");
+
+            //供应商信息
+            WriteCellData<String> suppInfo = new WriteCellData<>(x.getSuppName());
+            HyperlinkData hyperlinkData = new HyperlinkData();
+            suppInfo.setHyperlinkData(hyperlinkData);
+            hyperlinkData.setAddress(x.getLink());
+            hyperlinkData.setHyperlinkType(HyperlinkData.HyperlinkType.URL);
+            vo.setSuppInfo(suppInfo);
+
+
+            voList.add(vo);
+        });
+        return voList;
     }
 }

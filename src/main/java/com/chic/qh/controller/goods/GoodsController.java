@@ -5,11 +5,13 @@ import com.chic.qh.service.goods.dto.*;
 import com.chic.qh.service.goods.vo.GoodsListVO;
 import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
+import com.chic.qh.support.utils.ExcelUtils;
 import com.chic.qh.support.web.RespWrap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -136,5 +138,20 @@ public class GoodsController {
     @PostMapping("/deleteComment")
     public void deleteGoodsComment(@RequestBody GoodsCommentDTO comment, Authentication authentication){
         goodsService.deleteComment(comment.getRecId(), authentication.getName());
+    }
+
+
+    /**
+     * Sku列表导出
+     * @param goodsId
+     * @param response
+     */
+    @PostMapping("exportSkuList/{goodsId}")
+    public void exportSkuList(@PathVariable("goodsId") Integer goodsId, HttpServletResponse response) {
+        //查询sku列表
+        List<SkuListExcelVO> skuListExcelVOList = goodsService.exportSkuList(goodsId);
+        //导出sku列表
+        String fileName = "SkuListExport";
+        ExcelUtils.exportExcel(skuListExcelVOList, SkuListExcelVO.class, fileName, response);
     }
 }

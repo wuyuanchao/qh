@@ -136,6 +136,13 @@ public final class SkuRelationDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.remark")
     public static final SqlColumn<String> remark = skuRelation.remark;
 
+    /**
+     * Database Column Remarks:
+     *   sku图片
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_image")
+    public static final SqlColumn<String> skuImage = skuRelation.skuImage;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
     public static final class SkuRelation extends AliasableSqlTable<SkuRelation> {
         public final SqlColumn<Integer> skuId = column("sku_id", JDBCType.INTEGER);
@@ -173,6 +180,8 @@ public final class SkuRelationDynamicSqlSupport {
         public final SqlColumn<Integer> gmtModify = column("gmt_modify", JDBCType.INTEGER);
 
         public final SqlColumn<String> remark = column("remark", JDBCType.VARCHAR);
+
+        public final SqlColumn<String> skuImage = column("sku_image", JDBCType.VARCHAR);
 
         public SkuRelation() {
             super("qh_sku_relation", SkuRelation::new);

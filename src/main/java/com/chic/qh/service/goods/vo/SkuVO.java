@@ -51,4 +51,6 @@ public class SkuVO {
 
     private String remark;
 
+    private String skuImage;
+
 }

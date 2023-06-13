@@ -135,6 +135,13 @@ public class SkuRelation {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.remark")
     private String remark;
 
+    /**
+     * Database Column Remarks:
+     *   sku图片
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_image")
+    private String skuImage;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_id")
     public Integer getSkuId() {
         return skuId;
@@ -315,6 +322,16 @@ public class SkuRelation {
         this.remark = remark == null ? null : remark.trim();
     }
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_image")
+    public String getSkuImage() {
+        return skuImage;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_image")
+    public void setSkuImage(String skuImage) {
+        this.skuImage = skuImage == null ? null : skuImage.trim();
+    }
+
     @Override
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
     public String toString() {
@@ -340,6 +357,7 @@ public class SkuRelation {
         sb.append(", gmtCreated=").append(gmtCreated);
         sb.append(", gmtModify=").append(gmtModify);
         sb.append(", remark=").append(remark);
+        sb.append(", skuImage=").append(skuImage);
         sb.append("]");
         return sb.toString();
     }

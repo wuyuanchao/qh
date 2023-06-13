@@ -49,13 +49,6 @@ public final class EnquiryOrderGoodsDynamicSqlSupport {
 
     /**
      * Database Column Remarks:
-     *   备注
-     */
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.remark")
-    public static final SqlColumn<String> remark = enquiryOrderGoods.remark;
-
-    /**
-     * Database Column Remarks:
      *   创建时间
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.gmt_created")
@@ -67,6 +60,13 @@ public final class EnquiryOrderGoodsDynamicSqlSupport {
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.gmt_modify")
     public static final SqlColumn<Integer> gmtModify = enquiryOrderGoods.gmtModify;
+
+    /**
+     * Database Column Remarks:
+     *   备注
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_enquiry_order_goods.remark")
+    public static final SqlColumn<String> remark = enquiryOrderGoods.remark;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_enquiry_order_goods")
     public static final class EnquiryOrderGoods extends AliasableSqlTable<EnquiryOrderGoods> {
@@ -82,11 +82,11 @@ public final class EnquiryOrderGoodsDynamicSqlSupport {
 
         public final SqlColumn<Byte> relationType = column("relation_type", JDBCType.TINYINT);
 
-        public final SqlColumn<String> remark = column("remark", JDBCType.VARCHAR);
-
         public final SqlColumn<Integer> gmtCreated = column("gmt_created", JDBCType.INTEGER);
 
         public final SqlColumn<Integer> gmtModify = column("gmt_modify", JDBCType.INTEGER);
+
+        public final SqlColumn<String> remark = column("remark", JDBCType.LONGVARCHAR);
 
         public EnquiryOrderGoods() {
             super("qh_enquiry_order_goods", EnquiryOrderGoods::new);

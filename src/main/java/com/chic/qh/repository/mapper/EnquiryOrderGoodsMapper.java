@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface EnquiryOrderGoodsMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_enquiry_order_goods")
-    BasicColumn[] selectList = BasicColumn.columnList(recId, enquiryOrderId, goodsName, goodsSn, link, relationType, remark, gmtCreated, gmtModify);
+    BasicColumn[] selectList = BasicColumn.columnList(recId, enquiryOrderId, goodsName, goodsSn, link, relationType, gmtCreated, gmtModify, remark);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_enquiry_order_goods")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
@@ -56,9 +56,9 @@ public interface EnquiryOrderGoodsMapper extends CommonCountMapper, CommonDelete
         @Result(column="goods_sn", property="goodsSn", jdbcType=JdbcType.VARCHAR),
         @Result(column="link", property="link", jdbcType=JdbcType.VARCHAR),
         @Result(column="relation_type", property="relationType", jdbcType=JdbcType.TINYINT),
-        @Result(column="remark", property="remark", jdbcType=JdbcType.VARCHAR),
         @Result(column="gmt_created", property="gmtCreated", jdbcType=JdbcType.INTEGER),
-        @Result(column="gmt_modify", property="gmtModify", jdbcType=JdbcType.INTEGER)
+        @Result(column="gmt_modify", property="gmtModify", jdbcType=JdbcType.INTEGER),
+        @Result(column="remark", property="remark", jdbcType=JdbcType.LONGVARCHAR)
     })
     List<EnquiryOrderGoods> selectMany(SelectStatementProvider selectStatement);
 
@@ -92,9 +92,9 @@ public interface EnquiryOrderGoodsMapper extends CommonCountMapper, CommonDelete
             .map(goodsSn).toProperty("goodsSn")
             .map(link).toProperty("link")
             .map(relationType).toProperty("relationType")
-            .map(remark).toProperty("remark")
             .map(gmtCreated).toProperty("gmtCreated")
             .map(gmtModify).toProperty("gmtModify")
+            .map(remark).toProperty("remark")
         );
     }
 
@@ -106,9 +106,9 @@ public interface EnquiryOrderGoodsMapper extends CommonCountMapper, CommonDelete
             .map(goodsSn).toProperty("goodsSn")
             .map(link).toProperty("link")
             .map(relationType).toProperty("relationType")
-            .map(remark).toProperty("remark")
             .map(gmtCreated).toProperty("gmtCreated")
             .map(gmtModify).toProperty("gmtModify")
+            .map(remark).toProperty("remark")
         );
     }
 
@@ -120,9 +120,9 @@ public interface EnquiryOrderGoodsMapper extends CommonCountMapper, CommonDelete
             .map(goodsSn).toPropertyWhenPresent("goodsSn", row::getGoodsSn)
             .map(link).toPropertyWhenPresent("link", row::getLink)
             .map(relationType).toPropertyWhenPresent("relationType", row::getRelationType)
-            .map(remark).toPropertyWhenPresent("remark", row::getRemark)
             .map(gmtCreated).toPropertyWhenPresent("gmtCreated", row::getGmtCreated)
             .map(gmtModify).toPropertyWhenPresent("gmtModify", row::getGmtModify)
+            .map(remark).toPropertyWhenPresent("remark", row::getRemark)
         );
     }
 
@@ -160,9 +160,9 @@ public interface EnquiryOrderGoodsMapper extends CommonCountMapper, CommonDelete
                 .set(goodsSn).equalTo(row::getGoodsSn)
                 .set(link).equalTo(row::getLink)
                 .set(relationType).equalTo(row::getRelationType)
-                .set(remark).equalTo(row::getRemark)
                 .set(gmtCreated).equalTo(row::getGmtCreated)
-                .set(gmtModify).equalTo(row::getGmtModify);
+                .set(gmtModify).equalTo(row::getGmtModify)
+                .set(remark).equalTo(row::getRemark);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_enquiry_order_goods")
@@ -172,9 +172,9 @@ public interface EnquiryOrderGoodsMapper extends CommonCountMapper, CommonDelete
                 .set(goodsSn).equalToWhenPresent(row::getGoodsSn)
                 .set(link).equalToWhenPresent(row::getLink)
                 .set(relationType).equalToWhenPresent(row::getRelationType)
-                .set(remark).equalToWhenPresent(row::getRemark)
                 .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
-                .set(gmtModify).equalToWhenPresent(row::getGmtModify);
+                .set(gmtModify).equalToWhenPresent(row::getGmtModify)
+                .set(remark).equalToWhenPresent(row::getRemark);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_enquiry_order_goods")
@@ -185,9 +185,9 @@ public interface EnquiryOrderGoodsMapper extends CommonCountMapper, CommonDelete
             .set(goodsSn).equalTo(row::getGoodsSn)
             .set(link).equalTo(row::getLink)
             .set(relationType).equalTo(row::getRelationType)
-            .set(remark).equalTo(row::getRemark)
             .set(gmtCreated).equalTo(row::getGmtCreated)
             .set(gmtModify).equalTo(row::getGmtModify)
+            .set(remark).equalTo(row::getRemark)
             .where(recId, isEqualTo(row::getRecId))
         );
     }
@@ -200,9 +200,9 @@ public interface EnquiryOrderGoodsMapper extends CommonCountMapper, CommonDelete
             .set(goodsSn).equalToWhenPresent(row::getGoodsSn)
             .set(link).equalToWhenPresent(row::getLink)
             .set(relationType).equalToWhenPresent(row::getRelationType)
-            .set(remark).equalToWhenPresent(row::getRemark)
             .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
             .set(gmtModify).equalToWhenPresent(row::getGmtModify)
+            .set(remark).equalToWhenPresent(row::getRemark)
             .where(recId, isEqualTo(row::getRecId))
         );
     }
