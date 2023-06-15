@@ -31,10 +31,10 @@ public class Goods {
 
     /**
      * Database Column Remarks:
-     *   备注
+     *   商品名称（英文）
      */
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark")
-    private String remark;
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_name_en")
+    private String goodsNameEn;
 
     /**
      * Database Column Remarks:
@@ -74,6 +74,20 @@ public class Goods {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.status")
     private Byte status;
 
+    /**
+     * Database Column Remarks:
+     *   备注
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark")
+    private String remark;
+
+    /**
+     * Database Column Remarks:
+     *   备注（英文）
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark_en")
+    private String remarkEn;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_id")
     public Integer getGoodsId() {
         return goodsId;
@@ -104,14 +118,14 @@ public class Goods {
         this.goodsName = goodsName == null ? null : goodsName.trim();
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark")
-    public String getRemark() {
-        return remark;
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_name_en")
+    public String getGoodsNameEn() {
+        return goodsNameEn;
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark")
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_name_en")
+    public void setGoodsNameEn(String goodsNameEn) {
+        this.goodsNameEn = goodsNameEn == null ? null : goodsNameEn.trim();
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.gmt_created")
@@ -174,6 +188,26 @@ public class Goods {
         this.status = status;
     }
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark")
+    public String getRemark() {
+        return remark;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark")
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark_en")
+    public String getRemarkEn() {
+        return remarkEn;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark_en")
+    public void setRemarkEn(String remarkEn) {
+        this.remarkEn = remarkEn == null ? null : remarkEn.trim();
+    }
+
     @Override
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     public String toString() {
@@ -184,13 +218,15 @@ public class Goods {
         sb.append(", goodsId=").append(goodsId);
         sb.append(", goodsSn=").append(goodsSn);
         sb.append(", goodsName=").append(goodsName);
-        sb.append(", remark=").append(remark);
+        sb.append(", goodsNameEn=").append(goodsNameEn);
         sb.append(", gmtCreated=").append(gmtCreated);
         sb.append(", gmtModify=").append(gmtModify);
         sb.append(", goodsImage=").append(goodsImage);
         sb.append(", goodsType=").append(goodsType);
         sb.append(", depot=").append(depot);
         sb.append(", status=").append(status);
+        sb.append(", remark=").append(remark);
+        sb.append(", remarkEn=").append(remarkEn);
         sb.append("]");
         return sb.toString();
     }

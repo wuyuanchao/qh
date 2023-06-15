@@ -37,40 +37,46 @@ public class SkuListExcelVO implements Serializable {
 	private String skuName;
 
 	/**
+	 *   sku英文名称
+	 */
+	@ExcelProperty(value = "sku英文名称", index = 2)
+	private String skuNameEn;
+
+	/**
 	 *   图片
 	 */
-	@ExcelProperty(value = "图片", index = 2)
+	@ExcelProperty(value = "图片", index = 3)
 	private URL url;
 
 	/**
 	 *   供方skuId
 	 */
-	@ExcelProperty(value = "供方skuId", index = 3)
+	@ExcelProperty(value = "供方skuId", index = 4)
 	private String suppSkuId;
 
 	/**
 	 *   供应商信息
 	 */
-	@ExcelProperty(value = "供应商信息", index = 4)
+	@ExcelProperty(value = "供应商信息", index = 5)
 	private WriteCellData<String> suppInfo;
 
 	/**
 	 *   计费体积(长*宽*高)
 	 */
 	@ColumnWidth(30)
-	@ExcelProperty(value = "计费体积(长*宽*高)", index = 5)
+	@ExcelProperty(value = "计费体积(长*宽*高)", index = 6)
 	private String volume;
 
 	/**
 	 *   计费重量(kg)
 	 */
-	@ExcelProperty(value = "计费重量(kg)", index = 6)
+	@ExcelProperty(value = "计费重量(kg)", index = 7)
 	private BigDecimal weight;
 
 	/**
 	 *   采购价(元)
 	 */
-	@ExcelProperty(value = "采购价(元)", index = 7)
+	@ExcelProperty(value = "采购价(元)", index = 8)
 	private BigDecimal purPrice;
 
 

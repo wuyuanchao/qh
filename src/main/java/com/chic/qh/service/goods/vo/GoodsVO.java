@@ -17,9 +17,13 @@ public class GoodsVO {
 
     private String goodsName;
 
+    private String goodsNameEn;
+
     private String goodsSn;
 
     private String remark;
+
+    private String remarkEn;
 
     private String goodsImage;
 

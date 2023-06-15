@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    BasicColumn[] selectList = BasicColumn.columnList(goodsId, goodsSn, goodsName, remark, gmtCreated, gmtModify, goodsImage, goodsType, depot, status);
+    BasicColumn[] selectList = BasicColumn.columnList(goodsId, goodsSn, goodsName, goodsNameEn, gmtCreated, gmtModify, goodsImage, goodsType, depot, status, remark, remarkEn);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
@@ -53,13 +53,15 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
         @Result(column="goods_id", property="goodsId", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="goods_sn", property="goodsSn", jdbcType=JdbcType.VARCHAR),
         @Result(column="goods_name", property="goodsName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="remark", property="remark", jdbcType=JdbcType.VARCHAR),
+        @Result(column="goods_name_en", property="goodsNameEn", jdbcType=JdbcType.VARCHAR),
         @Result(column="gmt_created", property="gmtCreated", jdbcType=JdbcType.INTEGER),
         @Result(column="gmt_modify", property="gmtModify", jdbcType=JdbcType.INTEGER),
         @Result(column="goods_image", property="goodsImage", jdbcType=JdbcType.VARCHAR),
         @Result(column="goods_type", property="goodsType", jdbcType=JdbcType.INTEGER),
         @Result(column="depot", property="depot", jdbcType=JdbcType.VARCHAR),
-        @Result(column="status", property="status", jdbcType=JdbcType.TINYINT)
+        @Result(column="status", property="status", jdbcType=JdbcType.TINYINT),
+        @Result(column="remark", property="remark", jdbcType=JdbcType.LONGVARCHAR),
+        @Result(column="remark_en", property="remarkEn", jdbcType=JdbcType.LONGVARCHAR)
     })
     List<Goods> selectMany(SelectStatementProvider selectStatement);
 
@@ -90,13 +92,15 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
         return MyBatis3Utils.insert(this::insert, row, goods, c ->
             c.map(goodsSn).toProperty("goodsSn")
             .map(goodsName).toProperty("goodsName")
-            .map(remark).toProperty("remark")
+            .map(goodsNameEn).toProperty("goodsNameEn")
             .map(gmtCreated).toProperty("gmtCreated")
             .map(gmtModify).toProperty("gmtModify")
             .map(goodsImage).toProperty("goodsImage")
             .map(goodsType).toProperty("goodsType")
             .map(depot).toProperty("depot")
             .map(status).toProperty("status")
+            .map(remark).toProperty("remark")
+            .map(remarkEn).toProperty("remarkEn")
         );
     }
 
@@ -105,13 +109,15 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
         return MyBatis3Utils.insertMultipleWithGeneratedKeys(this::insertMultiple, records, goods, c ->
             c.map(goodsSn).toProperty("goodsSn")
             .map(goodsName).toProperty("goodsName")
-            .map(remark).toProperty("remark")
+            .map(goodsNameEn).toProperty("goodsNameEn")
             .map(gmtCreated).toProperty("gmtCreated")
             .map(gmtModify).toProperty("gmtModify")
             .map(goodsImage).toProperty("goodsImage")
             .map(goodsType).toProperty("goodsType")
             .map(depot).toProperty("depot")
             .map(status).toProperty("status")
+            .map(remark).toProperty("remark")
+            .map(remarkEn).toProperty("remarkEn")
         );
     }
 
@@ -120,13 +126,15 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
         return MyBatis3Utils.insert(this::insert, row, goods, c ->
             c.map(goodsSn).toPropertyWhenPresent("goodsSn", row::getGoodsSn)
             .map(goodsName).toPropertyWhenPresent("goodsName", row::getGoodsName)
-            .map(remark).toPropertyWhenPresent("remark", row::getRemark)
+            .map(goodsNameEn).toPropertyWhenPresent("goodsNameEn", row::getGoodsNameEn)
             .map(gmtCreated).toPropertyWhenPresent("gmtCreated", row::getGmtCreated)
             .map(gmtModify).toPropertyWhenPresent("gmtModify", row::getGmtModify)
             .map(goodsImage).toPropertyWhenPresent("goodsImage", row::getGoodsImage)
             .map(goodsType).toPropertyWhenPresent("goodsType", row::getGoodsType)
             .map(depot).toPropertyWhenPresent("depot", row::getDepot)
             .map(status).toPropertyWhenPresent("status", row::getStatus)
+            .map(remark).toPropertyWhenPresent("remark", row::getRemark)
+            .map(remarkEn).toPropertyWhenPresent("remarkEn", row::getRemarkEn)
         );
     }
 
@@ -161,26 +169,30 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
     static UpdateDSL<UpdateModel> updateAllColumns(Goods row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(goodsSn).equalTo(row::getGoodsSn)
                 .set(goodsName).equalTo(row::getGoodsName)
-                .set(remark).equalTo(row::getRemark)
+                .set(goodsNameEn).equalTo(row::getGoodsNameEn)
                 .set(gmtCreated).equalTo(row::getGmtCreated)
                 .set(gmtModify).equalTo(row::getGmtModify)
                 .set(goodsImage).equalTo(row::getGoodsImage)
                 .set(goodsType).equalTo(row::getGoodsType)
                 .set(depot).equalTo(row::getDepot)
-                .set(status).equalTo(row::getStatus);
+                .set(status).equalTo(row::getStatus)
+                .set(remark).equalTo(row::getRemark)
+                .set(remarkEn).equalTo(row::getRemarkEn);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     static UpdateDSL<UpdateModel> updateSelectiveColumns(Goods row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(goodsSn).equalToWhenPresent(row::getGoodsSn)
                 .set(goodsName).equalToWhenPresent(row::getGoodsName)
-                .set(remark).equalToWhenPresent(row::getRemark)
+                .set(goodsNameEn).equalToWhenPresent(row::getGoodsNameEn)
                 .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
                 .set(gmtModify).equalToWhenPresent(row::getGmtModify)
                 .set(goodsImage).equalToWhenPresent(row::getGoodsImage)
                 .set(goodsType).equalToWhenPresent(row::getGoodsType)
                 .set(depot).equalToWhenPresent(row::getDepot)
-                .set(status).equalToWhenPresent(row::getStatus);
+                .set(status).equalToWhenPresent(row::getStatus)
+                .set(remark).equalToWhenPresent(row::getRemark)
+                .set(remarkEn).equalToWhenPresent(row::getRemarkEn);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
@@ -188,13 +200,15 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
         return update(c ->
             c.set(goodsSn).equalTo(row::getGoodsSn)
             .set(goodsName).equalTo(row::getGoodsName)
-            .set(remark).equalTo(row::getRemark)
+            .set(goodsNameEn).equalTo(row::getGoodsNameEn)
             .set(gmtCreated).equalTo(row::getGmtCreated)
             .set(gmtModify).equalTo(row::getGmtModify)
             .set(goodsImage).equalTo(row::getGoodsImage)
             .set(goodsType).equalTo(row::getGoodsType)
             .set(depot).equalTo(row::getDepot)
             .set(status).equalTo(row::getStatus)
+            .set(remark).equalTo(row::getRemark)
+            .set(remarkEn).equalTo(row::getRemarkEn)
             .where(goodsId, isEqualTo(row::getGoodsId))
         );
     }
@@ -204,13 +218,15 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
         return update(c ->
             c.set(goodsSn).equalToWhenPresent(row::getGoodsSn)
             .set(goodsName).equalToWhenPresent(row::getGoodsName)
-            .set(remark).equalToWhenPresent(row::getRemark)
+            .set(goodsNameEn).equalToWhenPresent(row::getGoodsNameEn)
             .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
             .set(gmtModify).equalToWhenPresent(row::getGmtModify)
             .set(goodsImage).equalToWhenPresent(row::getGoodsImage)
             .set(goodsType).equalToWhenPresent(row::getGoodsType)
             .set(depot).equalToWhenPresent(row::getDepot)
             .set(status).equalToWhenPresent(row::getStatus)
+            .set(remark).equalToWhenPresent(row::getRemark)
+            .set(remarkEn).equalToWhenPresent(row::getRemarkEn)
             .where(goodsId, isEqualTo(row::getGoodsId))
         );
     }

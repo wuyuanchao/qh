@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    BasicColumn[] selectList = BasicColumn.columnList(skuId, goodsId, skuName, suppName, suppSkuId, link, length, width, height, area, weight, volumeWeight, purPrice, color, size, gmtCreated, gmtModify, remark, skuImage);
+    BasicColumn[] selectList = BasicColumn.columnList(skuId, goodsId, skuName, skuNameEn, suppName, suppSkuId, link, length, width, height, area, weight, volumeWeight, purPrice, color, size, gmtCreated, gmtModify, remark, skuImage);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
@@ -53,6 +53,7 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
         @Result(column="sku_id", property="skuId", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="goods_id", property="goodsId", jdbcType=JdbcType.INTEGER),
         @Result(column="sku_name", property="skuName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="sku_name_en", property="skuNameEn", jdbcType=JdbcType.VARCHAR),
         @Result(column="supp_name", property="suppName", jdbcType=JdbcType.VARCHAR),
         @Result(column="supp_sku_id", property="suppSkuId", jdbcType=JdbcType.VARCHAR),
         @Result(column="link", property="link", jdbcType=JdbcType.VARCHAR),
@@ -99,6 +100,7 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
         return MyBatis3Utils.insert(this::insert, row, skuRelation, c ->
             c.map(goodsId).toProperty("goodsId")
             .map(skuName).toProperty("skuName")
+            .map(skuNameEn).toProperty("skuNameEn")
             .map(suppName).toProperty("suppName")
             .map(suppSkuId).toProperty("suppSkuId")
             .map(link).toProperty("link")
@@ -123,6 +125,7 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
         return MyBatis3Utils.insertMultipleWithGeneratedKeys(this::insertMultiple, records, skuRelation, c ->
             c.map(goodsId).toProperty("goodsId")
             .map(skuName).toProperty("skuName")
+            .map(skuNameEn).toProperty("skuNameEn")
             .map(suppName).toProperty("suppName")
             .map(suppSkuId).toProperty("suppSkuId")
             .map(link).toProperty("link")
@@ -147,6 +150,7 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
         return MyBatis3Utils.insert(this::insert, row, skuRelation, c ->
             c.map(goodsId).toPropertyWhenPresent("goodsId", row::getGoodsId)
             .map(skuName).toPropertyWhenPresent("skuName", row::getSkuName)
+            .map(skuNameEn).toPropertyWhenPresent("skuNameEn", row::getSkuNameEn)
             .map(suppName).toPropertyWhenPresent("suppName", row::getSuppName)
             .map(suppSkuId).toPropertyWhenPresent("suppSkuId", row::getSuppSkuId)
             .map(link).toPropertyWhenPresent("link", row::getLink)
@@ -197,6 +201,7 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
     static UpdateDSL<UpdateModel> updateAllColumns(SkuRelation row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(goodsId).equalTo(row::getGoodsId)
                 .set(skuName).equalTo(row::getSkuName)
+                .set(skuNameEn).equalTo(row::getSkuNameEn)
                 .set(suppName).equalTo(row::getSuppName)
                 .set(suppSkuId).equalTo(row::getSuppSkuId)
                 .set(link).equalTo(row::getLink)
@@ -219,6 +224,7 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
     static UpdateDSL<UpdateModel> updateSelectiveColumns(SkuRelation row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(goodsId).equalToWhenPresent(row::getGoodsId)
                 .set(skuName).equalToWhenPresent(row::getSkuName)
+                .set(skuNameEn).equalToWhenPresent(row::getSkuNameEn)
                 .set(suppName).equalToWhenPresent(row::getSuppName)
                 .set(suppSkuId).equalToWhenPresent(row::getSuppSkuId)
                 .set(link).equalToWhenPresent(row::getLink)
@@ -242,6 +248,7 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
         return update(c ->
             c.set(goodsId).equalTo(row::getGoodsId)
             .set(skuName).equalTo(row::getSkuName)
+            .set(skuNameEn).equalTo(row::getSkuNameEn)
             .set(suppName).equalTo(row::getSuppName)
             .set(suppSkuId).equalTo(row::getSuppSkuId)
             .set(link).equalTo(row::getLink)
@@ -267,6 +274,7 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
         return update(c ->
             c.set(goodsId).equalToWhenPresent(row::getGoodsId)
             .set(skuName).equalToWhenPresent(row::getSkuName)
+            .set(skuNameEn).equalToWhenPresent(row::getSkuNameEn)
             .set(suppName).equalToWhenPresent(row::getSuppName)
             .set(suppSkuId).equalToWhenPresent(row::getSuppSkuId)
             .set(link).equalToWhenPresent(row::getLink)

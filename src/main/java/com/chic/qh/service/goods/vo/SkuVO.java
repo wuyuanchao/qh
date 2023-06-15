@@ -18,6 +18,8 @@ public class SkuVO {
 
     private String skuName;
 
+    private String skuNameEn;
+
     //供应商名称
     private String suppName;
 

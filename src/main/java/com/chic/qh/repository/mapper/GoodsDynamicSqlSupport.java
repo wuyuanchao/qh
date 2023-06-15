@@ -32,10 +32,10 @@ public final class GoodsDynamicSqlSupport {
 
     /**
      * Database Column Remarks:
-     *   备注
+     *   商品名称（英文）
      */
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark")
-    public static final SqlColumn<String> remark = goods.remark;
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.goods_name_en")
+    public static final SqlColumn<String> goodsNameEn = goods.goodsNameEn;
 
     /**
      * Database Column Remarks:
@@ -75,6 +75,20 @@ public final class GoodsDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.status")
     public static final SqlColumn<Byte> status = goods.status;
 
+    /**
+     * Database Column Remarks:
+     *   备注
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark")
+    public static final SqlColumn<String> remark = goods.remark;
+
+    /**
+     * Database Column Remarks:
+     *   备注（英文）
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark_en")
+    public static final SqlColumn<String> remarkEn = goods.remarkEn;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     public static final class Goods extends AliasableSqlTable<Goods> {
         public final SqlColumn<Integer> goodsId = column("goods_id", JDBCType.INTEGER);
@@ -83,7 +97,7 @@ public final class GoodsDynamicSqlSupport {
 
         public final SqlColumn<String> goodsName = column("goods_name", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> remark = column("remark", JDBCType.VARCHAR);
+        public final SqlColumn<String> goodsNameEn = column("goods_name_en", JDBCType.VARCHAR);
 
         public final SqlColumn<Integer> gmtCreated = column("gmt_created", JDBCType.INTEGER);
 
@@ -96,6 +110,10 @@ public final class GoodsDynamicSqlSupport {
         public final SqlColumn<String> depot = column("depot", JDBCType.VARCHAR);
 
         public final SqlColumn<Byte> status = column("status", JDBCType.TINYINT);
+
+        public final SqlColumn<String> remark = column("remark", JDBCType.LONGVARCHAR);
+
+        public final SqlColumn<String> remarkEn = column("remark_en", JDBCType.LONGVARCHAR);
 
         public Goods() {
             super("qh_goods", Goods::new);

@@ -33,6 +33,13 @@ public final class SkuRelationDynamicSqlSupport {
 
     /**
      * Database Column Remarks:
+     *   sku名称（英文）
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_name_en")
+    public static final SqlColumn<String> skuNameEn = skuRelation.skuNameEn;
+
+    /**
+     * Database Column Remarks:
      *   供应商名称
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.supp_name")
@@ -150,6 +157,8 @@ public final class SkuRelationDynamicSqlSupport {
         public final SqlColumn<Integer> goodsId = column("goods_id", JDBCType.INTEGER);
 
         public final SqlColumn<String> skuName = column("sku_name", JDBCType.VARCHAR);
+
+        public final SqlColumn<String> skuNameEn = column("sku_name_en", JDBCType.VARCHAR);
 
         public final SqlColumn<String> suppName = column("supp_name", JDBCType.VARCHAR);
 

@@ -32,6 +32,13 @@ public class SkuRelation {
 
     /**
      * Database Column Remarks:
+     *   sku名称（英文）
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_name_en")
+    private String skuNameEn;
+
+    /**
+     * Database Column Remarks:
      *   供应商名称
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.supp_name")
@@ -170,6 +177,16 @@ public class SkuRelation {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_name")
     public void setSkuName(String skuName) {
         this.skuName = skuName == null ? null : skuName.trim();
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_name_en")
+    public String getSkuNameEn() {
+        return skuNameEn;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_name_en")
+    public void setSkuNameEn(String skuNameEn) {
+        this.skuNameEn = skuNameEn == null ? null : skuNameEn.trim();
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.supp_name")
@@ -342,6 +359,7 @@ public class SkuRelation {
         sb.append(", skuId=").append(skuId);
         sb.append(", goodsId=").append(goodsId);
         sb.append(", skuName=").append(skuName);
+        sb.append(", skuNameEn=").append(skuNameEn);
         sb.append(", suppName=").append(suppName);
         sb.append(", suppSkuId=").append(suppSkuId);
         sb.append(", link=").append(link);
