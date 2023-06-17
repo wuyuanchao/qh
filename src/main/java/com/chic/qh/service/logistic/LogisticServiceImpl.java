@@ -10,17 +10,23 @@ import com.chic.qh.service.logistic.dto.ChannelDetailExcelVO;
 import com.chic.qh.service.logistic.dto.LogisticConfigDTO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.ArrayListMultimap;
+import io.jsonwebtoken.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.mybatis.dynamic.sql.SqlBuilder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @Service
@@ -31,8 +37,8 @@ public class LogisticServiceImpl implements LogisticService{
     @Autowired
     private LogisticChannelDetailMapper logisticChannelDetailMapper;
     @Override
-    public Page<LogisticChannel> getChannelList(String _company, String _code, Integer pageNum, Integer pageSize) {
-        return PageHelper.startPage(pageNum, pageSize).doSelectPage(() ->
+    public PageInfo<LogisticChannel> getChannelList(String _company, String _code, Integer pageNum, Integer pageSize) {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() ->
                 logisticChannelMapper.select(c -> c
                         .where(LogisticChannelDynamicSqlSupport.company, SqlBuilder.isEqualToWhenPresent(_company))
                         .and(LogisticChannelDynamicSqlSupport.code, SqlBuilder.isEqualToWhenPresent(_code))
@@ -45,9 +51,13 @@ public class LogisticServiceImpl implements LogisticService{
     }
 
     @Override
-    public List<LogisticConfigDTO> getChannelDetail(Integer channelId) {
+    public List<LogisticConfigDTO> getChannelDetail(String channelCode) {
+        LogisticChannel channel = getChannelInfo(channelCode);
+        if(channel == null){
+            throw new HttpClientErrorException(NOT_FOUND, "物流渠道["+channelCode+"]不存在");
+        }
         Integer index = 1;
-        ArrayListMultimap<LogisticChannelDetailUniKey, LogisticChannelDetail> channelDetailListMap = getChannelDetailListMap(channelId);
+        ArrayListMultimap<LogisticChannelDetailUniKey, LogisticChannelDetail> channelDetailListMap = getChannelDetailListMap(channel.getRecId());
         List<LogisticConfigDTO> dtoList = new ArrayList<>(channelDetailListMap.keySet().size());
 
         for (LogisticChannelDetailUniKey uniKey : channelDetailListMap.keySet()) {
@@ -79,7 +89,7 @@ public class LogisticServiceImpl implements LogisticService{
 
     private ArrayListMultimap<LogisticChannelDetailUniKey, LogisticChannelDetail> getChannelDetailListMap(Integer channelId){
         List<LogisticChannelDetail> channelDetails = logisticChannelDetailMapper.select(c ->
-                c.where(LogisticChannelDetailDynamicSqlSupport.channelId, SqlBuilder.isEqualTo(channelId))
+                c.where(LogisticChannelDetailDynamicSqlSupport.channelId, isEqualTo(channelId))
                         .orderBy(LogisticChannelDetailDynamicSqlSupport.weightLeft,LogisticChannelDetailDynamicSqlSupport.recId)
         );
 
@@ -104,7 +114,7 @@ public class LogisticServiceImpl implements LogisticService{
             return detail;
         }).collect(Collectors.toList());
         //删除原渠道详情
-        logisticChannelDetailMapper.delete(c->c.where(LogisticChannelDetailDynamicSqlSupport.channelId, SqlBuilder.isEqualTo(channelId)));
+        logisticChannelDetailMapper.delete(c->c.where(LogisticChannelDetailDynamicSqlSupport.channelId, isEqualTo(channelId)));
         //插入新的渠道详情
         logisticChannelDetailMapper.insertMultiple(detailList);
     }
@@ -125,8 +135,10 @@ public class LogisticServiceImpl implements LogisticService{
     }
 
     @Override
-    public LogisticChannel getChannelInfo(Integer channelId) {
-        return logisticChannelMapper.selectByPrimaryKey(channelId).orElse(null);
+    public LogisticChannel getChannelInfo(String _channelCode) {
+        return logisticChannelMapper.selectOne(c ->
+                c.where(LogisticChannelDynamicSqlSupport.code, isEqualTo(_channelCode)))
+                .orElse(null);
     }
 
     @Override
@@ -140,11 +152,11 @@ public class LogisticServiceImpl implements LogisticService{
     }
 
     @Override
-    public ChannelConfig getChannelConfig(Integer channelId) {
-        LogisticChannel channelInfo = getChannelInfo(channelId);
+    public ChannelConfig getChannelConfig(String channelCode) {
+        LogisticChannel channelInfo = getChannelInfo(channelCode);
         if(channelInfo == null){
             return null;
         }
-        return new ChannelConfig(channelInfo, getChannelDetailListMap(channelId));
+        return new ChannelConfig(channelInfo, getChannelDetailListMap(channelInfo.getRecId()));
     }
 }

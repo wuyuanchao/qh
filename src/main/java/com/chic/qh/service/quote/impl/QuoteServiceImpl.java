@@ -28,8 +28,8 @@ public class QuoteServiceImpl implements QuoteService {
     private LogisticService logisticService;
 
     @Override
-    public QuoteResult quote(String country, GoodsVO goodsVO, SkuVO skuVo, Integer quantity){
-        ChannelConfig config = logisticService.getChannelConfig(1);
+    public QuoteResult quote(String country, String carrierCode, GoodsVO goodsVO, SkuVO skuVo, Integer quantity){
+        ChannelConfig config = logisticService.getChannelConfig(carrierCode);
         VolumetricWeight volWeight = null;
         if(skuVo.getLength() != null && skuVo.getWidth() != null && skuVo.getHeight() != null) {
             volWeight = new VolumetricWeight(skuVo.getLength(), skuVo.getWidth(), skuVo.getHeight(),
@@ -55,7 +55,7 @@ public class QuoteServiceImpl implements QuoteService {
                 .divide(new BigDecimal("6.5"), 2, RoundingMode.HALF_UP);;
         BigDecimal total = shippingFee.add(productFee);
         LogisticChannel channel = config.getLogisticChannel();
-        QuoteResult result = new QuoteResult(channel.getCompany() + "(" + channel.getCode() +")", skuVo.getSkuName(), false, false,
+        QuoteResult result = new QuoteResult(channel.getCompany(), channel.getCode(), skuVo.getSkuName(), false, false,
                 new BigDecimal(billingWeight.getValue()),
                 new BigDecimal(billingWeight.getActWeight()),
                 new BigDecimal(billingWeight.getVolWeight()),

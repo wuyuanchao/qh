@@ -7,10 +7,16 @@ import com.chic.qh.service.quote.QuoteService;
 import com.chic.qh.support.web.RespWrap;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * @Description: 报价
@@ -30,8 +36,15 @@ public class QuoteController {
     public QuoteRespDTO quote(@PathVariable("goodsSn") String goodsSn,
                               @RequestParam(name = "country", defaultValue = "US") String country,
                               @RequestParam(name = "quantity", defaultValue="1") Integer quantity,
+                              @RequestParam(name = "carrierCode", defaultValue="THZXR") String carrierCode,
                               @RequestParam(value = "skuId", required = false) Integer skuId) {
         GoodsVO goodsVO = goodsService.getGoodsBySn(goodsSn);
+        if(goodsVO == null){
+            throw new HttpClientErrorException(NOT_FOUND, "goodsSn: " + goodsSn + " not found!");
+        }
+        if(CollectionUtils.isEmpty(goodsVO.getSkuList())){
+            throw new HttpClientErrorException(NOT_FOUND, "goodsSn: " + goodsSn + " skuList is empty!");
+        }
         QuoteRespDTO dto = new QuoteRespDTO();
         dto.setGoodsVo(goodsVO);
         dto.setCountry(country);
@@ -41,7 +54,7 @@ public class QuoteController {
                 .findFirst()
                 .orElse(goodsVO.getSkuList().get(0));
         dto.setCurrentSku(skuVO);
-        dto.setResult(quoteService.quote(countryMap.get(country), goodsVO, skuVO, quantity));
+        dto.setResult(quoteService.quote(countryMap.get(country), carrierCode, goodsVO, skuVO, quantity));
         return dto;
     }
 

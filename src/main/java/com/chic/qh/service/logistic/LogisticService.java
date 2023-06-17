@@ -4,15 +4,16 @@ import com.chic.qh.repository.model.LogisticChannel;
 import com.chic.qh.service.logistic.dto.ChannelDetailExcelVO;
 import com.chic.qh.service.logistic.dto.LogisticConfigDTO;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
 public interface LogisticService {
-    Page<LogisticChannel> getChannelList(String company, String code, Integer pageNum, Integer pageSize);
+    PageInfo<LogisticChannel> getChannelList(String company, String code, Integer pageNum, Integer pageSize);
 
     void addChannel(LogisticChannel logisticChannel);
 
-    List<LogisticConfigDTO> getChannelDetail(Integer channelId);
+    List<LogisticConfigDTO> getChannelDetail(String channelCode);
 
     int deleteChannel(Integer channelId);
 
@@ -22,7 +23,7 @@ public interface LogisticService {
 
     List<ChannelDetailExcelVO> exportChannelDetail(Integer channelId);
 
-    LogisticChannel getChannelInfo(Integer channelId);
+    LogisticChannel getChannelInfo(String _channelCode);
 
-    ChannelConfig getChannelConfig(Integer channelId);
+    ChannelConfig getChannelConfig(String channelCode);
 }
