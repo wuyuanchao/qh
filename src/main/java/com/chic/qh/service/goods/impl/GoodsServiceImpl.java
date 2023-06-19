@@ -102,6 +102,9 @@ public class GoodsServiceImpl implements GoodsService {
         goods.setGoodsSn(goodsSnGen.get());
         goods.setStatus((byte)1);
         goods.setGmtCreated((int)Instant.now().getEpochSecond());
+        //text类型无默认值
+        goods.setRemark(StringUtils.isEmpty(dto.getRemark()) ? StringUtils.EMPTY : dto.getRemark());
+        goods.setRemarkEn(StringUtils.isEmpty(dto.getRemarkEn()) ? StringUtils.EMPTY : dto.getRemarkEn());
 
         List<SkuAddUpdateDTO> skuDTOList = dto.getSkuList();
         if(CollectionUtils.isEmpty(skuDTOList)){
@@ -133,6 +136,9 @@ public class GoodsServiceImpl implements GoodsService {
 
         Goods updateGoods = new Goods();
         BeanUtils.copyProperties(dto, updateGoods);
+        //text类型无默认值
+        goods.setRemark(StringUtils.isEmpty(dto.getRemark()) ? StringUtils.EMPTY : dto.getRemark());
+        goods.setRemarkEn(StringUtils.isEmpty(dto.getRemarkEn()) ? StringUtils.EMPTY : dto.getRemarkEn());
         updateGoods.setGmtModify((int)Instant.now().getEpochSecond());
         goodsRepository.updateGoods(updateGoods);
 
