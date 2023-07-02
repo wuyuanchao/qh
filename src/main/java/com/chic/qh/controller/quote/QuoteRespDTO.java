@@ -5,8 +5,6 @@ import com.chic.qh.service.goods.vo.SkuVO;
 import com.chic.qh.service.quote.QuoteResult;
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 @Data
 public class QuoteRespDTO {
     private GoodsVO goodsVo;
@@ -17,6 +15,7 @@ public class QuoteRespDTO {
 
     private QuoteResult result;
 
-    private String availability;
-
+    private Byte availability;
+    private String referenceUrl;
+    private String processingTime;
 }

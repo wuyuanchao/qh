@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
-    BasicColumn[] selectList = BasicColumn.columnList(goodsId, goodsSn, goodsName, goodsNameEn, gmtCreated, gmtModify, goodsImage, goodsType, depot, status, remark, remarkEn);
+    BasicColumn[] selectList = BasicColumn.columnList(goodsId, goodsSn, goodsName, goodsNameEn, gmtCreated, gmtModify, goodsImage, goodsType, depot, status, availability, processingTime, remark, remarkEn);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
@@ -60,6 +60,8 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
         @Result(column="goods_type", property="goodsType", jdbcType=JdbcType.INTEGER),
         @Result(column="depot", property="depot", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.TINYINT),
+        @Result(column="availability", property="availability", jdbcType=JdbcType.TINYINT),
+        @Result(column="processing_time", property="processingTime", jdbcType=JdbcType.VARCHAR),
         @Result(column="remark", property="remark", jdbcType=JdbcType.LONGVARCHAR),
         @Result(column="remark_en", property="remarkEn", jdbcType=JdbcType.LONGVARCHAR)
     })
@@ -99,6 +101,8 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .map(goodsType).toProperty("goodsType")
             .map(depot).toProperty("depot")
             .map(status).toProperty("status")
+            .map(availability).toProperty("availability")
+            .map(processingTime).toProperty("processingTime")
             .map(remark).toProperty("remark")
             .map(remarkEn).toProperty("remarkEn")
         );
@@ -116,6 +120,8 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .map(goodsType).toProperty("goodsType")
             .map(depot).toProperty("depot")
             .map(status).toProperty("status")
+            .map(availability).toProperty("availability")
+            .map(processingTime).toProperty("processingTime")
             .map(remark).toProperty("remark")
             .map(remarkEn).toProperty("remarkEn")
         );
@@ -133,6 +139,8 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .map(goodsType).toPropertyWhenPresent("goodsType", row::getGoodsType)
             .map(depot).toPropertyWhenPresent("depot", row::getDepot)
             .map(status).toPropertyWhenPresent("status", row::getStatus)
+            .map(availability).toPropertyWhenPresent("availability", row::getAvailability)
+            .map(processingTime).toPropertyWhenPresent("processingTime", row::getProcessingTime)
             .map(remark).toPropertyWhenPresent("remark", row::getRemark)
             .map(remarkEn).toPropertyWhenPresent("remarkEn", row::getRemarkEn)
         );
@@ -176,6 +184,8 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
                 .set(goodsType).equalTo(row::getGoodsType)
                 .set(depot).equalTo(row::getDepot)
                 .set(status).equalTo(row::getStatus)
+                .set(availability).equalTo(row::getAvailability)
+                .set(processingTime).equalTo(row::getProcessingTime)
                 .set(remark).equalTo(row::getRemark)
                 .set(remarkEn).equalTo(row::getRemarkEn);
     }
@@ -191,6 +201,8 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
                 .set(goodsType).equalToWhenPresent(row::getGoodsType)
                 .set(depot).equalToWhenPresent(row::getDepot)
                 .set(status).equalToWhenPresent(row::getStatus)
+                .set(availability).equalToWhenPresent(row::getAvailability)
+                .set(processingTime).equalToWhenPresent(row::getProcessingTime)
                 .set(remark).equalToWhenPresent(row::getRemark)
                 .set(remarkEn).equalToWhenPresent(row::getRemarkEn);
     }
@@ -207,6 +219,8 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .set(goodsType).equalTo(row::getGoodsType)
             .set(depot).equalTo(row::getDepot)
             .set(status).equalTo(row::getStatus)
+            .set(availability).equalTo(row::getAvailability)
+            .set(processingTime).equalTo(row::getProcessingTime)
             .set(remark).equalTo(row::getRemark)
             .set(remarkEn).equalTo(row::getRemarkEn)
             .where(goodsId, isEqualTo(row::getGoodsId))
@@ -225,6 +239,8 @@ public interface GoodsMapper extends CommonCountMapper, CommonDeleteMapper, Comm
             .set(goodsType).equalToWhenPresent(row::getGoodsType)
             .set(depot).equalToWhenPresent(row::getDepot)
             .set(status).equalToWhenPresent(row::getStatus)
+            .set(availability).equalToWhenPresent(row::getAvailability)
+            .set(processingTime).equalToWhenPresent(row::getProcessingTime)
             .set(remark).equalToWhenPresent(row::getRemark)
             .set(remarkEn).equalToWhenPresent(row::getRemarkEn)
             .where(goodsId, isEqualTo(row::getGoodsId))

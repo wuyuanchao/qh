@@ -1,6 +1,7 @@
 package com.chic.qh.service.goods;
 
 import com.chic.qh.repository.model.Goods;
+import com.chic.qh.repository.model.GoodsChannel;
 import com.chic.qh.service.goods.dto.*;
 import com.chic.qh.service.goods.vo.GoodsListVO;
 import com.chic.qh.service.goods.vo.GoodsVO;
@@ -46,4 +47,10 @@ public interface GoodsService {
     void deleteComment(Integer commentId, String name);
 
     List<SkuListExcelVO> exportSkuList(Integer goodsId);
+
+    GoodsChannel getGoodsChannel(Integer goodsId, String countryCode);
+    int editOrUpdateGoodsChannel(Integer goodsId, String countryCode,  String channelCode);
+    List<GoodsChannel> getGoodsChannelList(Integer goodsId);
+    int deleteGoodsChannel(Integer goodsId, String countryCode);
+
 }

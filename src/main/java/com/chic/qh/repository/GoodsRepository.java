@@ -1,9 +1,8 @@
 package com.chic.qh.repository;
 
-import com.chic.qh.repository.mapper.GoodsCommentDynamicSqlSupport;
-import com.chic.qh.repository.mapper.GoodsCommentMapper;
-import com.chic.qh.repository.mapper.GoodsMapper;
+import com.chic.qh.repository.mapper.*;
 import com.chic.qh.repository.model.Goods;
+import com.chic.qh.repository.model.GoodsChannel;
 import com.chic.qh.repository.model.GoodsComment;
 import com.chic.qh.service.goods.dto.GoodsQueryDTO;
 import com.github.pagehelper.Page;
@@ -31,6 +30,8 @@ public class GoodsRepository {
     private GoodsMapper goodsMapper;
     @Autowired
     private GoodsCommentMapper goodsCommentMapper;
+    @Autowired
+    private GoodsChannelMapper goodsChannelMapper;
 
     public Optional<Goods> selectByPrimaryKey(Integer goodsId){
         return goodsMapper.selectByPrimaryKey(goodsId);
@@ -96,5 +97,32 @@ public class GoodsRepository {
         goodsComment.setStatus((byte)2);
         goodsComment.setUpdatedAt((int) Instant.now().getEpochSecond());
         return goodsCommentMapper.updateByPrimaryKeySelective(goodsComment);
+    }
+
+    public int addGoodsChannel(GoodsChannel channel) {
+        return goodsChannelMapper.insert(channel);
+    }
+
+    public Optional<GoodsChannel> selectGoodsChannel(Integer goodsId, String countryCode) {
+        return goodsChannelMapper.selectOne(c -> c.where(GoodsChannelDynamicSqlSupport.goodsId, isEqualTo(goodsId))
+                .and(GoodsChannelDynamicSqlSupport.countryCode, isEqualTo(countryCode)));
+    }
+
+    public int updateGoodsChannel(GoodsChannel channel) {
+        return goodsChannelMapper.updateByPrimaryKeySelective(channel);
+    }
+
+    public List<GoodsChannel> getGoodsChannelList(Integer goodsId) {
+        return goodsChannelMapper.select(c -> c.where(GoodsChannelDynamicSqlSupport.goodsId, isEqualTo(goodsId)));
+    }
+
+    public GoodsChannel getGoodsChannel(Integer goodsId, String countryCode) {
+        return  goodsChannelMapper.selectOne(c -> c.where(GoodsChannelDynamicSqlSupport.goodsId, isEqualTo(goodsId))
+                .and(GoodsChannelDynamicSqlSupport.countryCode, isEqualTo(countryCode))).orElse(null);
+    }
+
+    public int deleteGoodsChannel(Integer goodsId, String countryCode) {
+        return goodsChannelMapper.delete(c -> c.where(GoodsChannelDynamicSqlSupport.goodsId, isEqualTo(goodsId))
+                .and(GoodsChannelDynamicSqlSupport.countryCode, isEqualTo(countryCode)));
     }
 }

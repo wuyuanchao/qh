@@ -3,7 +3,6 @@ package com.chic.qh.service.logistic;
 import com.chic.qh.repository.model.LogisticChannel;
 import com.chic.qh.service.logistic.dto.ChannelDetailExcelVO;
 import com.chic.qh.service.logistic.dto.LogisticConfigDTO;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

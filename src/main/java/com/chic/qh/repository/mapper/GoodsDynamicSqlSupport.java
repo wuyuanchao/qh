@@ -77,6 +77,16 @@ public final class GoodsDynamicSqlSupport {
 
     /**
      * Database Column Remarks:
+     *   0-默认，1-RTS，2-Similar， 3-WFP
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.availability")
+    public static final SqlColumn<Byte> availability = goods.availability;
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.processing_time")
+    public static final SqlColumn<String> processingTime = goods.processingTime;
+
+    /**
+     * Database Column Remarks:
      *   备注
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods.remark")
@@ -110,6 +120,10 @@ public final class GoodsDynamicSqlSupport {
         public final SqlColumn<String> depot = column("depot", JDBCType.VARCHAR);
 
         public final SqlColumn<Byte> status = column("status", JDBCType.TINYINT);
+
+        public final SqlColumn<Byte> availability = column("availability", JDBCType.TINYINT);
+
+        public final SqlColumn<String> processingTime = column("processing_time", JDBCType.VARCHAR);
 
         public final SqlColumn<String> remark = column("remark", JDBCType.LONGVARCHAR);
 
