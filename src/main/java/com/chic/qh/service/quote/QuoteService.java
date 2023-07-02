@@ -11,4 +11,8 @@ import com.chic.qh.service.goods.vo.SkuVO;
 public interface QuoteService {
 
     QuoteResult quote(String country, String carrierCode, GoodsVO goodsVO, SkuVO skuVo, Integer quantity);
+
+    ConfigDTO getConfig();
+
+    void updateConfig(String key, String value);
 }

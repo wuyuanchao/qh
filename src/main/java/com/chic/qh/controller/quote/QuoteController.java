@@ -4,18 +4,16 @@ import com.chic.qh.repository.model.GoodsChannel;
 import com.chic.qh.service.goods.GoodsService;
 import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
+import com.chic.qh.service.quote.ConfigDTO;
 import com.chic.qh.service.quote.QuoteService;
 import com.chic.qh.support.web.RespWrap;
-import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -75,5 +73,17 @@ public class QuoteController {
         countryMap.put("GB", "英国");
         countryMap.put("DE", "德国");
         countryMap.put("FR", "法国");
+    }
+
+    @RespWrap
+    @GetMapping("/config")
+    public ConfigDTO getApplicationConfig(){
+        return quoteService.getConfig();
+    }
+
+    @RespWrap
+    @PutMapping("/config/{key}")
+    public void updateConfig(@PathVariable("key") String key, @RequestBody QCUpdateDTO dto){
+        quoteService.updateConfig(key, dto.getValue());
     }
 }
