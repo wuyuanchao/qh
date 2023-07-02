@@ -34,7 +34,7 @@ public class GoodsVO {
 
     private String depot;
 
-    private List<String> goodsTags = Arrays.asList("red", "blue");
+    private List<String> goodsTags; // = Arrays.asList("red", "blue");
 
     private List<SkuVO> skuList;
 
