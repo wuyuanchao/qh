@@ -100,8 +100,7 @@ public class GoodsServiceImpl implements GoodsService {
                 .distinct()
                 .collect(Collectors.toList());
         imageUrls.addAll(skuImages);
-        goodsVO.setImageUrls(imageUrls);
-
+        goodsVO.setImageUrls(imageUrls.stream().distinct().collect(Collectors.toList()));
         return goodsVO;
     }
 
