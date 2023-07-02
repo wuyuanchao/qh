@@ -25,7 +25,7 @@ public class LogisticController {
 
     @RespWrap
     @GetMapping("getChannelList")
-    public PageInfo<LogisticChannel> getChannelList(@RequestParam(defaultValue = "1") Integer pageNum,
+    public PageInfo<LogisticChannel> getChannelList(@RequestParam(defaultValue = "1", name = "current") Integer pageNum,
                                                     @RequestParam(defaultValue = "20") Integer pageSize,
                                                     @RequestParam(required = false) String company,
                                                     @RequestParam(required = false) String code) {
