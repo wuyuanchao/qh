@@ -159,4 +159,10 @@ public class LogisticServiceImpl implements LogisticService{
         }
         return new ChannelConfig(channelInfo, getChannelDetailListMap(channelInfo.getRecId()));
     }
+
+    @Override
+    public List<LogisticChannel> getCompanyChannels(String companyCode){
+        return logisticChannelMapper.select(c->c.where(LogisticChannelDynamicSqlSupport.company, isEqualTo(companyCode)));
+    }
+
 }

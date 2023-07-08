@@ -63,7 +63,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers("/quote/**").permitAll()
+                .authorizeRequests().antMatchers("/quote/**", "/logistic/get**").permitAll()
                 .anyRequest().authenticated();
 
        httpSecurity

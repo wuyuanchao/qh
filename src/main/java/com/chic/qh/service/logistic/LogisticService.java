@@ -25,4 +25,7 @@ public interface LogisticService {
     LogisticChannel getChannelInfo(String _channelCode);
 
     ChannelConfig getChannelConfig(String channelCode);
+
+    List<LogisticChannel> getCompanyChannels(String companyCode);
+
 }

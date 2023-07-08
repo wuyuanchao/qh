@@ -6,10 +6,8 @@ import com.chic.qh.service.logistic.dto.ChannelDetailExcelVO;
 import com.chic.qh.service.logistic.dto.LogisticConfigDTO;
 import com.chic.qh.support.utils.ExcelUtils;
 import com.chic.qh.support.web.RespWrap;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -86,4 +84,11 @@ public class LogisticController {
         String fileName = "ChannelDetailExport";
         ExcelUtils.exportExcel(channelDetailExportVOList, ChannelDetailExcelVO.class, fileName, response);
     }
+
+    @RespWrap
+    @GetMapping("/companies/{company}/channels")
+    public List<LogisticChannel> getCompanyChannels(@PathVariable("company")  String companyCode) {
+        return logisticService.getCompanyChannels(companyCode);
+    }
+
 }
