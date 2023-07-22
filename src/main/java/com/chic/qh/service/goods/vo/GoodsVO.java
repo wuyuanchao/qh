@@ -27,13 +27,18 @@ public class GoodsVO {
 
     private String goodsImage;
 
+    private List<String> imageUrls;
+
     //商品类型(1-普通;2-带电;3-特货;)
     private Integer goodsType = 2;
 
     private String depot;
 
-    private List<String> goodsTags = Arrays.asList("red", "blue");
+    private List<String> goodsTags; // = Arrays.asList("red", "blue");
 
     private List<SkuVO> skuList;
 
+    private Byte availability;
+
+    private String processingTime;
 }

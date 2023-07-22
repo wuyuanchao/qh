@@ -1,5 +1,7 @@
 package com.chic.qh.service.quote.impl;
 
+import com.chic.qh.configuration.AppConfig;
+import com.chic.qh.service.quote.ConfigDTO;
 import com.chic.qh.repository.model.LogisticChannel;
 import com.chic.qh.repository.model.LogisticChannelDetail;
 import com.chic.qh.service.goods.vo.GoodsVO;
@@ -26,10 +28,12 @@ public class QuoteServiceImpl implements QuoteService {
 
     @Autowired
     private LogisticService logisticService;
+    @Autowired
+    private AppConfig appConfig;
 
     @Override
-    public QuoteResult quote(String country, GoodsVO goodsVO, SkuVO skuVo, Integer quantity){
-        ChannelConfig config = logisticService.getChannelConfig(1);
+    public QuoteResult quote(String country, String carrierCode, GoodsVO goodsVO, SkuVO skuVo, Integer quantity){
+        ChannelConfig config = logisticService.getChannelConfig(carrierCode);
         VolumetricWeight volWeight = null;
         if(skuVo.getLength() != null && skuVo.getWidth() != null && skuVo.getHeight() != null) {
             volWeight = new VolumetricWeight(skuVo.getLength(), skuVo.getWidth(), skuVo.getHeight(),
@@ -46,21 +50,47 @@ public class QuoteServiceImpl implements QuoteService {
                 .multiply(detail.getShippingFee())
                 .add(detail.getExtraFee())
                 .multiply(new BigDecimal(quantity))
-                .add(new BigDecimal("3"))
-                .multiply(new BigDecimal("1.15"))
-                .divide(new BigDecimal("6.5"), 2, RoundingMode.HALF_UP);
+                .multiply(appConfig.getAmplifyRate())
+                .add(appConfig.getOperationFee())
+                .divide(appConfig.getExchangeRate(), 2, RoundingMode.HALF_UP);
         BigDecimal productFee = skuVo.getPurPrice()
                 .multiply(new BigDecimal(quantity))
-                .multiply(new BigDecimal("1.15"))
-                .divide(new BigDecimal("6.5"), 2, RoundingMode.HALF_UP);;
+                .multiply(appConfig.getAmplifyRate())
+                .divide(appConfig.getExchangeRate(), 2, RoundingMode.HALF_UP);;
         BigDecimal total = shippingFee.add(productFee);
         LogisticChannel channel = config.getLogisticChannel();
-        QuoteResult result = new QuoteResult(channel.getCompany() + "(" + channel.getCode() +")", skuVo.getSkuName(), false, false,
+        QuoteResult result = new QuoteResult(channel.getCompany(), channel.getCode(), skuVo.getSkuName(), false, false,
                 new BigDecimal(billingWeight.getValue()),
                 new BigDecimal(billingWeight.getActWeight()),
                 new BigDecimal(billingWeight.getVolWeight()),
                 billingWeight.getWeightType(),
                 total, productFee, shippingFee, detail.getShippingTime());
         return result;
+    }
+
+    @Override
+    public ConfigDTO getConfig(){
+        ConfigDTO configDTO = new ConfigDTO();
+        configDTO.setAmplifyRate(appConfig.getAmplifyRate());
+        configDTO.setOperationFee(appConfig.getOperationFee());
+        configDTO.setExchangeRate(appConfig.getExchangeRate());
+        return configDTO;
+    }
+
+    @Override
+    public void updateConfig(String key, String value) {
+        switch (key){
+            case "amplifyRate":
+                appConfig.setAmplifyRate(new BigDecimal(value));
+                break;
+            case "operationFee":
+                appConfig.setOperationFee(new BigDecimal(value));
+                break;
+            case "exchangeRate":
+                appConfig.setExchangeRate(new BigDecimal(value));
+                break;
+            default:
+                throw new RuntimeException("找不到key为[" + key + "]的配置项");
+        }
     }
 }

@@ -32,6 +32,10 @@ public class GoodsAddUpdateDTO {
     //收获仓库
     private String depot;
 
+    private Byte availability;
+
+    private String processingTime;
+
     private List<SkuAddUpdateDTO> skuList;
 
 

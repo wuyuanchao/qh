@@ -15,10 +15,10 @@
             <property name="addRemarkComments" value="true" />
         </commentGenerator>
 
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://172.31.0.250:32408/qh"
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/qh?useSSL=false"
                         userId="root"
-                        password="Test123456">
+                        password="">
         </jdbcConnection>
 
         <javaTypeResolver >
@@ -63,6 +63,14 @@
         </table>
 
         <table tableName="qh_logistic_channel_detail" domainObjectName="LogisticChannelDetail" >
+            <generatedKey column="rec_id" sqlStatement="JDBC" identity="true" />
+        </table>
+
+        <table tableName="qh_goods_channel" domainObjectName="GoodsChannel" >
+            <generatedKey column="rec_id" sqlStatement="JDBC" identity="true" />
+        </table>
+
+        <table tableName="qh_application_config" domainObjectName="ApplicationConfig" >
             <generatedKey column="rec_id" sqlStatement="JDBC" identity="true" />
         </table>
     </context>

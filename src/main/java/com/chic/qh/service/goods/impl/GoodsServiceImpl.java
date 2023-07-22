@@ -4,29 +4,28 @@ import com.alibaba.excel.metadata.data.HyperlinkData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.chic.qh.repository.GoodsRepository;
 import com.chic.qh.repository.SkuRelationRepository;
-import com.chic.qh.repository.model.Goods;
-import com.chic.qh.repository.model.GoodsComment;
-import com.chic.qh.repository.model.SkuRelation;
+import com.chic.qh.repository.model.*;
 import com.chic.qh.service.goods.GoodsService;
 import com.chic.qh.service.goods.dto.*;
 import com.chic.qh.service.goods.vo.GoodsListVO;
 import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
+import com.chic.qh.service.logistic.LogisticService;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -46,6 +45,8 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     private SkuRelationRepository skuRelationRepository;
 
+    @Autowired
+    private LogisticService logisticService;
 
     @Override
     public GoodsListVO queryList(GoodsQueryDTO dto) {
@@ -90,6 +91,16 @@ public class GoodsServiceImpl implements GoodsService {
             }).collect(Collectors.toList());
 
         goodsVO.setSkuList(skuVOList);
+
+        List<String> imageUrls = new ArrayList<>();
+        imageUrls.add(goodsPo.getGoodsImage());
+        List<String> skuImages = skuRelationList.stream()
+                .map(s -> s.getSkuImage())
+                .filter(url -> StringUtils.isNotBlank(url))
+                .distinct()
+                .collect(Collectors.toList());
+        imageUrls.addAll(skuImages);
+        goodsVO.setImageUrls(imageUrls.stream().distinct().collect(Collectors.toList()));
         return goodsVO;
     }
 
@@ -268,5 +279,66 @@ public class GoodsServiceImpl implements GoodsService {
             voList.add(vo);
         });
         return voList;
+    }
+
+    @Override
+    public GoodsChannel getGoodsChannel(Integer goodsId, String countryCode) {
+        return goodsRepository.selectGoodsChannel(goodsId, countryCode).orElse(null);
+    }
+
+    @Override
+    public int editOrUpdateGoodsChannel(Integer goodsId, String countryCode, String channelCode) {
+        LogisticChannel channelInfo = logisticService.getChannelInfo(channelCode);
+        if(channelInfo == null){
+            throw new HttpClientErrorException(HttpStatus.NOT_FOUND ,"物流渠道[" +channelCode+ "]不存在!");
+        }
+        Goods goods = goodsRepository.getGoods(goodsId);
+        if(goods == null){
+            throw new HttpClientErrorException(HttpStatus.NOT_FOUND ,"商品[" +goodsId+ "]不存在!");
+        }
+        Optional<GoodsChannel> channelOptional = goodsRepository.selectGoodsChannel(goodsId, countryCode);
+        if(channelOptional.isPresent()){
+            GoodsChannel channel = channelOptional.get();
+            channel.setChannelCode(channelCode);
+            channel.setUpdatedAt((int)Instant.now().getEpochSecond());
+            return goodsRepository.updateGoodsChannel(channel);
+        }else{
+            GoodsChannel channel = new GoodsChannel();
+            channel.setGoodsId(goodsId);
+            channel.setCountryCode(countryCode);
+            channel.setChannelCode(channelCode);
+            channel.setUpdatedAt((int)Instant.now().getEpochSecond());
+            return goodsRepository.addGoodsChannel(channel);
+        }
+    }
+
+    @Override
+    public int batchUpdateGoodsChannel(List<GoodsChannelConfigUpdateDTO> channelConfigs) {
+        int i = 0;
+        for(GoodsChannelConfigUpdateDTO dto : channelConfigs){
+            i += editOrUpdateGoodsChannel(dto.getGoodsId(), dto.getCountryCode(), dto.getChannelCode());
+        }
+        return i;
+    }
+
+    @Override
+    public List<GoodsChannelRespDTO> getGoodsChannelList(Integer goodsId) {
+        List<GoodsChannel> channels = goodsRepository.getGoodsChannelList(goodsId);
+        List<String> channelCodes = channels.stream().map(GoodsChannel::getChannelCode).collect(Collectors.toList());
+        List<LogisticChannel> l = logisticService.getByCodes(channelCodes);
+        Map<String, LogisticChannel> channelMap = l.stream().collect(Collectors.toMap(LogisticChannel::getCode, x -> x));
+        return channels.stream().map(x -> {
+            GoodsChannelRespDTO dto = new GoodsChannelRespDTO();
+            BeanUtils.copyProperties(x, dto);
+            String channelName = Optional.ofNullable(channelMap.get(x.getChannelCode()))
+                    .map(LogisticChannel::getName).orElse("");
+            dto.setChannelName(channelName);
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public int deleteGoodsChannel(Integer goodsId, String countryCode) {
+        return goodsRepository.deleteGoodsChannel(goodsId, countryCode);
     }
 }

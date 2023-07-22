@@ -1,5 +1,6 @@
 package com.chic.qh.controller.goods;
 
+import com.chic.qh.repository.model.GoodsChannel;
 import com.chic.qh.service.goods.GoodsService;
 import com.chic.qh.service.goods.dto.*;
 import com.chic.qh.service.goods.vo.GoodsListVO;
@@ -140,7 +141,6 @@ public class GoodsController {
         goodsService.deleteComment(comment.getRecId(), authentication.getName());
     }
 
-
     /**
      * Sku列表导出
      * @param goodsId
@@ -153,5 +153,23 @@ public class GoodsController {
         //导出sku列表
         String fileName = "SkuListExport";
         ExcelUtils.exportExcel(skuListExcelVOList, SkuListExcelVO.class, fileName, response);
+    }
+
+    @RespWrap
+    @PostMapping("/channels/config")
+    public int editOrUpdateGoodsChannel(@RequestBody List<GoodsChannelConfigUpdateDTO> channelConfigs){
+        return goodsService.batchUpdateGoodsChannel(channelConfigs);
+    }
+
+    @RespWrap
+    @DeleteMapping("/{goodsId}/channels/{countryCode}")
+    public int deleteGoodsChannel(@PathVariable("goodsId") Integer goodsId, @PathVariable("countryCode") String countryCode){
+        return goodsService.deleteGoodsChannel(goodsId, countryCode);
+    }
+
+    @RespWrap
+    @GetMapping("/{goodsId}/channels")
+    public List<GoodsChannelRespDTO> getGoodsChannelList(@PathVariable("goodsId") Integer goodsId){
+        return goodsService.getGoodsChannelList(goodsId);
     }
 }

@@ -6,9 +6,8 @@ import com.chic.qh.service.logistic.dto.ChannelDetailExcelVO;
 import com.chic.qh.service.logistic.dto.LogisticConfigDTO;
 import com.chic.qh.support.utils.ExcelUtils;
 import com.chic.qh.support.web.RespWrap;
-import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,17 +23,17 @@ public class LogisticController {
 
     @RespWrap
     @GetMapping("getChannelList")
-    public Page<LogisticChannel> getChannelList(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                @RequestParam(defaultValue = "20") Integer pageSize,
-                                                @RequestParam(required = false) String company,
-                                                @RequestParam(required = false) String code) {
+    public PageInfo<LogisticChannel> getChannelList(@RequestParam(defaultValue = "1", name = "current") Integer pageNum,
+                                                    @RequestParam(defaultValue = "20") Integer pageSize,
+                                                    @RequestParam(required = false) String company,
+                                                    @RequestParam(required = false) String code) {
         return logisticService.getChannelList(company, code, pageNum, pageSize);
     }
 
     @RespWrap
-    @GetMapping("channel/{channelId}")
-    public LogisticChannel getChannel(@PathVariable("channelId") Integer channelId) {
-        return logisticService.getChannelInfo(channelId);
+    @GetMapping("channel/{channelCode}")
+    public LogisticChannel getChannel(@PathVariable("channelCode") String channelCode) {
+        return logisticService.getChannelInfo(channelCode);
     }
 
     @RespWrap
@@ -56,9 +55,9 @@ public class LogisticController {
     }
 
     @RespWrap
-    @GetMapping("getChannelDetail/{channelId}")
-    public List<LogisticConfigDTO> getChannelDetail(@PathVariable("channelId") Integer channelId){
-        return logisticService.getChannelDetail(channelId);
+    @GetMapping("getChannelDetail/{channelCode}")
+    public List<LogisticConfigDTO> getChannelDetail(@PathVariable("channelCode") String channelCode){
+        return logisticService.getChannelDetail(channelCode);
     }
 
     /**
@@ -85,4 +84,11 @@ public class LogisticController {
         String fileName = "ChannelDetailExport";
         ExcelUtils.exportExcel(channelDetailExportVOList, ChannelDetailExcelVO.class, fileName, response);
     }
+
+    @RespWrap
+    @GetMapping("/companies/{company}/channels")
+    public List<LogisticChannel> getCompanyChannels(@PathVariable("company")  String companyCode) {
+        return logisticService.getCompanyChannels(companyCode);
+    }
+
 }

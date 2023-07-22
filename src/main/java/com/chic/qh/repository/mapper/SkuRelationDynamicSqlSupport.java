@@ -136,10 +136,6 @@ public final class SkuRelationDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.gmt_modify")
     public static final SqlColumn<Integer> gmtModify = skuRelation.gmtModify;
 
-    /**
-     * Database Column Remarks:
-     *   备注
-     */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.remark")
     public static final SqlColumn<String> remark = skuRelation.remark;
 
