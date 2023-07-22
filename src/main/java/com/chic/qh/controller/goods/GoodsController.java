@@ -156,11 +156,9 @@ public class GoodsController {
     }
 
     @RespWrap
-    @PutMapping("/{goodsId}/channels/{countryCode}")
-    public int editOrUpdateGoodsChannel(@PathVariable("goodsId") Integer goodsId,
-                                    @PathVariable("countryCode") String countryCode,
-                                 @RequestBody GoodsChannelAddDTO channel){
-        return goodsService.editOrUpdateGoodsChannel(goodsId, countryCode, channel.getChannelCode());
+    @PostMapping("/channels/config")
+    public int editOrUpdateGoodsChannel(@RequestBody List<GoodsChannelConfigUpdateDTO> channelConfigs){
+        return goodsService.batchUpdateGoodsChannel(channelConfigs);
     }
 
     @RespWrap
@@ -171,7 +169,7 @@ public class GoodsController {
 
     @RespWrap
     @GetMapping("/{goodsId}/channels")
-    public List<GoodsChannel> getGoodsChannelList(@PathVariable("goodsId") Integer goodsId){
+    public List<GoodsChannelRespDTO> getGoodsChannelList(@PathVariable("goodsId") Integer goodsId){
         return goodsService.getGoodsChannelList(goodsId);
     }
 }

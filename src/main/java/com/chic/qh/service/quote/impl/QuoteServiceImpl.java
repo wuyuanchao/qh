@@ -50,8 +50,8 @@ public class QuoteServiceImpl implements QuoteService {
                 .multiply(detail.getShippingFee())
                 .add(detail.getExtraFee())
                 .multiply(new BigDecimal(quantity))
-                .add(appConfig.getOperationFee())
                 .multiply(appConfig.getAmplifyRate())
+                .add(appConfig.getOperationFee())
                 .divide(appConfig.getExchangeRate(), 2, RoundingMode.HALF_UP);
         BigDecimal productFee = skuVo.getPurPrice()
                 .multiply(new BigDecimal(quantity))

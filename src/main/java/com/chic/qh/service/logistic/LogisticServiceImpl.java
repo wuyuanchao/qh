@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+import static org.mybatis.dynamic.sql.SqlBuilder.isIn;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
@@ -163,6 +164,14 @@ public class LogisticServiceImpl implements LogisticService{
     @Override
     public List<LogisticChannel> getCompanyChannels(String companyCode){
         return logisticChannelMapper.select(c->c.where(LogisticChannelDynamicSqlSupport.company, isEqualTo(companyCode)));
+    }
+
+    @Override
+    public List<LogisticChannel> getByCodes(List<String> channelCodes) {
+        if(CollectionUtils.isEmpty(channelCodes)){
+            return new ArrayList<>();
+        }
+        return logisticChannelMapper.select(c -> c.where(LogisticChannelDynamicSqlSupport.code, isIn(channelCodes)));
     }
 
 }

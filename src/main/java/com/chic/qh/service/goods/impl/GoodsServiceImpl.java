@@ -313,8 +313,28 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<GoodsChannel> getGoodsChannelList(Integer goodsId) {
-        return goodsRepository.getGoodsChannelList(goodsId);
+    public int batchUpdateGoodsChannel(List<GoodsChannelConfigUpdateDTO> channelConfigs) {
+        int i = 0;
+        for(GoodsChannelConfigUpdateDTO dto : channelConfigs){
+            i += editOrUpdateGoodsChannel(dto.getGoodsId(), dto.getCountryCode(), dto.getChannelCode());
+        }
+        return i;
+    }
+
+    @Override
+    public List<GoodsChannelRespDTO> getGoodsChannelList(Integer goodsId) {
+        List<GoodsChannel> channels = goodsRepository.getGoodsChannelList(goodsId);
+        List<String> channelCodes = channels.stream().map(GoodsChannel::getChannelCode).collect(Collectors.toList());
+        List<LogisticChannel> l = logisticService.getByCodes(channelCodes);
+        Map<String, LogisticChannel> channelMap = l.stream().collect(Collectors.toMap(LogisticChannel::getCode, x -> x));
+        return channels.stream().map(x -> {
+            GoodsChannelRespDTO dto = new GoodsChannelRespDTO();
+            BeanUtils.copyProperties(x, dto);
+            String channelName = Optional.ofNullable(channelMap.get(x.getChannelCode()))
+                    .map(LogisticChannel::getName).orElse("");
+            dto.setChannelName(channelName);
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @Override

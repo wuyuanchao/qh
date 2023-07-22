@@ -50,7 +50,8 @@ public interface GoodsService {
 
     GoodsChannel getGoodsChannel(Integer goodsId, String countryCode);
     int editOrUpdateGoodsChannel(Integer goodsId, String countryCode,  String channelCode);
-    List<GoodsChannel> getGoodsChannelList(Integer goodsId);
+    int batchUpdateGoodsChannel(List<GoodsChannelConfigUpdateDTO> channelConfigs);
+    List<GoodsChannelRespDTO> getGoodsChannelList(Integer goodsId);
     int deleteGoodsChannel(Integer goodsId, String countryCode);
 
 }
