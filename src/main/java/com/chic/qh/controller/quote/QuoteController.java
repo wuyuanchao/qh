@@ -73,6 +73,11 @@ public class QuoteController {
         countryMap.put("GB", "英国");
         countryMap.put("DE", "德国");
         countryMap.put("FR", "法国");
+        countryMap.put("IT", "意大利");
+        countryMap.put("IE", "爱尔兰");
+        countryMap.put("IL", "以色列");
+        countryMap.put("SE", "瑞典");
+        countryMap.put("CH", "瑞士");
     }
 
     @RespWrap
