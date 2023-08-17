@@ -73,5 +73,9 @@
         <table tableName="qh_application_config" domainObjectName="ApplicationConfig" >
             <generatedKey column="rec_id" sqlStatement="JDBC" identity="true" />
         </table>
+
+        <table tableName="qh_order_info" domainObjectName="OrderInfo" >
+            <generatedKey column="order_id" sqlStatement="JDBC" identity="true" />
+        </table>
     </context>
 </generatorConfiguration>
