@@ -63,7 +63,7 @@ public class OrderInfo {
      *   商品ID
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_order_info.product_id")
-    private Integer productId;
+    private String productId;
 
     /**
      * Database Column Remarks:
@@ -241,13 +241,13 @@ public class OrderInfo {
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_order_info.product_id")
-    public Integer getProductId() {
+    public String getProductId() {
         return productId;
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_order_info.product_id")
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setProductId(String productId) {
+        this.productId = productId == null ? null : productId.trim();
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_order_info.country")

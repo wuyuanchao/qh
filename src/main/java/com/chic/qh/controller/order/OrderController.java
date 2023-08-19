@@ -36,7 +36,6 @@ public class OrderController {
      * @param file
      * @return
      */
-    @RespWrap
     @PostMapping("/orderImport")
     public void orderImport(@RequestParam("file") MultipartFile file) {
         orderService.processOrderImport(file);

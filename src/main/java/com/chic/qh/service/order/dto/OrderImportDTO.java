@@ -15,114 +15,118 @@ public class OrderImportDTO implements Serializable {
     /**
      *   订单编号
      */
-    @ExcelProperty(value = "Order Number")
+    @ExcelProperty(index = 0, value = "Order Number")
     private String orderSn;
 
     /**
      *   物流单号
      */
-    @ExcelProperty(value = "Tracking number")
+    @ExcelProperty(index = 1, value = "Tracking number")
     private String trackingNumber;
 
     /**
      *   物流单号2
      */
-    @ExcelProperty(value = "Tracking number 2")
+    @ExcelProperty(index = 2, value = "Tracking number 2")
     private String trackingNumber2;
 
     /**
      *   商品数量
      */
-    @ExcelProperty(value = "Quantity")
+    @ExcelProperty(index = 3, value = "Quantity")
     private Integer quantity;
 
     /**
      *   价格
      */
-    @ExcelProperty(value = "Price")
+    @ExcelProperty(index = 4, value = "Price")
     private BigDecimal price;
 
     /**
      *   sku
      */
-    @ExcelProperty(value = "SKU")
+    @ExcelProperty(index = 5, value = "SKU")
     private String sku;
 
     /**
-     *   商品ID
+     *   收件人
      */
-    @ExcelProperty(value = "Products ID")
-    private Integer productId;
+    @ExcelProperty(index = 6, value = "Shipping name")
+    private String shippingName;
+
+    /**
+     *   详细地址
+     */
+    @ExcelProperty(index = 7, value = "Address")
+    private String address;
+
+    /**
+     *   市
+     */
+    @ExcelProperty(index = 8, value = "City")
+    private String city;
+
+    /**
+     *   邮编
+     */
+    @ExcelProperty(index = 9, value = "Zip code")
+    private String zipCode;
+
+    /**
+     *   省
+     */
+    @ExcelProperty(index = 10, value = "Province")
+    private String province;
 
     /**
      *   国家
      */
-    @ExcelProperty(value = "Country")
+    @ExcelProperty(index = 11, value = "Country")
     private String country;
 
     /**
      *   国家码
      */
-    @ExcelProperty(value = "国家二字码")
+    @ExcelProperty(index = 12, value = "国家二字码")
     private String countryCode;
 
-    /**
-     *   省
-     */
-    @ExcelProperty(value = "Province")
-    private String province;
 
-    /**
-     *   市
-     */
-    @ExcelProperty(value = "City")
-    private String city;
-
-    /**
-     *   详细地址
-     */
-    @ExcelProperty(value = "Address")
-    private String address;
-
-    /**
-     *   邮编
-     */
-    @ExcelProperty(value = "Zip code")
-    private String zipCode;
-
-    /**
-     *   收件人
-     */
-    @ExcelProperty(value = "Shipping name")
-    private String shippingName;
 
     /**
      *   手机号
      */
-    @ExcelProperty(value = "Phone number")
+    @ExcelProperty(index = 13, value = "Phone number")
     private String phoneNumber;
-
-    /**
-     *   下单时间
-     */
-    @ExcelProperty(value = "下单时间", converter = ExcelDate2TimestampConverter.class)
-    private Integer orderTime;
 
     /**
      *   支付时间
      */
-    @ExcelProperty(value = "Payment time", converter = ExcelDate2TimestampConverter.class)
+    @ExcelProperty(index = 14, value = "Payment time", converter = ExcelDate2TimestampConverter.class)
     private Integer payTime;
+
+    /**
+     *   商品ID
+     */
+    @ExcelProperty(index = 15, value = "Products ID")
+    private Integer productId;
+
+    /**
+     *   下单时间
+     */
+    @ExcelProperty(index = 16, value = "下单时间", converter = ExcelDate2TimestampConverter.class)
+    private Integer orderTime;
+
 
     /**
      *   发货时间
      */
-    @ExcelProperty(value = "发货时间", converter = ExcelDate2TimestampConverter.class)
+    @ExcelProperty(index = 17, value = "发货时间", converter = ExcelDate2TimestampConverter.class)
     private Integer shippingTime;
 
     /**
      *   发货方式
      */
-    @ExcelProperty(value = "物流方式")
+    @ExcelProperty(index = 18, value = "物流方式")
     private String shippingMethod;
+
 }

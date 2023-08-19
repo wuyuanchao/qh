@@ -23,8 +23,8 @@ public interface OrderInfoRepository extends OrderInfoMapper {
         return PageHelper.startPage(dto.getCurrent(), dto.getPageSize()).doSelectPageInfo(
                 () -> select(c->c
                         .where(orderSn, isEqualToWhenPresent(dto.getOrderSn()))
-                        .and(trackingNumber, isEqualToWhenPresent(dto.getTrackingNumber()))
-                        .and(trackingNumber2, isEqualToWhenPresent(dto.getTrackingNumber2()))
+                        .and(trackingNumber, isEqualToWhenPresent(dto.getTrackingNumber())
+                                ,or(trackingNumber2, isEqualToWhenPresent(dto.getTrackingNumber())))
                         .and(phoneNumber, isLikeWhenPresent(dto.getPhoneNumber()))
                         .and(status, isEqualToWhenPresent(dto.getStatus()))
                         .and(gmtCreated, isGreaterThanOrEqualToWhenPresent(dto.getGmtCreatedStart()))

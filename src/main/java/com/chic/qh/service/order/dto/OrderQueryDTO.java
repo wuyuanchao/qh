@@ -15,7 +15,6 @@ public class OrderQueryDTO {
 
     private String orderSn;
     private String trackingNumber;
-    private String trackingNumber2;
     private String phoneNumber;
 
     private Byte status;

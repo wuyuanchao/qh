@@ -40,7 +40,6 @@ public class OrderServiceImpl implements OrderService {
     public OrderListVO queryPagedList(OrderQueryDTO dto) {
         dto.setOrderSn(StringUtils.isBlank(dto.getOrderSn()) ? null : dto.getOrderSn());
         dto.setTrackingNumber(StringUtils.isBlank(dto.getTrackingNumber()) ? null : dto.getTrackingNumber());
-        dto.setTrackingNumber2(StringUtils.isBlank(dto.getTrackingNumber2()) ? null : dto.getTrackingNumber2());
         dto.setPhoneNumber(StringUtils.isBlank(dto.getPhoneNumber()) ? null : "%" + dto.getPhoneNumber() + "%");
         PageInfo<OrderInfo> orderInfoPageInfo = orderInfoRepository.queryPagedList(dto);
         return new OrderListVO(orderInfoPageInfo.getTotal(), orderInfoPageInfo.getList());
@@ -56,21 +55,14 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("单次导入数据最多5000条");
         }
 
-        List<OrderInfo> orderInfoList = new ArrayList<>();
         excelList.forEach(orderImportDTO -> {
             OrderInfo orderInfo = new OrderInfo();
             BeanUtils.copyProperties(orderImportDTO, orderInfo);
             orderInfo.setStatus((byte)1);
             orderInfo.setGmtCreated((int) Instant.now().getEpochSecond());
             orderInfo.setGmtModify((int) Instant.now().getEpochSecond());
-            orderInfoList.add(orderInfo);
+            orderInfoRepository.insertSelective(orderInfo);
         });
-
-        List<List<OrderInfo>> orderLists = ListUtils.partition(orderInfoList, 200);
-        orderLists.forEach(orderList->{
-            orderInfoRepository.insertMultiple(orderList);
-        });
-
     }
 
     @Override

@@ -64,7 +64,7 @@ public final class OrderInfoDynamicSqlSupport {
      *   商品ID
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_order_info.product_id")
-    public static final SqlColumn<Integer> productId = orderInfo.productId;
+    public static final SqlColumn<String> productId = orderInfo.productId;
 
     /**
      * Database Column Remarks:
@@ -187,7 +187,7 @@ public final class OrderInfoDynamicSqlSupport {
 
         public final SqlColumn<String> sku = column("sku", JDBCType.VARCHAR);
 
-        public final SqlColumn<Integer> productId = column("product_id", JDBCType.INTEGER);
+        public final SqlColumn<String> productId = column("product_id", JDBCType.VARCHAR);
 
         public final SqlColumn<String> country = column("country", JDBCType.VARCHAR);
 
