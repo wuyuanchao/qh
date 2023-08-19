@@ -108,7 +108,7 @@ public class OrderImportDTO implements Serializable {
      *   商品ID
      */
     @ExcelProperty(index = 15, value = "Products ID")
-    private Integer productId;
+    private String productId;
 
     /**
      *   下单时间
