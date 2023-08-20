@@ -82,5 +82,9 @@
             <generatedKey column="rec_id" sqlStatement="JDBC" identity="true" />
             <columnOverride column="weight_type" javaType="com.chic.qh.service.quote.WeightType" />
         </table>
+
+        <table tableName="qh_order_info" domainObjectName="OrderInfo" >
+            <generatedKey column="order_id" sqlStatement="JDBC" identity="true" />
+        </table>
     </context>
 </generatorConfiguration>
