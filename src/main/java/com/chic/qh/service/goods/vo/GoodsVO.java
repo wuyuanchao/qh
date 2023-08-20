@@ -41,4 +41,6 @@ public class GoodsVO {
     private Byte availability;
 
     private String processingTime;
+
+    private Byte status;
 }

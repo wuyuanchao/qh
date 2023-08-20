@@ -1,0 +1,189 @@
+databaseChangeLog:
+- changeSet:
+    id: 1692501556958-13
+    author: wuyuanchao (generated)
+    changes:
+      - createTable:
+          columns:
+            - column:
+                autoIncrement: true
+                constraints:
+                  nullable: false
+                  primaryKey: true
+                name: order_id
+                remarks: Order ID
+                type: INT UNSIGNED
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: order_sn
+                remarks: 订单编号
+                type: VARCHAR(50)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: tracking_number
+                remarks: 物流单号
+                type: VARCHAR(50)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: tracking_number2
+                remarks: 物流单号2
+                type: VARCHAR(50)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValueNumeric: 0
+                name: quantity
+                remarks: 商品数量
+                type: INT
+            - column:
+                constraints:
+                  nullable: false
+                defaultValueNumeric: 0.00
+                name: price
+                remarks: 价格
+                type: DECIMAL(10, 2)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: sku
+                remarks: sku
+                type: VARCHAR(255)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: product_id
+                remarks: 商品ID
+                type: VARCHAR(50)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: country
+                remarks: 国家
+                type: VARCHAR(50)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: country_code
+                remarks: 国家码
+                type: VARCHAR(5)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: province
+                remarks: 省
+                type: VARCHAR(50)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: city
+                remarks: 市
+                type: VARCHAR(50)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: address
+                remarks: 详细地址
+                type: VARCHAR(500)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: zip_code
+                remarks: 邮编
+                type: VARCHAR(50)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: shipping_name
+                remarks: 收件人
+                type: VARCHAR(255)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: phone_number
+                remarks: 手机号
+                type: VARCHAR(50)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValueNumeric: 0
+                name: order_time
+                remarks: 下单时间
+                type: INT
+            - column:
+                constraints:
+                  nullable: false
+                defaultValueNumeric: 0
+                name: pay_time
+                remarks: 支付时间
+                type: INT
+            - column:
+                constraints:
+                  nullable: false
+                defaultValueNumeric: 0
+                name: shipping_time
+                remarks: 发货时间
+                type: INT
+            - column:
+                constraints:
+                  nullable: false
+                defaultValue: ''
+                name: shipping_method
+                remarks: 发货方式
+                type: VARCHAR(255)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValueNumeric: 0
+                name: status
+                remarks: 状态 1-有效;2-无效;
+                type: TINYINT(3)
+            - column:
+                constraints:
+                  nullable: false
+                defaultValueNumeric: 0
+                name: gmt_created
+                remarks: 创建时间
+                type: INT
+            - column:
+                constraints:
+                  nullable: false
+                defaultValueNumeric: 0
+                name: gmt_modify
+                remarks: 修改时间
+                type: INT
+          remarks: 订单表
+          tableName: qh_order_info
+      - createIndex:
+          columns:
+            - column:
+                name: order_sn
+          indexName: idx_order_sn
+          tableName: qh_order_info
+      - createIndex:
+          columns:
+            - column:
+                name: tracking_number
+          indexName: idx_tracking_number
+          tableName: qh_order_info
+      - createIndex:
+          columns:
+            - column:
+                name: tracking_number2
+          indexName: idx_tracking_number2
+          tableName: qh_order_info

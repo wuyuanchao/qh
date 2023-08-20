@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface GoodsService {
 
+    boolean exist(Integer goodsId);
     GoodsVO getGoods(Integer goodsId);
 
     GoodsVO getGoodsBySn(String goodsSn);
@@ -54,4 +55,5 @@ public interface GoodsService {
     List<GoodsChannelRespDTO> getGoodsChannelList(Integer goodsId);
     int deleteGoodsChannel(Integer goodsId, String countryCode);
 
+    void saveQuote(Integer goodsId, String quoteName, String version);
 }
