@@ -1,0 +1,135 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1692501556958-8
+      author: wuyuanchao (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: rec_id
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValue: ''
+                  name: quote_name
+                  remarks: 报价单名称
+                  type: VARCHAR(45)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0
+                  name: goods_id
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValue: ''
+                  name: version
+                  remarks: 报价版本，暂时简单使用时间戳
+                  type: VARCHAR(45)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0
+                  name: created_at
+                  type: INT
+            remarks: 商品报价单
+            tableName: qh_goods_quote
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: rec_id
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0
+                  name: quote_id
+                  remarks: 报价单id
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0
+                  name: sku_id
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0
+                  name: qty
+                  remarks: 数量
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: country
+                  remarks: ISO两位国家码
+                  type: CHAR(2)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: shipping_channel
+                  remarks: 线路
+                  type: VARCHAR(45)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValue: ''
+                  name: shipping_time
+                  remarks: 物流时效
+                  type: VARCHAR(45)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0.00
+                  name: amount
+                  type: DECIMAL(10, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0.00
+                  name: product_cost
+                  type: DECIMAL(10, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0.00
+                  name: shipping_cost
+                  type: DECIMAL(10, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValue: ''
+                  name: weight_type
+                  type: VARCHAR(45)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0.00
+                  name: vol_weight
+                  type: DECIMAL(10, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0.00
+                  name: act_weight
+                  type: DECIMAL(10, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 0
+                  name: created_at
+                  remarks: 创建时间
+                  type: INT
+            remarks: 商品报价详情表
+            tableName: qh_goods_quote_detail

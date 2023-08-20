@@ -1,0 +1,808 @@
+databaseChangeLog:
+- changeSet:
+    id: 1692501556958-1
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: rec_id
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: config_key
+            remarks: 配置项的标识
+            type: VARCHAR(45)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: config_content
+            remarks: 配置内容：支持基本类型和复杂类型（使用json存储）
+            type: VARCHAR(1024)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: updated_at
+            type: INT
+        tableName: qh_application_config
+- changeSet:
+    id: 1692501556958-2
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: rec_id
+            type: INT UNSIGNED
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: enquiry_order_id
+            remarks: 询价单ID
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: goods_name
+            remarks: 商品名称
+            type: VARCHAR(1024)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: goods_sn
+            remarks: 商品sn
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: link
+            remarks: 商品链接
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: relation_type
+            remarks: 关联类型（1-RTS;2-Similar;3-WFP;）
+            type: TINYINT(3)
+        - column:
+            constraints:
+              nullable: false
+            name: remark
+            remarks: 备注
+            type: LONGTEXT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: gmt_created
+            remarks: 创建时间
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: gmt_modify
+            remarks: 修改时间
+            type: INT
+        remarks: 询价单商品
+        tableName: qh_enquiry_order_goods
+- changeSet:
+    id: 1692501556958-3
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: enquiry_order_id
+            remarks: 询价单ID
+            type: INT UNSIGNED
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: enquiry_order_sn
+            remarks: 询价单SN
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: enquiry_order_name
+            remarks: 询价单名称
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: customer_info
+            remarks: 客户信息
+            type: VARCHAR(500)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: customer_link
+            remarks: 客户链接
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: remark
+            remarks: 备注
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: gmt_created
+            remarks: 创建时间
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: gmt_modify
+            remarks: 修改时间
+            type: INT
+        remarks: 询价单
+        tableName: qh_enquiry_order_info
+- changeSet:
+    id: 1692501556958-4
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: rec_id
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+              unique: true
+            defaultValue: ''
+            name: bill_no
+            remarks: 账单编号
+            type: VARCHAR(45)
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(45)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0.00
+            name: total
+            type: DECIMAL(10, 2)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: created_at
+            type: INT
+        remarks: 账单
+        tableName: qh_finance_bill
+- changeSet:
+    id: 1692501556958-5
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: goods_id
+            remarks: 商品ID
+            type: INT UNSIGNED
+        - column:
+            constraints:
+              nullable: false
+              unique: true
+            defaultValue: ''
+            name: goods_sn
+            remarks: 商品sn
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: goods_name
+            remarks: 商品名称
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: goods_name_en
+            remarks: 商品名称（英文）
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: remark
+            remarks: 备注
+            type: LONGTEXT
+        - column:
+            constraints:
+              nullable: false
+            name: remark_en
+            remarks: 备注（英文）
+            type: LONGTEXT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: gmt_created
+            remarks: 创建时间
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: gmt_modify
+            remarks: 修改时间
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: goods_image
+            remarks: 商品主图链接
+            type: VARCHAR(1024)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: goods_type
+            remarks: 商品类型(1-普通;2-带电;3-特货;)
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: depot
+            type: VARCHAR(45)
+        - column:
+            constraints:
+              nullable: false
+            name: status
+            remarks: 状态(1-启用;2-禁用;3-删除)
+            type: TINYINT(3)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: availability
+            remarks: 0-默认，1-RTS，2-Similar， 3-WFP
+            type: TINYINT(3)
+        - column:
+            constraints:
+              nullable: false
+            name: processing_time
+            type: VARCHAR(45)
+        remarks: 商品表
+        tableName: qh_goods
+- changeSet:
+    id: 1692501556958-6
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: rec_id
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: goods_id
+            remarks: 商品id
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: country_code
+            remarks: ios国家码
+            type: VARCHAR(45)
+        - column:
+            constraints:
+              nullable: false
+            name: channel_code
+            type: VARCHAR(45)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: updated_at
+            type: INT
+        remarks: 商品各国运输线路配置
+        tableName: qh_goods_channel
+- changeSet:
+    id: 1692501556958-7
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: rec_id
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: goods_id
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: content
+            type: TEXT
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: user
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: created_at
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: status
+            remarks: 状态（1-正常;2-删除;）
+            type: TINYINT(3)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: updated_at
+            remarks: 修改时间
+            type: INT
+        tableName: qh_goods_comment
+- changeSet:
+    id: 1692501556958-10
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: rec_id
+            type: INT
+        - column:
+            name: name
+            type: VARCHAR(200)
+        - column:
+            name: code
+            type: VARCHAR(45)
+        - column:
+            name: company
+            type: VARCHAR(45)
+        - column:
+            name: cut_off_time
+            type: VARCHAR(100)
+        - column:
+            name: cost_time
+            remarks: 耗时说明
+            type: VARCHAR(100)
+        remarks: 物流渠道表
+        tableName: qh_logistic_channel
+- changeSet:
+    id: 1692501556958-11
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: rec_id
+            type: INT UNSIGNED
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: channel_id
+            remarks: 物流渠道ID
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: country
+            remarks: 国家
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: shipping_time
+            remarks: 物流时效
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0.00
+            name: vol_weight_rate
+            remarks: 计抛比
+            type: DECIMAL(10, 2)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0.00
+            name: weight_left
+            remarks: 重量左值
+            type: DECIMAL(10, 2)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0.00
+            name: weight_right
+            remarks: 重量右值
+            type: DECIMAL(10, 2)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0.00
+            name: shipping_fee
+            remarks: 运费
+            type: DECIMAL(10, 2)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0.00
+            name: extra_fee
+            remarks: 挂号费
+            type: DECIMAL(10, 2)
+        remarks: 物流渠道详情表
+        tableName: qh_logistic_channel_detail
+- changeSet:
+    id: 1692501556958-12
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: rec_id
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: channel_id
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: country
+            type: VARCHAR(45)
+        - column:
+            constraints:
+              nullable: false
+            name: vol_weight_rate
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: time_cost
+            remarks: 时效
+            type: VARCHAR(45)
+        - column:
+            constraints:
+              nullable: false
+            name: left
+            type: DECIMAL(10, 2)
+        - column:
+            constraints:
+              nullable: false
+            name: right
+            type: DECIMAL(10, 2)
+        - column:
+            constraints:
+              nullable: false
+            name: shipping_fee
+            remarks: 运费
+            type: DECIMAL(10, 2)
+        - column:
+            constraints:
+              nullable: false
+            name: operation_fee
+            remarks: 挂号费
+            type: DECIMAL(10, 2)
+        remarks: 运费配置
+        tableName: qh_logistic_fee_config
+- changeSet:
+    id: 1692501556958-14
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: sku_id
+            remarks: skuId
+            type: INT UNSIGNED
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: goods_id
+            remarks: 商品ID
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: sku_name
+            remarks: sku名称
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: sku_name_en
+            remarks: sku名称（英文）
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: supp_name
+            remarks: 供应商名称
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: supp_sku_id
+            remarks: 供方skuId
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: link
+            remarks: 供方链接
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: length
+            remarks: 长度(cm)
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: width
+            remarks: 宽度(cm)
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: height
+            remarks: 高度(cm)
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0.00
+            name: area
+            remarks: 面积
+            type: DECIMAL(10, 2)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0.000
+            name: weight
+            remarks: 重量
+            type: DECIMAL(10, 3)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0.00
+            name: volume_weight
+            remarks: 体积重
+            type: DECIMAL(10, 2)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0.00
+            name: pur_price
+            remarks: 采购价
+            type: DECIMAL(10, 2)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: color
+            remarks: 颜色
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: size
+            remarks: 尺码
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: gmt_created
+            remarks: 创建时间
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: gmt_modify
+            remarks: 修改时间
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: remark
+            type: VARCHAR(45)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: sku_image
+            remarks: sku图片
+            type: VARCHAR(1024)
+        remarks: sku表
+        tableName: qh_sku_relation
+- changeSet:
+    id: 1692501556958-15
+    author: wuyuanchao (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: user_id
+            remarks: 用户ID
+            type: INT UNSIGNED
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: username
+            remarks: 用户名
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: password
+            remarks: 密码
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: avatar
+            remarks: 头像
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: ''
+            name: role_name
+            remarks: 角色名称
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: status
+            remarks: 状态(1-启用;2-禁用;)
+            type: TINYINT(3)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: gmt_created
+            remarks: 创建时间
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: gmt_modify
+            remarks: 修改时间
+            type: INT
+        remarks: 用户表
+        tableName: qh_user_info
+- changeSet:
+    id: 1692501556958-16
+    author: wuyuanchao (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            defaultValueNumeric: !!float '0'
+            name: channel_id
+        indexName: idx_channel_id
+        tableName: qh_logistic_channel_detail
+- changeSet:
+    id: 1692501556958-17
+    author: wuyuanchao (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            defaultValueNumeric: !!float '0'
+            name: enquiry_order_id
+        indexName: idx_enquiry_order_id
+        tableName: qh_enquiry_order_goods
+- changeSet:
+    id: 1692501556958-18
+    author: wuyuanchao (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            defaultValueNumeric: !!float '0'
+            name: goods_id
+        indexName: idx_goods_id
+        tableName: qh_sku_relation
+

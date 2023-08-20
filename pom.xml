@@ -20,6 +20,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <maven.test.skip>true</maven.test.skip>
+        <liquibase.version>3.6.2</liquibase.version>
     </properties>
 
     <dependencies>
@@ -109,6 +110,12 @@
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
             <version>3.2.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
         </dependency>
 
         <!-- test -->
@@ -218,6 +225,18 @@
                         <version>8.0.11</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <driver>com.mysql.cj.jdbc.Driver</driver>
+                    <url>jdbc:mysql://localhost:3306/qh?useSSL=false</url>
+                    <username>root</username>
+                    <password />
+                    <outputChangeLogFile>src/main/resources/db/changelog/changes/liquibase-outputChangeLog.yaml</outputChangeLogFile>
+                </configuration>
             </plugin>
         </plugins>
     </build>
