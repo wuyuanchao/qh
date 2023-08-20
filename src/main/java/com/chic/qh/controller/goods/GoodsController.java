@@ -1,6 +1,5 @@
 package com.chic.qh.controller.goods;
 
-import com.chic.qh.repository.model.GoodsChannel;
 import com.chic.qh.service.goods.GoodsService;
 import com.chic.qh.service.goods.dto.*;
 import com.chic.qh.service.goods.vo.GoodsListVO;
@@ -171,5 +170,11 @@ public class GoodsController {
     @GetMapping("/{goodsId}/channels")
     public List<GoodsChannelRespDTO> getGoodsChannelList(@PathVariable("goodsId") Integer goodsId){
         return goodsService.getGoodsChannelList(goodsId);
+    }
+
+    @RespWrap
+    @PostMapping("/{goodsId}/quote")
+    public void quoteGoods(@PathVariable("goodsId") Integer goodsId, @RequestBody GoodsQuoteDTO dto){
+        goodsService.saveQuote(goodsId, dto.getName(), dto.getVersion());
     }
 }

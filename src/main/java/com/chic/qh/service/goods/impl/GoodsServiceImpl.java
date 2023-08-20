@@ -11,6 +11,8 @@ import com.chic.qh.service.goods.vo.GoodsListVO;
 import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
 import com.chic.qh.service.logistic.LogisticService;
+import com.chic.qh.service.quote.QuoteResult;
+import com.chic.qh.service.quote.QuoteService;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.net.MalformedURLException;
@@ -37,8 +40,6 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class GoodsServiceImpl implements GoodsService {
-
-
     @Autowired
     private GoodsRepository goodsRepository;
 
@@ -47,6 +48,14 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
     private LogisticService logisticService;
+
+    @Autowired
+    private QuoteService quoteService;
+
+    @Override
+    public boolean exist(Integer goodsId) {
+        return goodsRepository.selectByPrimaryKey(goodsId).isPresent();
+    }
 
     @Override
     public GoodsListVO queryList(GoodsQueryDTO dto) {
@@ -340,5 +349,38 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public int deleteGoodsChannel(Integer goodsId, String countryCode) {
         return goodsRepository.deleteGoodsChannel(goodsId, countryCode);
+    }
+
+    @Override
+    public void saveQuote(Integer goodsId, String quoteName, String version) {
+        GoodsVO goods = this.getGoods(goodsId);
+        if(goods == null){
+            throw new RuntimeException("商品不存在!goodsId:" + goodsId);
+        }
+        if(CollectionUtils.isEmpty(goods.getSkuList())){
+            throw new RuntimeException("商品没有SKU!goodsSn:" + goods.getGoodsSn());
+        }
+        List<GoodsChannel> channels = goodsRepository.getGoodsChannelList(goods.getGoodsId());
+        if(CollectionUtils.isEmpty(channels)){
+            throw new RuntimeException("商品没有配置渠道!goodsSn:" + goods.getGoodsSn());
+        }
+        GoodsQuote goodsQuote = new GoodsQuote();
+        goodsQuote.setGoodsId(goods.getGoodsId());
+        goodsQuote.setVersion(version);
+        goodsQuote.setQuoteName(quoteName);
+        goodsQuote.setCreatedAt((int)Instant.now().getEpochSecond());
+
+        List<GoodsQuoteDetail> quoteList = new ArrayList<>();
+        for(int qty = 1; qty <= 3; qty++) {
+            for (SkuVO skuVO : goods.getSkuList()) {
+                for (GoodsChannel channel : channels) {
+                    QuoteResult r = quoteService.quote(channel.getCountryCode(), channel.getChannelCode(), goods, skuVO, qty);
+                    GoodsQuoteDetail po = r.convert2PO(skuVO.getSkuId(), channel.getCountryCode(), qty, version);
+                    quoteList.add(po);
+                }
+            }
+        }
+        Assert.notEmpty(quoteList, "报价列表不能为空!");
+        quoteService.saveQuote(goodsQuote, quoteList);
     }
 }

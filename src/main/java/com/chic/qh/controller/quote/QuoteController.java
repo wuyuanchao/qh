@@ -1,19 +1,22 @@
 package com.chic.qh.controller.quote;
 
-import com.chic.qh.repository.model.GoodsChannel;
+import com.chic.qh.repository.model.*;
 import com.chic.qh.service.goods.GoodsService;
 import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
+import com.chic.qh.service.logistic.ChannelConfig;
+import com.chic.qh.service.logistic.LogisticService;
 import com.chic.qh.service.quote.ConfigDTO;
+import com.chic.qh.service.quote.QuoteResult;
 import com.chic.qh.service.quote.QuoteService;
 import com.chic.qh.support.web.RespWrap;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -30,12 +33,51 @@ public class QuoteController {
     private GoodsService goodsService;
     @Autowired
     private QuoteService quoteService;
+    @Autowired
+    private LogisticService logisticService;
+
+    @RespWrap
+    @GetMapping("/{goodsId}/history")
+    public List<GoodsQuote> getGoodsQuoteHistory(@PathVariable("goodsId") Integer goodsId){
+        if(!goodsService.exist(goodsId)){
+            throw new HttpClientErrorException(NOT_FOUND, "goodsId: " + goodsId + " not found!");
+        }
+        return quoteService.selectHistory(goodsId);
+    }
+
+    @RespWrap
+    @GetMapping("/{goodsSn}/preview")
+    public QuoteRespDTO preview(@PathVariable("goodsSn") String goodsSn,
+                                @RequestParam(name = "country", defaultValue = "US") String country,
+                                @RequestParam(name = "quantity", defaultValue="1") Integer quantity,
+                                @RequestParam(value = "skuId", required = false) Integer skuId){
+
+        return getQuoteResult(goodsSn, skuId, country, quantity, true);
+    }
+
+    @RespWrap
+    @GetMapping("/{goodsSn}/history/{version}")
+    public QuoteRespDTO history(@PathVariable("goodsSn") String goodsSn,
+                                @PathVariable("version") String version,
+                                @RequestParam(name = "country", defaultValue = "US") String country,
+                                @RequestParam(name = "quantity", defaultValue="1") Integer quantity,
+                                @RequestParam(value = "skuId", required = false) Integer skuId){
+        return getQuoteResult(goodsSn, skuId, country, quantity, false, version);
+    }
+
     @RespWrap
     @GetMapping("/{goodsSn}")
     public QuoteRespDTO quote(@PathVariable("goodsSn") String goodsSn,
                               @RequestParam(name = "country", defaultValue = "US") String country,
                               @RequestParam(name = "quantity", defaultValue="1") Integer quantity,
                               @RequestParam(value = "skuId", required = false) Integer skuId) {
+        return getQuoteResult(goodsSn, skuId, country, quantity, false);
+    }
+
+    private QuoteRespDTO getQuoteResult(String goodsSn, Integer skuId, String country, Integer quantity, boolean preview){
+        return getQuoteResult(goodsSn, skuId, country, quantity, preview, null);
+    }
+    private QuoteRespDTO getQuoteResult(String goodsSn, Integer skuId, String country, Integer quantity, boolean preview, String version){
         GoodsVO goodsVO = goodsService.getGoodsBySn(goodsSn);
         if(goodsVO == null){
             throw new HttpClientErrorException(NOT_FOUND, "goodsSn: " + goodsSn + " not found!");
@@ -43,41 +85,61 @@ public class QuoteController {
         if(CollectionUtils.isEmpty(goodsVO.getSkuList())){
             throw new HttpClientErrorException(NOT_FOUND, "No sku in goods[" + goodsSn + "]!");
         }
-        GoodsChannel goodsChannel = goodsService.getGoodsChannel(goodsVO.getGoodsId(), country);
-        if(goodsChannel == null){
-            throw new HttpClientErrorException(NOT_FOUND, "No Shipping line for goods[" + goodsSn + "] to country[" + country + "]  found!");
+        SkuVO skuVO;
+        if(skuId == null){
+            //没有选中sku时， 默认选中商品中的第一个sku
+            skuVO = goodsVO.getSkuList().get(0);
+        }else{
+            skuVO = goodsVO.getSkuList().stream()
+                    .filter(sku -> sku.getSkuId().equals(skuId))
+                    .findFirst().orElse(null);
         }
-        String carrierCode = goodsChannel.getChannelCode();
-        QuoteRespDTO dto = new QuoteRespDTO();
-        dto.setGoodsVo(goodsVO);
-        dto.setCountry(country);
-        dto.setQuantity(quantity);
-        SkuVO skuVO = goodsVO.getSkuList().stream()
-                .filter(sku -> sku.getSkuId().equals(skuId))
-                .findFirst()
-                .orElse(goodsVO.getSkuList().get(0));
-        dto.setCurrentSku(skuVO);
-        //冗余字段，方便前端展示
-        dto.setReferenceUrl(skuVO.getLink());
-        dto.setProcessingTime(goodsVO.getProcessingTime());
-        dto.setAvailability(goodsVO.getAvailability());
-        dto.setResult(quoteService.quote(countryMap.get(country), carrierCode, goodsVO, skuVO, quantity));
-        return dto;
+        if(skuVO == null){
+            throw new HttpClientErrorException(NOT_FOUND, "No sku[" + skuId + "] in goods[" + goodsSn + "]!");
+        }
+
+        if(preview){
+            GoodsChannel goodsChannel = goodsService.getGoodsChannel(goodsVO.getGoodsId(), country);
+            if(goodsChannel == null){
+                throw new HttpClientErrorException(NOT_FOUND, "No Shipping line for goods[" + goodsSn + "] to country[" + country + "]  found!");
+            }
+            return preview(goodsVO, skuVO, quantity, country, goodsChannel);
+        }else{
+            GoodsQuoteDetail goodsQuoteDetail;
+            if(StringUtils.isBlank(version)) {
+                goodsQuoteDetail = quoteService.getQuote(skuVO, country, quantity);
+            }else{
+                goodsQuoteDetail = quoteService.getQuote(skuVO, country, quantity, version);
+            }
+            if(goodsQuoteDetail == null) {
+                throw new HttpClientErrorException(NOT_FOUND, "No quote for goods[" + goodsSn + "] to country[" + country + "]  found!");
+            }
+            String carrierCode = goodsQuoteDetail.getShippingChannel();
+            ChannelConfig channelConfig = logisticService.getChannelConfig(carrierCode);
+            LogisticChannel channel = channelConfig.getLogisticChannel();
+
+            return QuoteRespDTO.Builder.create()
+                    .goodsVo(goodsVO)
+                    .currentSku(skuVO)
+                    .quantity(quantity)
+                    .country(country)
+                    .quote(goodsQuoteDetail, channel)
+                    .build();
+        }
     }
 
-    private static final Map<String, String> countryMap = new HashMap();
-    static{
-        countryMap.put("US", "美国");
-        countryMap.put("CA", "加拿大");
-        countryMap.put("AU", "澳大利亚");
-        countryMap.put("GB", "英国");
-        countryMap.put("DE", "德国");
-        countryMap.put("FR", "法国");
-        countryMap.put("IT", "意大利");
-        countryMap.put("IE", "爱尔兰");
-        countryMap.put("IL", "以色列");
-        countryMap.put("SE", "瑞典");
-        countryMap.put("CH", "瑞士");
+    private QuoteRespDTO preview(GoodsVO goodsVO, SkuVO skuVO, Integer quantity, String country, GoodsChannel goodsChannel){
+        //当前国家从来没有报过价，则实时计算
+        String carrierCode = goodsChannel.getChannelCode();
+        QuoteResult quoteResult = quoteService.quote(country, carrierCode, goodsVO, skuVO, quantity);
+
+        return QuoteRespDTO.Builder.create()
+                .goodsVo(goodsVO)
+                .currentSku(skuVO)
+                .quantity(quantity)
+                .country(country)
+                .quote(quoteResult)
+                .build();
     }
 
     @RespWrap
