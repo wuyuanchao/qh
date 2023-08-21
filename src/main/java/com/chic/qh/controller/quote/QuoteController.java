@@ -153,4 +153,10 @@ public class QuoteController {
     public void updateConfig(@PathVariable("key") String key, @RequestBody QCUpdateDTO dto){
         quoteService.updateConfig(key, dto.getValue());
     }
+
+    @RespWrap
+    @GetMapping("/supportedCountries")
+    public List<String> supportedCountries(){
+        return quoteService.supportedCountries();
+    }
 }

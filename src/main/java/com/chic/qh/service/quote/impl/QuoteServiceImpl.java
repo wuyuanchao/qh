@@ -15,14 +15,18 @@ import com.chic.qh.service.quote.BillingWeight;
 import com.chic.qh.service.quote.QuoteResult;
 import com.chic.qh.service.quote.QuoteService;
 import com.chic.qh.service.quote.VolumetricWeight;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
@@ -42,19 +46,34 @@ public class QuoteServiceImpl implements QuoteService {
     private GoodsQuoteDetailMapper goodsQuoteDetailMapper;
     @Autowired
     private GoodsQuoteMapper goodsQuoteMapper;
-    private static final Map<String, String> countryMap = new HashMap();
-    static{
-        countryMap.put("US", "美国");
-        countryMap.put("CA", "加拿大");
-        countryMap.put("AU", "澳大利亚");
-        countryMap.put("GB", "英国");
-        countryMap.put("DE", "德国");
-        countryMap.put("FR", "法国");
-        countryMap.put("IT", "意大利");
-        countryMap.put("IE", "爱尔兰");
-        countryMap.put("IL", "以色列");
-        countryMap.put("SE", "瑞典");
-        countryMap.put("CH", "瑞士");
+
+    @Data
+    @AllArgsConstructor
+    public static class CountryEntry{
+        private String isoCode;
+        private String cnName;
+    }
+    private static final List<CountryEntry> supportedCountries = Arrays.asList(
+            new CountryEntry("US", "美国"),
+            new CountryEntry("CA", "加拿大"),
+            new CountryEntry("AU", "澳大利亚"),
+            new CountryEntry("GB", "英国"),
+            new CountryEntry("DE", "德国"),
+            new CountryEntry("FR", "法国"),
+            new CountryEntry("IT", "意大利"),
+            new CountryEntry("IE", "爱尔兰"),
+            new CountryEntry("IL", "以色列"),
+            new CountryEntry("SE", "瑞典"),
+            new CountryEntry("CH", "瑞士"),
+            new CountryEntry("NZ", "新西兰"),
+            new CountryEntry("BR", "巴西")
+    );
+    private static final Map<String, String> countryMap = supportedCountries.stream()
+            .collect(Collectors.toMap( CountryEntry::getIsoCode, CountryEntry::getCnName ));
+
+    @Override
+    public List<String> supportedCountries(){
+        return this.supportedCountries.stream().map(CountryEntry::getIsoCode).collect(Collectors.toList());
     }
 
     @Override
