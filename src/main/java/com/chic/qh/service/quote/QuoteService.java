@@ -14,6 +14,8 @@ import java.util.List;
  */
 public interface QuoteService {
 
+    List<String> supportedCountries();
+
     QuoteResult quote(String country, String carrierCode, GoodsVO goodsVO, SkuVO skuVo, Integer quantity);
 
     ConfigDTO getConfig();
