@@ -136,6 +136,10 @@ public final class SkuRelationDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.gmt_modify")
     public static final SqlColumn<Integer> gmtModify = skuRelation.gmtModify;
 
+    /**
+     * Database Column Remarks:
+     *   备注
+     */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.remark")
     public static final SqlColumn<String> remark = skuRelation.remark;
 
@@ -145,6 +149,20 @@ public final class SkuRelationDynamicSqlSupport {
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.sku_image")
     public static final SqlColumn<String> skuImage = skuRelation.skuImage;
+
+    /**
+     * Database Column Remarks:
+     *   父skuId
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.parent_id")
+    public static final SqlColumn<Integer> parentId = skuRelation.parentId;
+
+    /**
+     * Database Column Remarks:
+     *   店小蜜skuId
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_sku_relation.dxm_sku_id")
+    public static final SqlColumn<String> dxmSkuId = skuRelation.dxmSkuId;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
     public static final class SkuRelation extends AliasableSqlTable<SkuRelation> {
@@ -187,6 +205,10 @@ public final class SkuRelationDynamicSqlSupport {
         public final SqlColumn<String> remark = column("remark", JDBCType.VARCHAR);
 
         public final SqlColumn<String> skuImage = column("sku_image", JDBCType.VARCHAR);
+
+        public final SqlColumn<Integer> parentId = column("parent_id", JDBCType.INTEGER);
+
+        public final SqlColumn<String> dxmSkuId = column("dxm_sku_id", JDBCType.VARCHAR);
 
         public SkuRelation() {
             super("qh_sku_relation", SkuRelation::new);

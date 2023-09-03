@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
-    BasicColumn[] selectList = BasicColumn.columnList(skuId, goodsId, skuName, skuNameEn, suppName, suppSkuId, link, length, width, height, area, weight, volumeWeight, purPrice, color, size, gmtCreated, gmtModify, remark, skuImage);
+    BasicColumn[] selectList = BasicColumn.columnList(skuId, goodsId, skuName, skuNameEn, suppName, suppSkuId, link, length, width, height, area, weight, volumeWeight, purPrice, color, size, gmtCreated, gmtModify, remark, skuImage, parentId, dxmSkuId);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
@@ -69,7 +69,9 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
         @Result(column="gmt_created", property="gmtCreated", jdbcType=JdbcType.INTEGER),
         @Result(column="gmt_modify", property="gmtModify", jdbcType=JdbcType.INTEGER),
         @Result(column="remark", property="remark", jdbcType=JdbcType.VARCHAR),
-        @Result(column="sku_image", property="skuImage", jdbcType=JdbcType.VARCHAR)
+        @Result(column="sku_image", property="skuImage", jdbcType=JdbcType.VARCHAR),
+        @Result(column="parent_id", property="parentId", jdbcType=JdbcType.INTEGER),
+        @Result(column="dxm_sku_id", property="dxmSkuId", jdbcType=JdbcType.VARCHAR)
     })
     List<SkuRelation> selectMany(SelectStatementProvider selectStatement);
 
@@ -117,6 +119,8 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
             .map(gmtModify).toProperty("gmtModify")
             .map(remark).toProperty("remark")
             .map(skuImage).toProperty("skuImage")
+            .map(parentId).toProperty("parentId")
+            .map(dxmSkuId).toProperty("dxmSkuId")
         );
     }
 
@@ -142,6 +146,8 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
             .map(gmtModify).toProperty("gmtModify")
             .map(remark).toProperty("remark")
             .map(skuImage).toProperty("skuImage")
+            .map(parentId).toProperty("parentId")
+            .map(dxmSkuId).toProperty("dxmSkuId")
         );
     }
 
@@ -167,6 +173,8 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
             .map(gmtModify).toPropertyWhenPresent("gmtModify", row::getGmtModify)
             .map(remark).toPropertyWhenPresent("remark", row::getRemark)
             .map(skuImage).toPropertyWhenPresent("skuImage", row::getSkuImage)
+            .map(parentId).toPropertyWhenPresent("parentId", row::getParentId)
+            .map(dxmSkuId).toPropertyWhenPresent("dxmSkuId", row::getDxmSkuId)
         );
     }
 
@@ -217,7 +225,9 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
                 .set(gmtCreated).equalTo(row::getGmtCreated)
                 .set(gmtModify).equalTo(row::getGmtModify)
                 .set(remark).equalTo(row::getRemark)
-                .set(skuImage).equalTo(row::getSkuImage);
+                .set(skuImage).equalTo(row::getSkuImage)
+                .set(parentId).equalTo(row::getParentId)
+                .set(dxmSkuId).equalTo(row::getDxmSkuId);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
@@ -240,7 +250,9 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
                 .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
                 .set(gmtModify).equalToWhenPresent(row::getGmtModify)
                 .set(remark).equalToWhenPresent(row::getRemark)
-                .set(skuImage).equalToWhenPresent(row::getSkuImage);
+                .set(skuImage).equalTo(row::getSkuImage)
+                .set(parentId).equalTo(row::getParentId)
+                .set(dxmSkuId).equalTo(row::getDxmSkuId);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_sku_relation")
@@ -265,6 +277,8 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
             .set(gmtModify).equalTo(row::getGmtModify)
             .set(remark).equalTo(row::getRemark)
             .set(skuImage).equalTo(row::getSkuImage)
+            .set(parentId).equalTo(row::getParentId)
+            .set(dxmSkuId).equalTo(row::getDxmSkuId)
             .where(skuId, isEqualTo(row::getSkuId))
         );
     }
@@ -291,6 +305,8 @@ public interface SkuRelationMapper extends CommonCountMapper, CommonDeleteMapper
             .set(gmtModify).equalToWhenPresent(row::getGmtModify)
             .set(remark).equalToWhenPresent(row::getRemark)
             .set(skuImage).equalToWhenPresent(row::getSkuImage)
+            .set(parentId).equalToWhenPresent(row::getParentId)
+            .set(dxmSkuId).equalToWhenPresent(row::getDxmSkuId)
             .where(skuId, isEqualTo(row::getSkuId))
         );
     }

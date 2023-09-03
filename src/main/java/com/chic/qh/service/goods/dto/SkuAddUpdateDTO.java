@@ -51,5 +51,11 @@ public class SkuAddUpdateDTO {
 
     private String skuImage;
 
+    //父级skuId
+    private Integer parentId;
+
+    //店小蜜skuId
+    private String dxmSkuId;
+
 
 }

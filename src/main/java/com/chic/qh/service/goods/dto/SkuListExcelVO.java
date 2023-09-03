@@ -79,5 +79,11 @@ public class SkuListExcelVO implements Serializable {
 	@ExcelProperty(value = "采购价(元)", index = 8)
 	private BigDecimal purPrice;
 
+	/**
+	 *   店小蜜sku
+	 */
+	@ExcelProperty(value = "店小蜜sku", index = 9)
+	private String dxmSkuId;
+
 
 }
