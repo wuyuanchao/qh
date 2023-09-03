@@ -7,4 +7,5 @@ public class GoodsChannelConfigUpdateDTO {
     private Integer goodsId;
     private String channelCode;
     private String countryCode;
+    private Byte channelType;
 }

@@ -148,7 +148,7 @@ public class QuoteServiceImpl implements QuoteService {
     }
 
     @Override
-    public GoodsQuoteDetail getQuote(SkuVO skuVO, String _country, Integer _quantity) {
+    public GoodsQuoteDetail getQuote(SkuVO skuVO, String _country, Integer _quantity, Byte _channelType) {
         GoodsQuote quoteVersion = goodsQuoteMapper.selectOne(c -> c.where(GoodsQuoteDynamicSqlSupport.goodsId, isEqualTo(skuVO.getGoodsId()))
                 .orderBy(GoodsQuoteDynamicSqlSupport.version.descending())
                 .limit(1)).orElse(null);
@@ -159,11 +159,12 @@ public class QuoteServiceImpl implements QuoteService {
                 .and(GoodsQuoteDetailDynamicSqlSupport.quoteId, isEqualTo(quoteVersion.getRecId()))
                 .and(GoodsQuoteDetailDynamicSqlSupport.country, isEqualTo(_country))
                 .and(GoodsQuoteDetailDynamicSqlSupport.qty, isEqualTo(_quantity))
+                .and(GoodsQuoteDetailDynamicSqlSupport.channelType, isEqualTo(_channelType))
                 .limit(1)).orElse(null);
     }
 
     @Override
-    public GoodsQuoteDetail getQuote(SkuVO skuVO, String _country, Integer _quantity, String version) {
+    public GoodsQuoteDetail getQuote(SkuVO skuVO, String _country, Integer _quantity, Byte _channelType, String version) {
         GoodsQuote quoteVersion = goodsQuoteMapper.selectOne(c -> c.where(GoodsQuoteDynamicSqlSupport.goodsId, isEqualTo(skuVO.getGoodsId()))
                 .and(GoodsQuoteDynamicSqlSupport.version, isEqualTo(version))
                 .limit(1)).orElse(null);
@@ -174,6 +175,7 @@ public class QuoteServiceImpl implements QuoteService {
                 .and(GoodsQuoteDetailDynamicSqlSupport.quoteId, isEqualTo(quoteVersion.getRecId()))
                 .and(GoodsQuoteDetailDynamicSqlSupport.country, isEqualTo(_country))
                 .and(GoodsQuoteDetailDynamicSqlSupport.qty, isEqualTo(_quantity))
+                .and(GoodsQuoteDetailDynamicSqlSupport.channelType, isEqualTo(_channelType))
                 .limit(1)).orElse(null);
     }
 

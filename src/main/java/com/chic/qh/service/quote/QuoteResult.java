@@ -37,11 +37,12 @@ public class QuoteResult {
 
     private String time;
 
-    public GoodsQuoteDetail convert2PO(int skuId, String country, int qty, String version){
+    public GoodsQuoteDetail convert2PO(int skuId, String country, int qty, Byte channelType, String version){
         GoodsQuoteDetail quote = new GoodsQuoteDetail();
         quote.setSkuId(skuId);
         quote.setQty(qty);
         quote.setCountry(country);
+        quote.setChannelType(channelType);
         quote.setShippingChannel(carrierCode);
         quote.setAmount(totalFee);
         quote.setProductCost(baseFee);

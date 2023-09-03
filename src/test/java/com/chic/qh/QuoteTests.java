@@ -21,7 +21,7 @@ public class QuoteTests {
     @Test
     public void testQuoteDetail(){
         GoodsVO goods = goodsService.getGoods(32);
-        GoodsQuoteDetail detail = quoteService.getQuote(goods.getSkuList().get(0), "US", 1);
+        GoodsQuoteDetail detail = quoteService.getQuote(goods.getSkuList().get(0), "US", 1, (byte)1);
         System.out.println(detail);
     }
 }

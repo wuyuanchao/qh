@@ -291,12 +291,12 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public GoodsChannel getGoodsChannel(Integer goodsId, String countryCode) {
-        return goodsRepository.selectGoodsChannel(goodsId, countryCode).orElse(null);
+    public GoodsChannel getGoodsChannel(Integer goodsId, String countryCode, Byte channelType) {
+        return goodsRepository.selectGoodsChannel(goodsId, countryCode, channelType).orElse(null);
     }
 
     @Override
-    public int editOrUpdateGoodsChannel(Integer goodsId, String countryCode, String channelCode) {
+    public int editOrUpdateGoodsChannel(Integer goodsId, String countryCode, String channelCode, Byte channelType) {
         LogisticChannel channelInfo = logisticService.getChannelInfo(channelCode);
         if(channelInfo == null){
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND ,"物流渠道[" +channelCode+ "]不存在!");
@@ -305,10 +305,11 @@ public class GoodsServiceImpl implements GoodsService {
         if(goods == null){
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND ,"商品[" +goodsId+ "]不存在!");
         }
-        Optional<GoodsChannel> channelOptional = goodsRepository.selectGoodsChannel(goodsId, countryCode);
+        Optional<GoodsChannel> channelOptional = goodsRepository.selectGoodsChannel(goodsId, countryCode, channelType);
         if(channelOptional.isPresent()){
             GoodsChannel channel = channelOptional.get();
             channel.setChannelCode(channelCode);
+            channel.setChannelType(channelType);
             channel.setUpdatedAt((int)Instant.now().getEpochSecond());
             return goodsRepository.updateGoodsChannel(channel);
         }else{
@@ -316,6 +317,7 @@ public class GoodsServiceImpl implements GoodsService {
             channel.setGoodsId(goodsId);
             channel.setCountryCode(countryCode);
             channel.setChannelCode(channelCode);
+            channel.setChannelType(channelType);
             channel.setUpdatedAt((int)Instant.now().getEpochSecond());
             return goodsRepository.addGoodsChannel(channel);
         }
@@ -325,7 +327,7 @@ public class GoodsServiceImpl implements GoodsService {
     public int batchUpdateGoodsChannel(List<GoodsChannelConfigUpdateDTO> channelConfigs) {
         int i = 0;
         for(GoodsChannelConfigUpdateDTO dto : channelConfigs){
-            i += editOrUpdateGoodsChannel(dto.getGoodsId(), dto.getCountryCode(), dto.getChannelCode());
+            i += editOrUpdateGoodsChannel(dto.getGoodsId(), dto.getCountryCode(), dto.getChannelCode(), dto.getChannelType());
         }
         return i;
     }
@@ -336,12 +338,31 @@ public class GoodsServiceImpl implements GoodsService {
         List<String> channelCodes = channels.stream().map(GoodsChannel::getChannelCode).collect(Collectors.toList());
         List<LogisticChannel> l = logisticService.getByCodes(channelCodes);
         Map<String, LogisticChannel> channelMap = l.stream().collect(Collectors.toMap(LogisticChannel::getCode, x -> x));
-        return channels.stream().map(x -> {
+        Map<String, List<GoodsChannel>> group = channels.stream().collect(Collectors.groupingBy(GoodsChannel::getCountryCode));
+
+        return group.entrySet().stream().map(x -> {
+            String countryCode = x.getKey();
+            List<GoodsChannel> channelList = x.getValue();
+            Map<Byte, GoodsChannel> typedChannel = channelList.stream().collect(Collectors.toMap(GoodsChannel::getChannelType, y -> y));
+            GoodsChannel channel1 = typedChannel.get((byte)1);
+            GoodsChannel channel2 = typedChannel.get((byte)2);
             GoodsChannelRespDTO dto = new GoodsChannelRespDTO();
-            BeanUtils.copyProperties(x, dto);
-            String channelName = Optional.ofNullable(channelMap.get(x.getChannelCode()))
-                    .map(LogisticChannel::getName).orElse("");
-            dto.setChannelName(channelName);
+
+            dto.setGoodsId(goodsId);
+            dto.setCountryCode(countryCode);
+            if(channel1 != null) {
+                String channelName1 = Optional.ofNullable(channelMap.get(channel1.getChannelCode()))
+                        .map(LogisticChannel::getName).orElse("");
+                dto.setChannelCode(channel1.getChannelCode());
+                dto.setChannelName(channelName1);
+            }
+
+            if(channel2 != null) {
+                String channelName2 = Optional.ofNullable(channelMap.get(channel2.getChannelCode()))
+                        .map(LogisticChannel::getName).orElse("");
+                dto.setChannelCode2(channel2.getChannelCode());
+                dto.setChannelName2(channelName2);
+            }
             return dto;
         }).collect(Collectors.toList());
     }
@@ -375,7 +396,7 @@ public class GoodsServiceImpl implements GoodsService {
             for (SkuVO skuVO : goods.getSkuList()) {
                 for (GoodsChannel channel : channels) {
                     QuoteResult r = quoteService.quote(channel.getCountryCode(), channel.getChannelCode(), goods, skuVO, qty);
-                    GoodsQuoteDetail po = r.convert2PO(skuVO.getSkuId(), channel.getCountryCode(), qty, version);
+                    GoodsQuoteDetail po = r.convert2PO(skuVO.getSkuId(), channel.getCountryCode(), qty, channel.getChannelType(), version);
                     quoteList.add(po);
                 }
             }

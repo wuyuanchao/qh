@@ -16,7 +16,7 @@ public final class GoodsQuoteDetailDynamicSqlSupport {
 
     /**
      * Database Column Remarks:
-     *   版本号。暂时简单使用时间戳
+     *   报价单id
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote_detail.quote_id")
     public static final SqlColumn<Integer> quoteId = goodsQuoteDetail.quoteId;
@@ -77,6 +77,9 @@ public final class GoodsQuoteDetailDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote_detail.created_at")
     public static final SqlColumn<Integer> createdAt = goodsQuoteDetail.createdAt;
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote_detail.channel_type")
+    public static final SqlColumn<Byte> channelType = goodsQuoteDetail.channelType;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_quote_detail")
     public static final class GoodsQuoteDetail extends AliasableSqlTable<GoodsQuoteDetail> {
         public final SqlColumn<Integer> recId = column("rec_id", JDBCType.INTEGER);
@@ -106,6 +109,8 @@ public final class GoodsQuoteDetailDynamicSqlSupport {
         public final SqlColumn<BigDecimal> actWeight = column("act_weight", JDBCType.DECIMAL);
 
         public final SqlColumn<Integer> createdAt = column("created_at", JDBCType.INTEGER);
+
+        public final SqlColumn<Byte> channelType = column("channel_type", JDBCType.TINYINT);
 
         public GoodsQuoteDetail() {
             super("qh_goods_quote_detail", GoodsQuoteDetail::new);

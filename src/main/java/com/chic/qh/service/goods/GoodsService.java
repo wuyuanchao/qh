@@ -49,8 +49,8 @@ public interface GoodsService {
 
     List<SkuListExcelVO> exportSkuList(Integer goodsId);
 
-    GoodsChannel getGoodsChannel(Integer goodsId, String countryCode);
-    int editOrUpdateGoodsChannel(Integer goodsId, String countryCode,  String channelCode);
+    GoodsChannel getGoodsChannel(Integer goodsId, String countryCode, Byte channelType);
+    int editOrUpdateGoodsChannel(Integer goodsId, String countryCode,  String channelCode, Byte channelType);
     int batchUpdateGoodsChannel(List<GoodsChannelConfigUpdateDTO> channelConfigs);
     List<GoodsChannelRespDTO> getGoodsChannelList(Integer goodsId);
     int deleteGoodsChannel(Integer goodsId, String countryCode);

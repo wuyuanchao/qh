@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface GoodsChannelMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_channel")
-    BasicColumn[] selectList = BasicColumn.columnList(recId, goodsId, countryCode, channelCode, updatedAt);
+    BasicColumn[] selectList = BasicColumn.columnList(recId, goodsId, countryCode, channelCode, updatedAt, channelType);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_channel")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
@@ -54,7 +54,8 @@ public interface GoodsChannelMapper extends CommonCountMapper, CommonDeleteMappe
         @Result(column="goods_id", property="goodsId", jdbcType=JdbcType.INTEGER),
         @Result(column="country_code", property="countryCode", jdbcType=JdbcType.VARCHAR),
         @Result(column="channel_code", property="channelCode", jdbcType=JdbcType.VARCHAR),
-        @Result(column="updated_at", property="updatedAt", jdbcType=JdbcType.INTEGER)
+        @Result(column="updated_at", property="updatedAt", jdbcType=JdbcType.INTEGER),
+        @Result(column="channel_type", property="channelType", jdbcType=JdbcType.TINYINT)
     })
     List<GoodsChannel> selectMany(SelectStatementProvider selectStatement);
 
@@ -87,6 +88,7 @@ public interface GoodsChannelMapper extends CommonCountMapper, CommonDeleteMappe
             .map(countryCode).toProperty("countryCode")
             .map(channelCode).toProperty("channelCode")
             .map(updatedAt).toProperty("updatedAt")
+            .map(channelType).toProperty("channelType")
         );
     }
 
@@ -97,6 +99,7 @@ public interface GoodsChannelMapper extends CommonCountMapper, CommonDeleteMappe
             .map(countryCode).toProperty("countryCode")
             .map(channelCode).toProperty("channelCode")
             .map(updatedAt).toProperty("updatedAt")
+            .map(channelType).toProperty("channelType")
         );
     }
 
@@ -107,6 +110,7 @@ public interface GoodsChannelMapper extends CommonCountMapper, CommonDeleteMappe
             .map(countryCode).toPropertyWhenPresent("countryCode", row::getCountryCode)
             .map(channelCode).toPropertyWhenPresent("channelCode", row::getChannelCode)
             .map(updatedAt).toPropertyWhenPresent("updatedAt", row::getUpdatedAt)
+            .map(channelType).toPropertyWhenPresent("channelType", row::getChannelType)
         );
     }
 
@@ -142,7 +146,8 @@ public interface GoodsChannelMapper extends CommonCountMapper, CommonDeleteMappe
         return dsl.set(goodsId).equalTo(row::getGoodsId)
                 .set(countryCode).equalTo(row::getCountryCode)
                 .set(channelCode).equalTo(row::getChannelCode)
-                .set(updatedAt).equalTo(row::getUpdatedAt);
+                .set(updatedAt).equalTo(row::getUpdatedAt)
+                .set(channelType).equalTo(row::getChannelType);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_channel")
@@ -150,7 +155,8 @@ public interface GoodsChannelMapper extends CommonCountMapper, CommonDeleteMappe
         return dsl.set(goodsId).equalToWhenPresent(row::getGoodsId)
                 .set(countryCode).equalToWhenPresent(row::getCountryCode)
                 .set(channelCode).equalToWhenPresent(row::getChannelCode)
-                .set(updatedAt).equalToWhenPresent(row::getUpdatedAt);
+                .set(updatedAt).equalToWhenPresent(row::getUpdatedAt)
+                .set(channelType).equalToWhenPresent(row::getChannelType);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_channel")
@@ -160,6 +166,7 @@ public interface GoodsChannelMapper extends CommonCountMapper, CommonDeleteMappe
             .set(countryCode).equalTo(row::getCountryCode)
             .set(channelCode).equalTo(row::getChannelCode)
             .set(updatedAt).equalTo(row::getUpdatedAt)
+            .set(channelType).equalTo(row::getChannelType)
             .where(recId, isEqualTo(row::getRecId))
         );
     }
@@ -171,6 +178,7 @@ public interface GoodsChannelMapper extends CommonCountMapper, CommonDeleteMappe
             .set(countryCode).equalToWhenPresent(row::getCountryCode)
             .set(channelCode).equalToWhenPresent(row::getChannelCode)
             .set(updatedAt).equalToWhenPresent(row::getUpdatedAt)
+            .set(channelType).equalToWhenPresent(row::getChannelType)
             .where(recId, isEqualTo(row::getRecId))
         );
     }

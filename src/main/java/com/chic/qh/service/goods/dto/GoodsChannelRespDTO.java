@@ -8,4 +8,7 @@ public class GoodsChannelRespDTO {
     private String countryCode;
     private String channelCode;
     private String channelName;
+    private String channelCode2;
+    private String channelName2;
+
 }

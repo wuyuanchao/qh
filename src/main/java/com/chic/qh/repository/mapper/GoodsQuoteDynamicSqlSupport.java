@@ -12,12 +12,20 @@ public final class GoodsQuoteDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote.rec_id")
     public static final SqlColumn<Integer> recId = goodsQuote.recId;
 
+    /**
+     * Database Column Remarks:
+     *   报价单名称
+     */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote.quote_name")
     public static final SqlColumn<String> quoteName = goodsQuote.quoteName;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote.goods_id")
     public static final SqlColumn<Integer> goodsId = goodsQuote.goodsId;
 
+    /**
+     * Database Column Remarks:
+     *   报价版本，暂时简单使用时间戳
+     */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote.version")
     public static final SqlColumn<String> version = goodsQuote.version;
 

@@ -50,9 +50,9 @@ public class QuoteController {
     public QuoteRespDTO preview(@PathVariable("goodsSn") String goodsSn,
                                 @RequestParam(name = "country", defaultValue = "US") String country,
                                 @RequestParam(name = "quantity", defaultValue="1") Integer quantity,
-                                @RequestParam(value = "skuId", required = false) Integer skuId){
-
-        return getQuoteResult(goodsSn, skuId, country, quantity, true);
+                                @RequestParam(value = "skuId", required = false) Integer skuId,
+                                @RequestParam(value = "channelType", defaultValue = "1") Byte channelType){
+        return getQuoteResult(goodsSn, skuId, country, quantity, channelType, true);
     }
 
     @RespWrap
@@ -61,8 +61,9 @@ public class QuoteController {
                                 @PathVariable("version") String version,
                                 @RequestParam(name = "country", defaultValue = "US") String country,
                                 @RequestParam(name = "quantity", defaultValue="1") Integer quantity,
-                                @RequestParam(value = "skuId", required = false) Integer skuId){
-        return getQuoteResult(goodsSn, skuId, country, quantity, false, version);
+                                @RequestParam(value = "skuId", required = false) Integer skuId,
+                                @RequestParam(value = "channelType", defaultValue = "1") Byte channelType){
+        return getQuoteResult(goodsSn, skuId, country, quantity, channelType, false, version);
     }
 
     @RespWrap
@@ -70,14 +71,15 @@ public class QuoteController {
     public QuoteRespDTO quote(@PathVariable("goodsSn") String goodsSn,
                               @RequestParam(name = "country", defaultValue = "US") String country,
                               @RequestParam(name = "quantity", defaultValue="1") Integer quantity,
-                              @RequestParam(value = "skuId", required = false) Integer skuId) {
-        return getQuoteResult(goodsSn, skuId, country, quantity, false);
+                              @RequestParam(value = "skuId", required = false) Integer skuId,
+                              @RequestParam(value = "channelType", defaultValue = "1") Byte channelType){
+        return getQuoteResult(goodsSn, skuId, country, quantity, channelType, false);
     }
 
-    private QuoteRespDTO getQuoteResult(String goodsSn, Integer skuId, String country, Integer quantity, boolean preview){
-        return getQuoteResult(goodsSn, skuId, country, quantity, preview, null);
+    private QuoteRespDTO getQuoteResult(String goodsSn, Integer skuId, String country, Integer quantity, Byte channelType, boolean preview){
+        return getQuoteResult(goodsSn, skuId, country, quantity, channelType, preview, null);
     }
-    private QuoteRespDTO getQuoteResult(String goodsSn, Integer skuId, String country, Integer quantity, boolean preview, String version){
+    private QuoteRespDTO getQuoteResult(String goodsSn, Integer skuId, String country, Integer quantity, Byte channelType, boolean preview, String version){
         GoodsVO goodsVO = goodsService.getGoodsBySn(goodsSn);
         if(goodsVO == null){
             throw new HttpClientErrorException(NOT_FOUND, "goodsSn: " + goodsSn + " not found!");
@@ -99,7 +101,7 @@ public class QuoteController {
         }
 
         if(preview){
-            GoodsChannel goodsChannel = goodsService.getGoodsChannel(goodsVO.getGoodsId(), country);
+            GoodsChannel goodsChannel = goodsService.getGoodsChannel(goodsVO.getGoodsId(), country, channelType);
             if(goodsChannel == null){
                 throw new HttpClientErrorException(NOT_FOUND, "No Shipping line for goods[" + goodsSn + "] to country[" + country + "]  found!");
             }
@@ -107,9 +109,9 @@ public class QuoteController {
         }else{
             GoodsQuoteDetail goodsQuoteDetail;
             if(StringUtils.isBlank(version)) {
-                goodsQuoteDetail = quoteService.getQuote(skuVO, country, quantity);
+                goodsQuoteDetail = quoteService.getQuote(skuVO, country, quantity, channelType);
             }else{
-                goodsQuoteDetail = quoteService.getQuote(skuVO, country, quantity, version);
+                goodsQuoteDetail = quoteService.getQuote(skuVO, country, quantity, channelType, version);
             }
             if(goodsQuoteDetail == null) {
                 throw new HttpClientErrorException(NOT_FOUND, "No quote for goods[" + goodsSn + "] to country[" + country + "]  found!");
