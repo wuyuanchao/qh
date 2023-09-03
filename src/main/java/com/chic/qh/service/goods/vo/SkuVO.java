@@ -2,7 +2,9 @@ package com.chic.qh.service.goods.vo;
 
 import lombok.Data;
 
+import javax.annotation.Generated;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @Description:
@@ -54,5 +56,14 @@ public class SkuVO {
     private String remark;
 
     private String skuImage;
+
+    //父级skuId
+    private Integer parentId;
+
+    //店小蜜skuId
+    private String dxmSkuId;
+
+    //子sku列表
+    private List<SkuVO> children;
 
 }

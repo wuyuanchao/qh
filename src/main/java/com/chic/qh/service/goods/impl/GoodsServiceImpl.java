@@ -14,6 +14,7 @@ import com.chic.qh.service.logistic.LogisticService;
 import com.chic.qh.service.quote.QuoteResult;
 import com.chic.qh.service.quote.QuoteService;
 import com.github.pagehelper.Page;
+import com.google.common.collect.ArrayListMultimap;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -93,11 +94,7 @@ public class GoodsServiceImpl implements GoodsService {
         BeanUtils.copyProperties(goodsPo, goodsVO);
 
         List<SkuRelation> skuRelationList = skuRelationRepository.querySkuList(goodsPo.getGoodsId());
-        List<SkuVO> skuVOList = skuRelationList.stream().map( s->{
-                SkuVO skuVO = new SkuVO();
-                BeanUtils.copyProperties(s, skuVO);
-                return skuVO;
-            }).collect(Collectors.toList());
+        List<SkuVO> skuVOList = buildSkuVOList(skuRelationList);
 
         goodsVO.setSkuList(skuVOList);
 
@@ -193,10 +190,29 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<SkuVO> querySkuList(SkuQueryDTO dto) {
         List<SkuRelation> skuRelationList = skuRelationRepository.querySkuList(dto.getGoodsId());
+        return buildSkuVOList(skuRelationList);
+    }
+
+    private List<SkuVO> buildSkuVOList(List<SkuRelation> skuRelationList){
+        List<Integer> skuIds = skuRelationList.stream().map(x -> x.getSkuId()).collect(Collectors.toList());
+        ArrayListMultimap<Integer, SkuRelation> childSkuListMap = ArrayListMultimap.create();
+        if(CollectionUtils.isNotEmpty(skuIds)) {
+            List<SkuRelation> childList = skuRelationRepository.querySkuListByParentIds(skuIds);
+            childList.forEach(x->childSkuListMap.put(x.getParentId(), x));
+        }
         List<SkuVO> skuVOList = new ArrayList<>(skuRelationList.size());
         skuRelationList.forEach(x->{
             SkuVO skuVO = new SkuVO();
             BeanUtils.copyProperties(x, skuVO);
+            List<SkuRelation> childList = childSkuListMap.get(x.getSkuId());
+            if(CollectionUtils.isNotEmpty(childList)) {
+                List<SkuVO> childSkuVOList = childList.stream().map(childSku -> {
+                    SkuVO childSkuVO = new SkuVO();
+                    BeanUtils.copyProperties(childSku, childSkuVO);
+                    return childSkuVO;
+                }).collect(Collectors.toList());
+                skuVO.setChildren(childSkuVOList);
+            }
             skuVOList.add(skuVO);
         });
         return skuVOList;
