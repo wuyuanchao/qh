@@ -32,6 +32,13 @@ public final class GoodsChannelDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_channel.updated_at")
     public static final SqlColumn<Integer> updatedAt = goodsChannel.updatedAt;
 
+    /**
+     * Database Column Remarks:
+     *   渠道类型：1-普线， 2-快线
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_channel.channel_type")
+    public static final SqlColumn<Byte> channelType = goodsChannel.channelType;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_channel")
     public static final class GoodsChannel extends AliasableSqlTable<GoodsChannel> {
         public final SqlColumn<Integer> recId = column("rec_id", JDBCType.INTEGER);
@@ -43,6 +50,8 @@ public final class GoodsChannelDynamicSqlSupport {
         public final SqlColumn<String> channelCode = column("channel_code", JDBCType.VARCHAR);
 
         public final SqlColumn<Integer> updatedAt = column("updated_at", JDBCType.INTEGER);
+
+        public final SqlColumn<Byte> channelType = column("channel_type", JDBCType.TINYINT);
 
         public GoodsChannel() {
             super("qh_goods_channel", GoodsChannel::new);

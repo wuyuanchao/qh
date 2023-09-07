@@ -103,9 +103,10 @@ public class GoodsRepository {
         return goodsChannelMapper.insert(channel);
     }
 
-    public Optional<GoodsChannel> selectGoodsChannel(Integer goodsId, String countryCode) {
+    public Optional<GoodsChannel> selectGoodsChannel(Integer goodsId, String countryCode, Byte channelType) {
         return goodsChannelMapper.selectOne(c -> c.where(GoodsChannelDynamicSqlSupport.goodsId, isEqualTo(goodsId))
-                .and(GoodsChannelDynamicSqlSupport.countryCode, isEqualTo(countryCode)));
+                .and(GoodsChannelDynamicSqlSupport.countryCode, isEqualTo(countryCode))
+                .and(GoodsChannelDynamicSqlSupport.channelType, isEqualTo(channelType)));
     }
 
     public int updateGoodsChannel(GoodsChannel channel) {

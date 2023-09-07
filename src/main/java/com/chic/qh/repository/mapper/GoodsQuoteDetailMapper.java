@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface GoodsQuoteDetailMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_quote_detail")
-    BasicColumn[] selectList = BasicColumn.columnList(recId, quoteId, skuId, qty, country, shippingChannel, shippingTime, amount, productCost, shippingCost, weightType, volWeight, actWeight, createdAt);
+    BasicColumn[] selectList = BasicColumn.columnList(recId, quoteId, skuId, qty, country, shippingChannel, shippingTime, amount, productCost, shippingCost, weightType, volWeight, actWeight, createdAt, channelType);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_quote_detail")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
@@ -63,7 +63,8 @@ public interface GoodsQuoteDetailMapper extends CommonCountMapper, CommonDeleteM
         @Result(column="weight_type", property="weightType", jdbcType=JdbcType.VARCHAR),
         @Result(column="vol_weight", property="volWeight", jdbcType=JdbcType.DECIMAL),
         @Result(column="act_weight", property="actWeight", jdbcType=JdbcType.DECIMAL),
-        @Result(column="created_at", property="createdAt", jdbcType=JdbcType.INTEGER)
+        @Result(column="created_at", property="createdAt", jdbcType=JdbcType.INTEGER),
+        @Result(column="channel_type", property="channelType", jdbcType=JdbcType.TINYINT)
     })
     List<GoodsQuoteDetail> selectMany(SelectStatementProvider selectStatement);
 
@@ -105,6 +106,7 @@ public interface GoodsQuoteDetailMapper extends CommonCountMapper, CommonDeleteM
             .map(volWeight).toProperty("volWeight")
             .map(actWeight).toProperty("actWeight")
             .map(createdAt).toProperty("createdAt")
+            .map(channelType).toProperty("channelType")
         );
     }
 
@@ -124,6 +126,7 @@ public interface GoodsQuoteDetailMapper extends CommonCountMapper, CommonDeleteM
             .map(volWeight).toProperty("volWeight")
             .map(actWeight).toProperty("actWeight")
             .map(createdAt).toProperty("createdAt")
+            .map(channelType).toProperty("channelType")
         );
     }
 
@@ -143,6 +146,7 @@ public interface GoodsQuoteDetailMapper extends CommonCountMapper, CommonDeleteM
             .map(volWeight).toPropertyWhenPresent("volWeight", row::getVolWeight)
             .map(actWeight).toPropertyWhenPresent("actWeight", row::getActWeight)
             .map(createdAt).toPropertyWhenPresent("createdAt", row::getCreatedAt)
+            .map(channelType).toPropertyWhenPresent("channelType", row::getChannelType)
         );
     }
 
@@ -187,7 +191,8 @@ public interface GoodsQuoteDetailMapper extends CommonCountMapper, CommonDeleteM
                 .set(weightType).equalTo(row::getWeightType)
                 .set(volWeight).equalTo(row::getVolWeight)
                 .set(actWeight).equalTo(row::getActWeight)
-                .set(createdAt).equalTo(row::getCreatedAt);
+                .set(createdAt).equalTo(row::getCreatedAt)
+                .set(channelType).equalTo(row::getChannelType);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_quote_detail")
@@ -204,7 +209,8 @@ public interface GoodsQuoteDetailMapper extends CommonCountMapper, CommonDeleteM
                 .set(weightType).equalToWhenPresent(row::getWeightType)
                 .set(volWeight).equalToWhenPresent(row::getVolWeight)
                 .set(actWeight).equalToWhenPresent(row::getActWeight)
-                .set(createdAt).equalToWhenPresent(row::getCreatedAt);
+                .set(createdAt).equalToWhenPresent(row::getCreatedAt)
+                .set(channelType).equalToWhenPresent(row::getChannelType);
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_quote_detail")
@@ -223,6 +229,7 @@ public interface GoodsQuoteDetailMapper extends CommonCountMapper, CommonDeleteM
             .set(volWeight).equalTo(row::getVolWeight)
             .set(actWeight).equalTo(row::getActWeight)
             .set(createdAt).equalTo(row::getCreatedAt)
+            .set(channelType).equalTo(row::getChannelType)
             .where(recId, isEqualTo(row::getRecId))
         );
     }
@@ -243,6 +250,7 @@ public interface GoodsQuoteDetailMapper extends CommonCountMapper, CommonDeleteM
             .set(volWeight).equalToWhenPresent(row::getVolWeight)
             .set(actWeight).equalToWhenPresent(row::getActWeight)
             .set(createdAt).equalToWhenPresent(row::getCreatedAt)
+            .set(channelType).equalToWhenPresent(row::getChannelType)
             .where(recId, isEqualTo(row::getRecId))
         );
     }

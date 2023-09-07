@@ -236,6 +236,7 @@
                     <username>root</username>
                     <password />
                     <outputChangeLogFile>src/main/resources/db/changelog/changes/liquibase-outputChangeLog.yaml</outputChangeLogFile>
+<!--                    <outputChangeLogFile>src/main/resources/db/changelog/changes/liquibase-outputChangeLog.mysql.sql</outputChangeLogFile>-->
                 </configuration>
             </plugin>
         </plugins>

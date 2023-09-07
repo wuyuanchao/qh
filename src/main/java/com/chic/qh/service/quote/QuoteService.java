@@ -24,9 +24,9 @@ public interface QuoteService {
 
     void saveQuote(GoodsQuote goodsQuote, List<GoodsQuoteDetail> quoteList);
 
-    GoodsQuoteDetail getQuote(SkuVO skuVO, String country, Integer quantity);
+    GoodsQuoteDetail getQuote(SkuVO skuVO, String country, Integer quantity, Byte chanelType);
 
-    GoodsQuoteDetail getQuote(SkuVO skuVO, String country, Integer quantity, String version);
+    GoodsQuoteDetail getQuote(SkuVO skuVO, String country, Integer quantity,  Byte chanelType, String version);
 
     List<GoodsQuote> selectHistory(Integer goodsId);
 }

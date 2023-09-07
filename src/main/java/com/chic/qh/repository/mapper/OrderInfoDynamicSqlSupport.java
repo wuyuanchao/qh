@@ -10,10 +10,6 @@ public final class OrderInfoDynamicSqlSupport {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_order_info")
     public static final OrderInfo orderInfo = new OrderInfo();
 
-    /**
-     * Database Column Remarks:
-     *   Order ID
-     */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_order_info.order_id")
     public static final SqlColumn<Integer> orderId = orderInfo.orderId;
 

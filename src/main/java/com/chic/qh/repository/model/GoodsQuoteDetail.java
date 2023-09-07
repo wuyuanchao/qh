@@ -17,7 +17,7 @@ public class GoodsQuoteDetail {
 
     /**
      * Database Column Remarks:
-     *   版本号。暂时简单使用时间戳
+     *   报价单id
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote_detail.quote_id")
     private Integer quoteId;
@@ -77,6 +77,9 @@ public class GoodsQuoteDetail {
      */
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote_detail.created_at")
     private Integer createdAt;
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote_detail.channel_type")
+    private Byte channelType;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote_detail.rec_id")
     public Integer getRecId() {
@@ -218,6 +221,16 @@ public class GoodsQuoteDetail {
         this.createdAt = createdAt;
     }
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote_detail.channel_type")
+    public Byte getChannelType() {
+        return channelType;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_quote_detail.channel_type")
+    public void setChannelType(Byte channelType) {
+        this.channelType = channelType;
+    }
+
     @Override
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_quote_detail")
     public String toString() {
@@ -239,6 +252,7 @@ public class GoodsQuoteDetail {
         sb.append(", volWeight=").append(volWeight);
         sb.append(", actWeight=").append(actWeight);
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", channelType=").append(channelType);
         sb.append("]");
         return sb.toString();
     }

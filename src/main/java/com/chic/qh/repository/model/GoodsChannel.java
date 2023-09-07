@@ -33,6 +33,13 @@ public class GoodsChannel {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_channel.updated_at")
     private Integer updatedAt;
 
+    /**
+     * Database Column Remarks:
+     *   渠道类型：1-普线， 2-快线
+     */
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_channel.channel_type")
+    private Byte channelType;
+
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_channel.rec_id")
     public Integer getRecId() {
         return recId;
@@ -83,6 +90,16 @@ public class GoodsChannel {
         this.updatedAt = updatedAt;
     }
 
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_channel.channel_type")
+    public Byte getChannelType() {
+        return channelType;
+    }
+
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source field: qh_goods_channel.channel_type")
+    public void setChannelType(Byte channelType) {
+        this.channelType = channelType;
+    }
+
     @Override
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_goods_channel")
     public String toString() {
@@ -95,6 +112,7 @@ public class GoodsChannel {
         sb.append(", countryCode=").append(countryCode);
         sb.append(", channelCode=").append(channelCode);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", channelType=").append(channelType);
         sb.append("]");
         return sb.toString();
     }
