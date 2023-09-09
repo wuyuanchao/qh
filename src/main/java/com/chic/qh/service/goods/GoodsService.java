@@ -52,8 +52,7 @@ public interface GoodsService {
     GoodsChannel getGoodsChannel(Integer goodsId, String countryCode, Byte channelType);
     int editOrUpdateGoodsChannel(Integer goodsId, String countryCode,  String channelCode, Byte channelType);
     int batchUpdateGoodsChannel(List<GoodsChannelConfigUpdateDTO> channelConfigs);
-    List<GoodsChannelRespDTO> getGoodsChannelList(Integer goodsId);
+    List<GoodsChannelRespDTO> getGoodsChannelDTOList(Integer goodsId);
+    List<GoodsChannel> getGoodsChannelList(Integer goodsId);
     int deleteGoodsChannel(Integer goodsId, String countryCode);
-
-    void saveQuote(Integer goodsId, String quoteName, String version);
 }

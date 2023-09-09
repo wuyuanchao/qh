@@ -37,7 +37,7 @@ public class QuoteResult {
 
     private String time;
 
-    public GoodsQuoteDetail convert2PO(int skuId, String country, int qty, Byte channelType, String version){
+    public GoodsQuoteDetail convert2PO(int skuId, String country, int qty, Byte channelType){
         GoodsQuoteDetail quote = new GoodsQuoteDetail();
         quote.setSkuId(skuId);
         quote.setQty(qty);

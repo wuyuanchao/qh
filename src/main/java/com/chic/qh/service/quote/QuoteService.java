@@ -6,6 +6,7 @@ import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description:
@@ -22,11 +23,21 @@ public interface QuoteService {
 
     void updateConfig(String key, String value);
 
-    void saveQuote(GoodsQuote goodsQuote, List<GoodsQuoteDetail> quoteList);
+    void saveQuote(GoodsQuoteDTO goodsQuoteDTO);
 
-    GoodsQuoteDetail getQuote(SkuVO skuVO, String country, Integer quantity, Byte chanelType);
+    GoodsQuote getQuoteVersion(Integer goodsId);
 
-    GoodsQuoteDetail getQuote(SkuVO skuVO, String country, Integer quantity,  Byte chanelType, String version);
+    GoodsQuote getQuoteVersion(Integer goodsId, String version);
+
+    GoodsQuoteDetail getQuoteDetails(SkuVO skuVO, String country, Integer quantity, Byte chanelType);
+
+    GoodsQuoteDetail getQuoteDetails(SkuVO skuVO, String country, Integer quantity, Byte chanelType, String version);
 
     List<GoodsQuote> selectHistory(Integer goodsId);
+
+    GoodsQuoteDTO createQuote(GoodsVO goods, String quoteName, String version);
+
+    GoodsQuoteDTO getQuoteDTO(Integer goodsId, String version);
+
+    Optional<String> getQuotedCountry(GoodsQuote quoteVersion);
 }

@@ -21,6 +21,7 @@ public class QuoteRespDTO {
     private Byte availability;
     private String referenceUrl;
     private String processingTime;
+    private Byte channelType;
 
     public static class Builder{
         private Builder(){}
@@ -51,6 +52,11 @@ public class QuoteRespDTO {
 
         public Builder quantity(Integer quantity){
             quoteRespDTO.setQuantity(quantity);
+            return this;
+        }
+
+        public Builder channelType(Byte channelType){
+            quoteRespDTO.setChannelType(channelType);
             return this;
         }
 

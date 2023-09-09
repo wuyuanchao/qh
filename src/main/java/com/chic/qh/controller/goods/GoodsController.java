@@ -169,12 +169,7 @@ public class GoodsController {
     @RespWrap
     @GetMapping("/{goodsId}/channels")
     public List<GoodsChannelRespDTO> getGoodsChannelList(@PathVariable("goodsId") Integer goodsId){
-        return goodsService.getGoodsChannelList(goodsId);
+        return goodsService.getGoodsChannelDTOList(goodsId);
     }
 
-    @RespWrap
-    @PostMapping("/{goodsId}/quote")
-    public void quoteGoods(@PathVariable("goodsId") Integer goodsId, @RequestBody GoodsQuoteDTO dto){
-        goodsService.saveQuote(goodsId, dto.getName(), dto.getVersion());
-    }
 }

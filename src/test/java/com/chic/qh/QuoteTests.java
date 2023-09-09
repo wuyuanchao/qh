@@ -1,6 +1,5 @@
 package com.chic.qh;
 
-import com.chic.qh.repository.model.Goods;
 import com.chic.qh.repository.model.GoodsQuoteDetail;
 import com.chic.qh.service.goods.GoodsService;
 import com.chic.qh.service.goods.vo.GoodsVO;
@@ -21,7 +20,12 @@ public class QuoteTests {
     @Test
     public void testQuoteDetail(){
         GoodsVO goods = goodsService.getGoods(32);
-        GoodsQuoteDetail detail = quoteService.getQuote(goods.getSkuList().get(0), "US", 1, (byte)1);
+        GoodsQuoteDetail detail = quoteService.getQuoteDetails(goods.getSkuList().get(0), "US", 1, (byte)1);
         System.out.println(detail);
     }
-}
+
+    @Test
+    public void testCreateQuote(){
+        GoodsVO goods = goodsService.getGoods(32);
+        System.out.println(quoteService.createQuote(goods, "preview", "preview"));
+    }}

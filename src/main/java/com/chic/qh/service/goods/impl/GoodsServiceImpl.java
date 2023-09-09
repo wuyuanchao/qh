@@ -349,7 +349,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<GoodsChannelRespDTO> getGoodsChannelList(Integer goodsId) {
+    public List<GoodsChannelRespDTO> getGoodsChannelDTOList(Integer goodsId) {
         List<GoodsChannel> channels = goodsRepository.getGoodsChannelList(goodsId);
         List<String> channelCodes = channels.stream().map(GoodsChannel::getChannelCode).collect(Collectors.toList());
         List<LogisticChannel> l = logisticService.getByCodes(channelCodes);
@@ -384,40 +384,13 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public int deleteGoodsChannel(Integer goodsId, String countryCode) {
-        return goodsRepository.deleteGoodsChannel(goodsId, countryCode);
+    public List<GoodsChannel> getGoodsChannelList(Integer goodsId) {
+        return goodsRepository.getGoodsChannelList(goodsId);
     }
 
-    @Override
-    public void saveQuote(Integer goodsId, String quoteName, String version) {
-        GoodsVO goods = this.getGoods(goodsId);
-        if(goods == null){
-            throw new RuntimeException("商品不存在!goodsId:" + goodsId);
-        }
-        if(CollectionUtils.isEmpty(goods.getSkuList())){
-            throw new RuntimeException("商品没有SKU!goodsSn:" + goods.getGoodsSn());
-        }
-        List<GoodsChannel> channels = goodsRepository.getGoodsChannelList(goods.getGoodsId());
-        if(CollectionUtils.isEmpty(channels)){
-            throw new RuntimeException("商品没有配置渠道!goodsSn:" + goods.getGoodsSn());
-        }
-        GoodsQuote goodsQuote = new GoodsQuote();
-        goodsQuote.setGoodsId(goods.getGoodsId());
-        goodsQuote.setVersion(version);
-        goodsQuote.setQuoteName(quoteName);
-        goodsQuote.setCreatedAt((int)Instant.now().getEpochSecond());
 
-        List<GoodsQuoteDetail> quoteList = new ArrayList<>();
-        for(int qty = 1; qty <= 3; qty++) {
-            for (SkuVO skuVO : goods.getSkuList()) {
-                for (GoodsChannel channel : channels) {
-                    QuoteResult r = quoteService.quote(channel.getCountryCode(), channel.getChannelCode(), goods, skuVO, qty);
-                    GoodsQuoteDetail po = r.convert2PO(skuVO.getSkuId(), channel.getCountryCode(), qty, channel.getChannelType(), version);
-                    quoteList.add(po);
-                }
-            }
-        }
-        Assert.notEmpty(quoteList, "报价列表不能为空!");
-        quoteService.saveQuote(goodsQuote, quoteList);
+    @Override
+    public int deleteGoodsChannel(Integer goodsId, String countryCode) {
+        return goodsRepository.deleteGoodsChannel(goodsId, countryCode);
     }
 }
