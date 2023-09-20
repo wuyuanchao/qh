@@ -27,11 +27,14 @@ public interface QuoteService {
 
     GoodsQuote getQuoteVersion(Integer goodsId);
 
+    GoodsQuote getQuoteVersion(Integer goodsId, Integer orderTime);
+
     GoodsQuote getQuoteVersion(Integer goodsId, String version);
 
     GoodsQuoteDetail getQuoteDetails(SkuVO skuVO, String country, Integer quantity, Byte chanelType);
 
     GoodsQuoteDetail getQuoteDetails(SkuVO skuVO, String country, Integer quantity, Byte chanelType, String version);
+    GoodsQuoteDetail getQuoteDetails(Integer skuId, String country, Integer quantity, Byte chanelType, Integer quoteId);
 
     List<GoodsQuote> selectHistory(Integer goodsId);
 

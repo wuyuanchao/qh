@@ -7,22 +7,22 @@ import com.chic.qh.service.order.dto.OrderEditDTO;
 import com.chic.qh.service.order.dto.OrderImportDTO;
 import com.chic.qh.service.order.dto.OrderQueryDTO;
 import com.chic.qh.service.order.vo.OrderListVO;
+import com.chic.qh.service.settle.SettleOrderService;
 import com.chic.qh.support.utils.DateUtils;
 import com.chic.qh.support.utils.ExcelUtils;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description:
@@ -31,10 +31,13 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderInfoRepository orderInfoRepository;
+    @Autowired
+    private SettleOrderService settleOrderService;
 
     @Override
     public OrderListVO queryPagedList(OrderQueryDTO dto) {
@@ -55,14 +58,20 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("单次导入数据最多5000条");
         }
 
-        excelList.forEach(orderImportDTO -> {
+        Integer currentTime = DateUtils.getCurrentSecond();
+        List<OrderInfo> orderInfoList = excelList.stream().map(orderImportDTO -> {
             OrderInfo orderInfo = new OrderInfo();
             BeanUtils.copyProperties(orderImportDTO, orderInfo);
             orderInfo.setStatus((byte)1);
-            orderInfo.setGmtCreated((int) Instant.now().getEpochSecond());
-            orderInfo.setGmtModify((int) Instant.now().getEpochSecond());
-            orderInfoRepository.insertSelective(orderInfo);
-        });
+            orderInfo.setGmtCreated(currentTime);
+            orderInfo.setGmtModify(currentTime);
+            return orderInfo;
+        }).collect(Collectors.toList());
+        //保存订单
+        Lists.partition(orderInfoList, 500).forEach(x->orderInfoRepository.insertMultiple(x));
+
+        //生成账单
+        settleOrderService.createSettleOrder(orderInfoList);
     }
 
     @Override

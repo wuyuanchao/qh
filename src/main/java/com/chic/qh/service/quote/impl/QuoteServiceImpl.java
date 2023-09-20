@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+import static org.mybatis.dynamic.sql.SqlBuilder.isLessThanOrEqualTo;
 
 /**
  * @Description: 报价
@@ -211,6 +212,16 @@ public class QuoteServiceImpl implements QuoteService {
     }
 
     @Override
+    public GoodsQuote getQuoteVersion(Integer _goodsId, Integer _orderTime) {
+        return goodsQuoteMapper.selectOne(c -> c
+                            .where(GoodsQuoteDynamicSqlSupport.goodsId, isEqualTo(_goodsId))
+                            .and(GoodsQuoteDynamicSqlSupport.version, isLessThanOrEqualTo(String.valueOf(_orderTime)))
+                            .orderBy(GoodsQuoteDynamicSqlSupport.version.descending())
+                            .limit(1)
+        ).orElse(null);
+    }
+
+    @Override
     public GoodsQuote getQuoteVersion(Integer _goodsId, String version) {
         return goodsQuoteMapper.selectOne(c -> c.where(GoodsQuoteDynamicSqlSupport.goodsId, isEqualTo(_goodsId))
                 .and(GoodsQuoteDynamicSqlSupport.version, isEqualTo(version))
@@ -243,6 +254,16 @@ public class QuoteServiceImpl implements QuoteService {
         }
         return goodsQuoteDetailMapper.selectOne(c -> c.where(GoodsQuoteDetailDynamicSqlSupport.skuId, isEqualTo(skuVO.getSkuId()))
                 .and(GoodsQuoteDetailDynamicSqlSupport.quoteId, isEqualTo(quoteVersion.getRecId()))
+                .and(GoodsQuoteDetailDynamicSqlSupport.country, isEqualTo(_country))
+                .and(GoodsQuoteDetailDynamicSqlSupport.qty, isEqualTo(_quantity))
+                .and(GoodsQuoteDetailDynamicSqlSupport.channelType, isEqualTo(_channelType))
+                .limit(1)).orElse(null);
+    }
+
+    @Override
+    public GoodsQuoteDetail getQuoteDetails(Integer _skuId, String _country, Integer _quantity, Byte _channelType, Integer _quoteId) {
+        return goodsQuoteDetailMapper.selectOne(c -> c.where(GoodsQuoteDetailDynamicSqlSupport.skuId, isEqualTo(_skuId))
+                .and(GoodsQuoteDetailDynamicSqlSupport.quoteId, isEqualTo(_quoteId))
                 .and(GoodsQuoteDetailDynamicSqlSupport.country, isEqualTo(_country))
                 .and(GoodsQuoteDetailDynamicSqlSupport.qty, isEqualTo(_quantity))
                 .and(GoodsQuoteDetailDynamicSqlSupport.channelType, isEqualTo(_channelType))

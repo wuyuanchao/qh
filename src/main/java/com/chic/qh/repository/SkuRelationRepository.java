@@ -59,4 +59,8 @@ public class SkuRelationRepository {
         }
         return skuRelationMapper.select(c->c.where(parentId, isIn(skuIds)));
     }
+
+    public SkuRelation getSkuByDxmSkuId(String _dxmSku) {
+        return skuRelationMapper.selectOne(c->c.where(dxmSkuId, isEqualTo(_dxmSku)).limit(1L)).orElse(null);
+    }
 }
