@@ -4,6 +4,7 @@ import com.chic.qh.repository.mapper.*;
 import com.chic.qh.repository.model.Goods;
 import com.chic.qh.repository.model.GoodsChannel;
 import com.chic.qh.repository.model.GoodsComment;
+import com.chic.qh.repository.model.SkuRelation;
 import com.chic.qh.service.goods.dto.GoodsQueryDTO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -29,6 +30,8 @@ public class GoodsRepository {
     @Autowired
     private GoodsMapper goodsMapper;
     @Autowired
+    private SkuRelationMapper skuRelationMapper;
+    @Autowired
     private GoodsCommentMapper goodsCommentMapper;
     @Autowired
     private GoodsChannelMapper goodsChannelMapper;
@@ -42,17 +45,25 @@ public class GoodsRepository {
     }
 
     public Page<Goods> queryPagedList(GoodsQueryDTO dto) {
+        //使用店小蜜skuId查找商品
+        Integer _goodsId = skuRelationMapper
+                .selectOne(c -> c.where(SkuRelationDynamicSqlSupport.dxmSkuId, isEqualTo(dto.getQ())))
+                .map(SkuRelation::getGoodsId)
+                .orElse(null);
         String sn = StringUtils.hasText(dto.getQ()) ? dto.getQ() + "%" : null;
         String txt = StringUtils.hasText(dto.getQ()) ? "%" + dto.getQ() + "%" : null;
         return PageHelper.startPage(dto.getCurrent(), dto.getPageSize()).doSelectPage(
-                () -> goodsMapper.select(c->c
-                                .where(goodsSn, isLikeWhenPresent(sn))
-                                .and(status, isNotEqualTo((byte)3))
-                                .or(goodsName, isLikeWhenPresent(txt))
-                                .or(goodsName, isLikeWhenPresent(txt))
-                                .or(remark, isLikeWhenPresent(txt))
-                                .orderBy(gmtCreated.descending())
+                () -> goodsMapper.select(c -> c
+                        .where(status, isNotEqualTo((byte) 3))
+                        .and(goodsSn, isLikeWhenPresent(sn),
+                                or(goodsId, isEqualTo(_goodsId)),
+                                or(goodsName, isLikeWhenPresent(txt)),
+                                or(goodsNameEn, isLikeWhenPresent(txt)),
+                                or(remark, isLikeWhenPresent(txt)),
+                                or(remarkEn, isLikeWhenPresent(txt))
                         )
+                        .orderBy(gmtCreated.descending())
+                )
         );
     }
 
