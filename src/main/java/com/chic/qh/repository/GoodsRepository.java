@@ -46,17 +46,23 @@ public class GoodsRepository {
 
     public Page<Goods> queryPagedList(GoodsQueryDTO dto) {
         //使用店小蜜skuId查找商品
-        Integer _goodsId = skuRelationMapper
-                .selectOne(c -> c.where(SkuRelationDynamicSqlSupport.dxmSkuId, isEqualTo(dto.getQ())))
-                .map(SkuRelation::getGoodsId)
-                .orElse(null);
+        Integer _goodsId;
+        if(StringUtils.hasText(dto.getQ())) {
+            _goodsId = skuRelationMapper
+                    .selectOne(c -> c.where(SkuRelationDynamicSqlSupport.dxmSkuId, isEqualTo(dto.getQ()))
+                            .limit(1))
+                    .map(SkuRelation::getGoodsId)
+                    .orElse(null);
+        } else {
+            _goodsId = null;
+        }
         String sn = StringUtils.hasText(dto.getQ()) ? dto.getQ() + "%" : null;
         String txt = StringUtils.hasText(dto.getQ()) ? "%" + dto.getQ() + "%" : null;
         return PageHelper.startPage(dto.getCurrent(), dto.getPageSize()).doSelectPage(
                 () -> goodsMapper.select(c -> c
                         .where(status, isNotEqualTo((byte) 3))
                         .and(goodsSn, isLikeWhenPresent(sn),
-                                or(goodsId, isEqualTo(_goodsId)),
+                                or(goodsId, isEqualToWhenPresent(_goodsId)),
                                 or(goodsName, isLikeWhenPresent(txt)),
                                 or(goodsNameEn, isLikeWhenPresent(txt)),
                                 or(remark, isLikeWhenPresent(txt)),

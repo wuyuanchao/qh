@@ -141,68 +141,16 @@ public class QuoteServiceImpl implements QuoteService {
 
     @Override
     public void saveQuote(GoodsQuoteDTO goodsQuoteDTO) {
-        Integer now = (int)Instant.now().getEpochSecond();
-        GoodsQuote goodsQuote = new GoodsQuote();
-        goodsQuote.setGoodsId(goodsQuoteDTO.getGoodsId());
-        goodsQuote.setVersion(goodsQuoteDTO.getVersion());
-        goodsQuote.setQuoteName(goodsQuoteDTO.getQuoteName());
-        goodsQuote.setCreatedAt((int) Instant.now().getEpochSecond());
+        //将页面dto转换为po
+        GoodsQuoteDTO.PoBuilder poBuilder = GoodsQuoteDTO.BuildPO(goodsQuoteDTO);
+        GoodsQuote goodsQuote = poBuilder.getGoodsQuote();
+        List<GoodsQuoteDetail> quoteList = poBuilder.getDetails();
         goodsQuoteMapper.insert(goodsQuote);
-        List<QuoteDetailDTO> detailDTOList = goodsQuoteDTO.getQuoteList();
-        List<GoodsQuoteDetail> quoteList = detailDTOList.stream().flatMap(x -> {
-            GoodsQuoteDetail detail1 = new GoodsQuoteDetail();
-            GoodsQuoteDetail detail2 = new GoodsQuoteDetail();
-            GoodsQuoteDetail detail3 = new GoodsQuoteDetail();
-            detail1.setAmount(x.getAmount1Pcs());
-            detail1.setSkuId(x.getSkuId());
-            detail1.setShippingChannel(x.getChannelCode());
-            detail1.setCountry(x.getCountry());
-            detail1.setChannelType(x.getChannelType());
-            detail1.setQty(1);
-            detail1.setShippingTime(x.getShippingTime());
-            detail1.setActWeight(BigDecimal.ZERO);
-            detail1.setVolWeight(BigDecimal.ZERO);
-            detail1.setWeightType(WeightType.ACTUAL_WEIGHT);
-            detail1.setProductCost(BigDecimal.ZERO);
-            detail1.setShippingCost(BigDecimal.ZERO);
-            detail1.setQuoteId(goodsQuote.getRecId());
-            detail1.setCreatedAt(now);
-
-            detail2.setAmount(x.getAmount2Pcs());
-            detail2.setSkuId(x.getSkuId());
-            detail2.setShippingChannel(x.getChannelCode());
-            detail2.setCountry(x.getCountry());
-            detail2.setChannelType(x.getChannelType());
-            detail2.setQty(2);
-            detail2.setShippingTime(x.getShippingTime());
-            detail2.setActWeight(BigDecimal.ZERO);
-            detail2.setVolWeight(BigDecimal.ZERO);
-            detail2.setWeightType(WeightType.ACTUAL_WEIGHT);
-            detail2.setProductCost(BigDecimal.ZERO);
-            detail2.setShippingCost(BigDecimal.ZERO);
-            detail2.setQuoteId(goodsQuote.getRecId());
-            detail2.setCreatedAt(now);
-
-            detail3.setAmount(x.getAmount3Pcs());
-            detail3.setSkuId(x.getSkuId());
-            detail3.setShippingChannel(x.getChannelCode());
-            detail3.setCountry(x.getCountry());
-            detail3.setChannelType(x.getChannelType());
-            detail3.setQty(3);
-            detail3.setShippingTime(x.getShippingTime());
-            detail3.setActWeight(BigDecimal.ZERO);
-            detail3.setVolWeight(BigDecimal.ZERO);
-            detail3.setWeightType(WeightType.ACTUAL_WEIGHT);
-            detail3.setProductCost(BigDecimal.ZERO);
-            detail3.setShippingCost(BigDecimal.ZERO);
-            detail3.setQuoteId(goodsQuote.getRecId());
-            detail3.setCreatedAt(now);
-
-            return Arrays.asList(detail1, detail2, detail3).stream();
-        }).collect(Collectors.toList());
-
+        quoteList.stream().forEach(x -> x.setQuoteId(goodsQuote.getRecId()));
         goodsQuoteDetailMapper.insertMultiple(quoteList);
     }
+
+
 
     @Override
     public GoodsQuote getQuoteVersion(Integer _goodsId) {
@@ -277,19 +225,19 @@ public class QuoteServiceImpl implements QuoteService {
     }
 
     @Override
-    public GoodsQuoteDTO createQuote(GoodsVO goods, String quoteName, String version){
-        List<GoodsChannel> channels = goodsService.getGoodsChannelList(goods.getGoodsId());
+    public GoodsQuoteDTO buildQuote(GoodsVO goodsVo, String quoteName, String version){
+        List<GoodsChannel> channels = goodsService.getGoodsChannelList(goodsVo.getGoodsId());
         if(CollectionUtils.isEmpty(channels)){
-            throw new RuntimeException("商品没有配置渠道!goodsSn:" + goods.getGoodsSn());
+            throw new RuntimeException("商品没有配置渠道!goodsSn:" + goodsVo.getGoodsSn());
         }
         GoodsQuoteDTO dto = new GoodsQuoteDTO();
-        dto.setGoodsId(goods.getGoodsId());
+        dto.setGoodsId(goodsVo.getGoodsId());
         dto.setQuoteName(quoteName);
         dto.setVersion(version);
 
         List<QuoteDetailDTO> quoteList = new ArrayList<>();
 
-        for (SkuVO skuVO : goods.getSkuList()) {
+        for (SkuVO skuVO : goodsVo.getSkuList()) {
             if(skuVO.getParentId() != 0){
                 continue;
             }
@@ -299,11 +247,11 @@ public class QuoteServiceImpl implements QuoteService {
                 detailDTO.setCountry(channel.getCountryCode());
                 detailDTO.setChannelCode(channel.getChannelCode());
                 detailDTO.setChannelType(channel.getChannelType());
-                QuoteResult r1 = this.quote(channel.getCountryCode(), channel.getChannelCode(), goods, skuVO, 1);
+                QuoteResult r1 = this.quote(channel.getCountryCode(), channel.getChannelCode(), goodsVo, skuVO, 1);
                 detailDTO.setAmount1Pcs(r1.getTotalFee());
-                QuoteResult r2 = this.quote(channel.getCountryCode(), channel.getChannelCode(), goods, skuVO, 2);
+                QuoteResult r2 = this.quote(channel.getCountryCode(), channel.getChannelCode(), goodsVo, skuVO, 2);
                 detailDTO.setAmount2Pcs(r2.getTotalFee());
-                QuoteResult r3 = this.quote(channel.getCountryCode(), channel.getChannelCode(), goods, skuVO, 3);
+                QuoteResult r3 = this.quote(channel.getCountryCode(), channel.getChannelCode(), goodsVo, skuVO, 3);
                 detailDTO.setAmount3Pcs(r3.getTotalFee());
 
                 detailDTO.setShippingTime(r3.getTime());
@@ -314,33 +262,33 @@ public class QuoteServiceImpl implements QuoteService {
         Assert.notEmpty(quoteList, "报价列表不能为空!");
 
         dto.setQuoteList(quoteList);
+        dto.setGoodsVo(goodsVo);
         return dto;
     }
 
     @Override
-    public GoodsQuoteDTO getQuoteDTO(Integer goodsId, String version) {
+    public GoodsQuoteDTO getQuoteDTO(GoodsVO goods, String version) {
         GoodsQuote quoteVersion;
         if("latest".equals(version)) {
-            quoteVersion = goodsQuoteMapper.selectOne(c -> c.where(GoodsQuoteDynamicSqlSupport.goodsId, isEqualTo(goodsId))
+            quoteVersion = goodsQuoteMapper.selectOne(c -> c.where(GoodsQuoteDynamicSqlSupport.goodsId, isEqualTo(goods.getGoodsId()))
                     .orderBy(GoodsQuoteDynamicSqlSupport.version.descending())
                     .limit(1)).orElse(null);
         }else{
-            quoteVersion = goodsQuoteMapper.selectOne(c -> c.where(GoodsQuoteDynamicSqlSupport.goodsId, isEqualTo(goodsId))
+            quoteVersion = goodsQuoteMapper.selectOne(c -> c.where(GoodsQuoteDynamicSqlSupport.goodsId, isEqualTo(goods.getGoodsId()))
                     .and(GoodsQuoteDynamicSqlSupport.version, isEqualTo(version))
                     .limit(1)).orElse(null);
         }
         if(quoteVersion == null){
             return null;
         }
-        GoodsQuoteDTO dto = new GoodsQuoteDTO();
-        dto.setRecId(quoteVersion.getRecId());
-        dto.setGoodsId(quoteVersion.getGoodsId());
-        dto.setQuoteName(quoteVersion.getQuoteName());
-        dto.setVersion(quoteVersion.getVersion());
-        dto.setCreatedAt(quoteVersion.getCreatedAt());
+        List<GoodsQuoteDetail> details = goodsQuoteDetailMapper.select(c ->
+                c.where(GoodsQuoteDetailDynamicSqlSupport.quoteId, isEqualTo(quoteVersion.getRecId())));
 
+        GoodsQuoteDTO.DtoBuilder builder = GoodsQuoteDTO.BuildDTO(goods);
+        builder.setQuoteVersion(quoteVersion);
+        builder.setQuoteList(details);
         //todo: 查询出报价明细并转换成dto
-        return dto;
+        return builder.build();
     }
 
     @Override
