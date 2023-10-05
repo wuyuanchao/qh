@@ -419,8 +419,8 @@ public class GoodsServiceImpl implements GoodsService {
                 .map(SkuImportDTO::getDxmSkuId)
                 .filter(x -> StringUtils.isNotBlank(x))
                 .collect(Collectors.toList());
-        Map<Integer, SkuRelation> exists = goodsRepository.selectSkuByDxmIds(dxmSkuIds).stream()
-                .collect(Collectors.toMap(SkuRelation::getSkuId, x -> x, (v1, v2) -> v1));
+        Map<String, SkuRelation> exists = goodsRepository.selectSkuByDxmIds(dxmSkuIds).stream()
+                .collect(Collectors.toMap(SkuRelation::getDxmSkuId, x -> x, (v1, v2) -> v1));
 
         List<SkuRelation> skuList = excelList.stream()
                 .filter(x -> x.getParentId()!=null
