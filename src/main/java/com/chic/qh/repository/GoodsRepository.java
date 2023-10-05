@@ -8,11 +8,14 @@ import com.chic.qh.repository.model.SkuRelation;
 import com.chic.qh.service.goods.dto.GoodsQueryDTO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -142,5 +145,23 @@ public class GoodsRepository {
     public int deleteGoodsChannel(Integer goodsId, String countryCode) {
         return goodsChannelMapper.delete(c -> c.where(GoodsChannelDynamicSqlSupport.goodsId, isEqualTo(goodsId))
                 .and(GoodsChannelDynamicSqlSupport.countryCode, isEqualTo(countryCode)));
+    }
+
+    public void insertSkuList(List<SkuRelation> skuList) {
+        skuList.stream().forEach(x -> skuRelationMapper.insertSelective(x));
+    }
+
+    public List<SkuRelation> selectSkuByIds(List<Integer> parentIds) {
+        if(CollectionUtils.isEmpty(parentIds)) {
+            return new ArrayList<>();
+        }
+        return skuRelationMapper.select(c -> c.where(SkuRelationDynamicSqlSupport.skuId, isIn(parentIds)));
+    }
+
+    public List<SkuRelation> selectSkuByDxmIds(List<String> dxmSkuIds) {
+        if(CollectionUtils.isEmpty(dxmSkuIds)) {
+            return new ArrayList<>();
+        }
+        return skuRelationMapper.select(c -> c.where(SkuRelationDynamicSqlSupport.dxmSkuId, isIn(dxmSkuIds)));
     }
 }

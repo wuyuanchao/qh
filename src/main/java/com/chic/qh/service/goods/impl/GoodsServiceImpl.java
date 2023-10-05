@@ -11,8 +11,10 @@ import com.chic.qh.service.goods.vo.GoodsListVO;
 import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
 import com.chic.qh.service.logistic.LogisticService;
+import com.chic.qh.service.order.dto.OrderImportDTO;
 import com.chic.qh.service.quote.QuoteResult;
 import com.chic.qh.service.quote.QuoteService;
+import com.chic.qh.support.utils.ExcelUtils;
 import com.github.pagehelper.Page;
 import com.google.common.collect.ArrayListMultimap;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -392,5 +395,50 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public int deleteGoodsChannel(Integer goodsId, String countryCode) {
         return goodsRepository.deleteGoodsChannel(goodsId, countryCode);
+    }
+
+    @Override
+    public void importSku(MultipartFile file) {
+        List<SkuImportDTO> excelList = ExcelUtils.importExcel(file, SkuImportDTO.class, null);
+        if (CollectionUtils.isEmpty(excelList)) {
+            throw new RuntimeException("excel模版数据为空");
+        }
+        if(excelList.size() > 5000){
+            throw new RuntimeException("单次导入数据最多5000条");
+        }
+        //zesty的skuId必须存在
+        List<Integer> parentIds = excelList.stream()
+                .map(SkuImportDTO::getParentId)
+                .filter(x -> x != null)
+                .collect(Collectors.toList());
+        Map<Integer, SkuRelation> idx = goodsRepository.selectSkuByIds(parentIds)
+                .stream()
+                .collect(Collectors.toMap(SkuRelation::getSkuId, x -> x));
+        //店小蜜skuId必须存在
+        List<String> dxmSkuIds = excelList.stream()
+                .map(SkuImportDTO::getDxmSkuId)
+                .filter(x -> StringUtils.isNotBlank(x))
+                .collect(Collectors.toList());
+        Map<Integer, SkuRelation> exists = goodsRepository.selectSkuByDxmIds(dxmSkuIds).stream()
+                .collect(Collectors.toMap(SkuRelation::getSkuId, x -> x, (v1, v2) -> v1));
+
+        List<SkuRelation> skuList = excelList.stream()
+                .filter(x -> x.getParentId()!=null
+                        && StringUtils.isNotBlank(x.getDxmSkuId())
+                        && idx.containsKey(x.getParentId())
+                        && !exists.containsKey(x.getDxmSkuId())
+                )
+                .map(x -> {
+                    SkuRelation parent = idx.get(x.getParentId());
+                    SkuRelation po = new SkuRelation();
+                    BeanUtils.copyProperties(x, po);
+                    po.setGoodsId(parent.getGoodsId());
+                    po.setGmtCreated((int)Instant.now().getEpochSecond());
+                    return po;
+                }).collect(Collectors.toList());
+        if(CollectionUtils.isEmpty(skuList)){
+            throw new RuntimeException("无有效的数据");
+        }
+        goodsRepository.insertSkuList(skuList);
     }
 }
