@@ -5,3 +5,5 @@ databaseChangeLog:
     file: db/changelog/changes/change-20230820-qh_goods_quote.yaml
 - include:
     file: db/changelog/changes/change-20230831-qh_goods_channel.mysql.sql
+- include:
+    file: db/changelog/changes/change-20230921-qh_settle.mysql.sql

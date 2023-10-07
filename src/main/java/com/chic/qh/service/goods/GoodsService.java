@@ -6,6 +6,7 @@ import com.chic.qh.service.goods.dto.*;
 import com.chic.qh.service.goods.vo.GoodsListVO;
 import com.chic.qh.service.goods.vo.GoodsVO;
 import com.chic.qh.service.goods.vo.SkuVO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -55,4 +56,6 @@ public interface GoodsService {
     List<GoodsChannelRespDTO> getGoodsChannelDTOList(Integer goodsId);
     List<GoodsChannel> getGoodsChannelList(Integer goodsId);
     int deleteGoodsChannel(Integer goodsId, String countryCode);
+    //todo: 不建议service层依赖 org.springframework.web 的 类
+    void importSku(MultipartFile file);
 }

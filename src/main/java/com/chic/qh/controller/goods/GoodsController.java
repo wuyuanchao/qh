@@ -10,6 +10,7 @@ import com.chic.qh.support.web.RespWrap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -170,6 +171,11 @@ public class GoodsController {
     @GetMapping("/{goodsId}/channels")
     public List<GoodsChannelRespDTO> getGoodsChannelList(@PathVariable("goodsId") Integer goodsId){
         return goodsService.getGoodsChannelDTOList(goodsId);
+    }
+
+    @PostMapping("/skuImport")
+    public void orderImport(@RequestParam("file") MultipartFile file) {
+        goodsService.importSku(file);
     }
 
 }

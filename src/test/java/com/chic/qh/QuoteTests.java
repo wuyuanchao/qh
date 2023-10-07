@@ -27,5 +27,5 @@ public class QuoteTests {
     @Test
     public void testCreateQuote(){
         GoodsVO goods = goodsService.getGoods(32);
-        System.out.println(quoteService.createQuote(goods, "preview", "preview"));
+        System.out.println(quoteService.buildQuote(goods, "preview", "preview"));
     }}

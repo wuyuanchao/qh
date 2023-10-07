@@ -38,9 +38,9 @@ public interface QuoteService {
 
     List<GoodsQuote> selectHistory(Integer goodsId);
 
-    GoodsQuoteDTO createQuote(GoodsVO goods, String quoteName, String version);
+    GoodsQuoteDTO buildQuote(GoodsVO goods, String quoteName, String version);
 
-    GoodsQuoteDTO getQuoteDTO(Integer goodsId, String version);
+    GoodsQuoteDTO getQuoteDTO(GoodsVO goods, String version);
 
     Optional<String> getQuotedCountry(GoodsQuote quoteVersion);
 }
