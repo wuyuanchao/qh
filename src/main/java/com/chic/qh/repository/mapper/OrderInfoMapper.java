@@ -1,7 +1,6 @@
 package com.chic.qh.repository.mapper;
 
 import static com.chic.qh.repository.mapper.OrderInfoDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 import com.chic.qh.repository.model.OrderInfo;
 import java.util.Collection;
@@ -35,7 +34,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface OrderInfoMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_order_info")
-    BasicColumn[] selectList = BasicColumn.columnList(orderId, orderSn, trackingNumber, trackingNumber2, quantity, price, sku, productId, country, countryCode, province, city, address, zipCode, shippingName, phoneNumber, orderTime, payTime, shippingTime, shippingMethod, status, gmtCreated, gmtModify);
+    BasicColumn[] selectList = BasicColumn.columnList(orderId, orderSn, trackingNumber, trackingNumber2, quantity, price, dxmSku, dxmProductCode, sku, productId, country, countryCode, province, city, address, zipCode, shippingName, phoneNumber, orderTime, payTime, shippingTime, shippingMethod, status, gmtCreated, gmtModify);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_order_info")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
@@ -50,12 +49,14 @@ public interface OrderInfoMapper extends CommonCountMapper, CommonDeleteMapper, 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_order_info")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @Results(id="OrderInfoResult", value = {
-        @Result(column="order_id", property="orderId", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="order_id", property="orderId", jdbcType=JdbcType.INTEGER),
         @Result(column="order_sn", property="orderSn", jdbcType=JdbcType.VARCHAR),
         @Result(column="tracking_number", property="trackingNumber", jdbcType=JdbcType.VARCHAR),
         @Result(column="tracking_number2", property="trackingNumber2", jdbcType=JdbcType.VARCHAR),
         @Result(column="quantity", property="quantity", jdbcType=JdbcType.INTEGER),
         @Result(column="price", property="price", jdbcType=JdbcType.DECIMAL),
+        @Result(column="dxm_sku", property="dxmSku", jdbcType=JdbcType.VARCHAR),
+        @Result(column="dxm_product_code", property="dxmProductCode", jdbcType=JdbcType.VARCHAR),
         @Result(column="sku", property="sku", jdbcType=JdbcType.VARCHAR),
         @Result(column="product_id", property="productId", jdbcType=JdbcType.VARCHAR),
         @Result(column="country", property="country", jdbcType=JdbcType.VARCHAR),
@@ -92,13 +93,6 @@ public interface OrderInfoMapper extends CommonCountMapper, CommonDeleteMapper, 
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_order_info")
-    default int deleteByPrimaryKey(Integer orderId_) {
-        return delete(c -> 
-            c.where(orderId, isEqualTo(orderId_))
-        );
-    }
-
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_order_info")
     default int insert(OrderInfo row) {
         return MyBatis3Utils.insert(this::insert, row, orderInfo, c ->
             c.map(orderSn).toProperty("orderSn")
@@ -106,6 +100,8 @@ public interface OrderInfoMapper extends CommonCountMapper, CommonDeleteMapper, 
             .map(trackingNumber2).toProperty("trackingNumber2")
             .map(quantity).toProperty("quantity")
             .map(price).toProperty("price")
+            .map(dxmSku).toProperty("dxmSku")
+            .map(dxmProductCode).toProperty("dxmProductCode")
             .map(sku).toProperty("sku")
             .map(productId).toProperty("productId")
             .map(country).toProperty("country")
@@ -134,6 +130,8 @@ public interface OrderInfoMapper extends CommonCountMapper, CommonDeleteMapper, 
             .map(trackingNumber2).toProperty("trackingNumber2")
             .map(quantity).toProperty("quantity")
             .map(price).toProperty("price")
+            .map(dxmSku).toProperty("dxmSku")
+            .map(dxmProductCode).toProperty("dxmProductCode")
             .map(sku).toProperty("sku")
             .map(productId).toProperty("productId")
             .map(country).toProperty("country")
@@ -162,6 +160,8 @@ public interface OrderInfoMapper extends CommonCountMapper, CommonDeleteMapper, 
             .map(trackingNumber2).toPropertyWhenPresent("trackingNumber2", row::getTrackingNumber2)
             .map(quantity).toPropertyWhenPresent("quantity", row::getQuantity)
             .map(price).toPropertyWhenPresent("price", row::getPrice)
+            .map(dxmSku).toPropertyWhenPresent("dxmSku", row::getDxmSku)
+            .map(dxmProductCode).toPropertyWhenPresent("dxmProductCode", row::getDxmProductCode)
             .map(sku).toPropertyWhenPresent("sku", row::getSku)
             .map(productId).toPropertyWhenPresent("productId", row::getProductId)
             .map(country).toPropertyWhenPresent("country", row::getCountry)
@@ -198,13 +198,6 @@ public interface OrderInfoMapper extends CommonCountMapper, CommonDeleteMapper, 
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_order_info")
-    default Optional<OrderInfo> selectByPrimaryKey(Integer orderId_) {
-        return selectOne(c ->
-            c.where(orderId, isEqualTo(orderId_))
-        );
-    }
-
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_order_info")
     default int update(UpdateDSLCompleter completer) {
         return MyBatis3Utils.update(this::update, orderInfo, completer);
     }
@@ -216,6 +209,8 @@ public interface OrderInfoMapper extends CommonCountMapper, CommonDeleteMapper, 
                 .set(trackingNumber2).equalTo(row::getTrackingNumber2)
                 .set(quantity).equalTo(row::getQuantity)
                 .set(price).equalTo(row::getPrice)
+                .set(dxmSku).equalTo(row::getDxmSku)
+                .set(dxmProductCode).equalTo(row::getDxmProductCode)
                 .set(sku).equalTo(row::getSku)
                 .set(productId).equalTo(row::getProductId)
                 .set(country).equalTo(row::getCountry)
@@ -242,6 +237,8 @@ public interface OrderInfoMapper extends CommonCountMapper, CommonDeleteMapper, 
                 .set(trackingNumber2).equalToWhenPresent(row::getTrackingNumber2)
                 .set(quantity).equalToWhenPresent(row::getQuantity)
                 .set(price).equalToWhenPresent(row::getPrice)
+                .set(dxmSku).equalToWhenPresent(row::getDxmSku)
+                .set(dxmProductCode).equalToWhenPresent(row::getDxmProductCode)
                 .set(sku).equalToWhenPresent(row::getSku)
                 .set(productId).equalToWhenPresent(row::getProductId)
                 .set(country).equalToWhenPresent(row::getCountry)
@@ -259,63 +256,5 @@ public interface OrderInfoMapper extends CommonCountMapper, CommonDeleteMapper, 
                 .set(status).equalToWhenPresent(row::getStatus)
                 .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
                 .set(gmtModify).equalToWhenPresent(row::getGmtModify);
-    }
-
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_order_info")
-    default int updateByPrimaryKey(OrderInfo row) {
-        return update(c ->
-            c.set(orderSn).equalTo(row::getOrderSn)
-            .set(trackingNumber).equalTo(row::getTrackingNumber)
-            .set(trackingNumber2).equalTo(row::getTrackingNumber2)
-            .set(quantity).equalTo(row::getQuantity)
-            .set(price).equalTo(row::getPrice)
-            .set(sku).equalTo(row::getSku)
-            .set(productId).equalTo(row::getProductId)
-            .set(country).equalTo(row::getCountry)
-            .set(countryCode).equalTo(row::getCountryCode)
-            .set(province).equalTo(row::getProvince)
-            .set(city).equalTo(row::getCity)
-            .set(address).equalTo(row::getAddress)
-            .set(zipCode).equalTo(row::getZipCode)
-            .set(shippingName).equalTo(row::getShippingName)
-            .set(phoneNumber).equalTo(row::getPhoneNumber)
-            .set(orderTime).equalTo(row::getOrderTime)
-            .set(payTime).equalTo(row::getPayTime)
-            .set(shippingTime).equalTo(row::getShippingTime)
-            .set(shippingMethod).equalTo(row::getShippingMethod)
-            .set(status).equalTo(row::getStatus)
-            .set(gmtCreated).equalTo(row::getGmtCreated)
-            .set(gmtModify).equalTo(row::getGmtModify)
-            .where(orderId, isEqualTo(row::getOrderId))
-        );
-    }
-
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", comments="Source Table: qh_order_info")
-    default int updateByPrimaryKeySelective(OrderInfo row) {
-        return update(c ->
-            c.set(orderSn).equalToWhenPresent(row::getOrderSn)
-            .set(trackingNumber).equalToWhenPresent(row::getTrackingNumber)
-            .set(trackingNumber2).equalToWhenPresent(row::getTrackingNumber2)
-            .set(quantity).equalToWhenPresent(row::getQuantity)
-            .set(price).equalToWhenPresent(row::getPrice)
-            .set(sku).equalToWhenPresent(row::getSku)
-            .set(productId).equalToWhenPresent(row::getProductId)
-            .set(country).equalToWhenPresent(row::getCountry)
-            .set(countryCode).equalToWhenPresent(row::getCountryCode)
-            .set(province).equalToWhenPresent(row::getProvince)
-            .set(city).equalToWhenPresent(row::getCity)
-            .set(address).equalToWhenPresent(row::getAddress)
-            .set(zipCode).equalToWhenPresent(row::getZipCode)
-            .set(shippingName).equalToWhenPresent(row::getShippingName)
-            .set(phoneNumber).equalToWhenPresent(row::getPhoneNumber)
-            .set(orderTime).equalToWhenPresent(row::getOrderTime)
-            .set(payTime).equalToWhenPresent(row::getPayTime)
-            .set(shippingTime).equalToWhenPresent(row::getShippingTime)
-            .set(shippingMethod).equalToWhenPresent(row::getShippingMethod)
-            .set(status).equalToWhenPresent(row::getStatus)
-            .set(gmtCreated).equalToWhenPresent(row::getGmtCreated)
-            .set(gmtModify).equalToWhenPresent(row::getGmtModify)
-            .where(orderId, isEqualTo(row::getOrderId))
-        );
     }
 }

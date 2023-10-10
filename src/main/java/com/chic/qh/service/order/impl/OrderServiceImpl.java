@@ -63,6 +63,12 @@ public class OrderServiceImpl implements OrderService {
             OrderInfo orderInfo = new OrderInfo();
             BeanUtils.copyProperties(orderImportDTO, orderInfo);
             orderInfo.setStatus((byte)1);
+            if(StringUtils.isBlank(orderInfo.getTrackingNumber2())) {
+                orderInfo.setTrackingNumber2(StringUtils.EMPTY);
+            }
+            if(StringUtils.isBlank(orderInfo.getCountryCode())) {
+                orderInfo.setCountryCode(StringUtils.EMPTY);
+            }
             orderInfo.setGmtCreated(currentTime);
             orderInfo.setGmtModify(currentTime);
             return orderInfo;

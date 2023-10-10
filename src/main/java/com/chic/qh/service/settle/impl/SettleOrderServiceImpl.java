@@ -59,9 +59,15 @@ public class SettleOrderServiceImpl implements SettleOrderService {
             settleOrderDetail.setOrderSn(orderInfo.getOrderSn());
             settleOrderDetail.setQuantity(orderInfo.getQuantity());
             settleOrderDetail.setSku(orderInfo.getSku());
-            settleOrderDetail.setSkuId(quoteDetail.getSkuId());
-            settleOrderDetail.setAmount(quoteDetail.getAmount());
-            settleOrderDetail.setQuoteId(quoteDetail.getQuoteId());
+            //匹配不到sku时，价格为空
+            settleOrderDetail.setSkuId(0);
+            settleOrderDetail.setAmount(BigDecimal.ZERO);
+            settleOrderDetail.setQuoteId(0);
+            if(quoteDetail != null) {
+                settleOrderDetail.setSkuId(quoteDetail.getSkuId());
+                settleOrderDetail.setAmount(quoteDetail.getAmount());
+                settleOrderDetail.setQuoteId(quoteDetail.getQuoteId());
+            }
             settleOrderDetail.setGmtCreated(currentSecond);
             settleOrderDetailList.add(settleOrderDetail);
         });
@@ -83,27 +89,28 @@ public class SettleOrderServiceImpl implements SettleOrderService {
      * @return
      */
     private GoodsQuoteDetail getQuoteDetail(OrderInfo orderInfo){
-        SkuRelation skuRelation = skuRelationRepository.getSkuByDxmSkuId(orderInfo.getSku());
+        SkuRelation skuRelation = skuRelationRepository.getSkuByDxmSkuId(orderInfo.getDxmProductCode());
         if(skuRelation == null){
-            throw new RuntimeException("找不到该店小蜜sku！orderSn:" + orderInfo.getOrderSn() + ", 店小蜜sku:" + orderInfo.getSku());
+            log.error("找不到该店小蜜sku！orderSn:{}, 店小蜜sku:{}", orderInfo.getOrderSn(), orderInfo.getDxmProductCode());
+            return null;
         }
         if(skuRelation.getParentId() > 0){
             skuRelation = skuRelationRepository.getSku(skuRelation.getParentId());
             if(skuRelation == null) {
-                throw new RuntimeException("找不到父SKU！orderSn:" + orderInfo.getOrderSn() + ", skuId: " + skuRelation.getSkuId() + ", 店小蜜sku:" + orderInfo.getSku());
+                throw new RuntimeException("找不到父SKU！orderSn:" + orderInfo.getOrderSn() + ", skuId: " + skuRelation.getSkuId() + ", 店小蜜sku:" + orderInfo.getDxmProductCode());
             }
         }
         Goods goods = goodsRepository.getGoods(skuRelation.getGoodsId());
         if(goods == null){
-            throw new RuntimeException("找不到商品！orderSn:" + orderInfo.getOrderSn() + ", goodsId: " + skuRelation.getGoodsId() + ", 店小蜜sku:" + orderInfo.getSku());
+            throw new RuntimeException("找不到商品！orderSn:" + orderInfo.getOrderSn() + ", goodsId: " + skuRelation.getGoodsId() + ", 店小蜜sku:" + orderInfo.getDxmProductCode());
         }
         GoodsQuote goodsQuote = quoteService.getQuoteVersion(goods.getGoodsId(), orderInfo.getOrderTime());
         if(goodsQuote == null){
-            throw new RuntimeException("找不到商品可用报价！orderSn:" + orderInfo.getOrderSn() + ", goodsId: " + skuRelation.getGoodsId() + ", 店小蜜sku:" + orderInfo.getSku());
+            throw new RuntimeException("找不到商品可用报价！orderSn:" + orderInfo.getOrderSn() + ", goodsId: " + skuRelation.getGoodsId() + ", 店小蜜sku:" + orderInfo.getDxmProductCode());
         }
         GoodsChannel goodsChannel = goodsRepository.getGoodsChannel(goods.getGoodsId(), orderInfo.getCountryCode());
         if(goodsChannel == null){
-            throw new RuntimeException("找不到商品渠道配置！orderSn:" + orderInfo.getOrderSn() + ", goodsId: " + skuRelation.getGoodsId() + ", 店小蜜sku:" + orderInfo.getSku());
+            throw new RuntimeException("找不到商品渠道配置！orderSn:" + orderInfo.getOrderSn() + ", goodsId: " + skuRelation.getGoodsId() + ", 店小蜜sku:" + orderInfo.getDxmProductCode());
         }
         return quoteService.getQuoteDetails(skuRelation.getSkuId(), orderInfo.getCountryCode(), orderInfo.getQuantity(), goodsChannel.getChannelType(), goodsQuote.getRecId());
     }

@@ -21,76 +21,74 @@ public class OrderImportDTO implements Serializable {
     /**
      *   物流单号
      */
-    @ExcelProperty(index = 1, value = "Tracking number")
+    @ExcelProperty(index = 1, value = "Tracking")
     private String trackingNumber;
-
-    /**
-     *   物流单号2
-     */
-    @ExcelProperty(index = 2, value = "Tracking number 2")
-    private String trackingNumber2;
 
     /**
      *   商品数量
      */
-    @ExcelProperty(index = 3, value = "Quantity")
+    @ExcelProperty(index = 2, value = "Quantity")
     private Integer quantity;
 
     /**
      *   价格
      */
-    @ExcelProperty(index = 4, value = "Price")
+    @ExcelProperty(index = 3, value = "Price")
     private BigDecimal price;
 
     /**
      *   sku
      */
-    @ExcelProperty(index = 5, value = "SKU")
+    @ExcelProperty(index = 4, value = "DXM SKU")
+    private String dxmSku;
+
+    /**
+     *   product
+     */
+    @ExcelProperty(index = 5, value = "DXM Product Code")
+    private String dxmProductCode;
+
+    /**
+     *   sku
+     */
+    @ExcelProperty(index = 6, value = "SKU")
     private String sku;
 
     /**
      *   收件人
      */
-    @ExcelProperty(index = 6, value = "Shipping name")
+    @ExcelProperty(index = 7, value = "Shipping name")
     private String shippingName;
 
     /**
      *   详细地址
      */
-    @ExcelProperty(index = 7, value = "Address")
+    @ExcelProperty(index = 8, value = "Address")
     private String address;
 
     /**
      *   市
      */
-    @ExcelProperty(index = 8, value = "City")
+    @ExcelProperty(index = 9, value = "City")
     private String city;
 
     /**
      *   邮编
      */
-    @ExcelProperty(index = 9, value = "Zip code")
+    @ExcelProperty(index = 10, value = "Zip code")
     private String zipCode;
 
     /**
      *   省
      */
-    @ExcelProperty(index = 10, value = "Province")
+    @ExcelProperty(index = 11, value = "Province")
     private String province;
 
     /**
      *   国家
      */
-    @ExcelProperty(index = 11, value = "Country")
+    @ExcelProperty(index = 12, value = "Country")
     private String country;
-
-    /**
-     *   国家码
-     */
-    @ExcelProperty(index = 12, value = "国家二字码")
-    private String countryCode;
-
-
 
     /**
      *   手机号
