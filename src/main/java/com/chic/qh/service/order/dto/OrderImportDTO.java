@@ -91,40 +91,46 @@ public class OrderImportDTO implements Serializable {
     private String country;
 
     /**
+     *   国家码
+     */
+    @ExcelProperty(index = 13, value = "Country code")
+    private String countryCode;
+
+    /**
      *   手机号
      */
-    @ExcelProperty(index = 13, value = "Phone number")
+    @ExcelProperty(index = 14, value = "Phone number")
     private String phoneNumber;
 
     /**
      *   支付时间
      */
-    @ExcelProperty(index = 14, value = "Payment time", converter = ExcelDate2TimestampConverter.class)
+    @ExcelProperty(index = 15, value = "Payment time", converter = ExcelDate2TimestampConverter.class)
     private Integer payTime;
 
     /**
      *   商品ID
      */
-    @ExcelProperty(index = 15, value = "Products ID")
+    @ExcelProperty(index = 16, value = "Products ID")
     private String productId;
 
     /**
      *   下单时间
      */
-    @ExcelProperty(index = 16, value = "下单时间", converter = ExcelDate2TimestampConverter.class)
+    @ExcelProperty(index = 17, value = "下单时间", converter = ExcelDate2TimestampConverter.class)
     private Integer orderTime;
 
 
     /**
      *   发货时间
      */
-    @ExcelProperty(index = 17, value = "发货时间", converter = ExcelDate2TimestampConverter.class)
+    @ExcelProperty(index = 18, value = "发货时间", converter = ExcelDate2TimestampConverter.class)
     private Integer shippingTime;
 
     /**
      *   发货方式
      */
-    @ExcelProperty(index = 18, value = "物流方式")
+    @ExcelProperty(index = 19, value = "物流方式")
     private String shippingMethod;
 
 }

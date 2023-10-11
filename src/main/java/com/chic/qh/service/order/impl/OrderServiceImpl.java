@@ -66,9 +66,6 @@ public class OrderServiceImpl implements OrderService {
             if(StringUtils.isBlank(orderInfo.getTrackingNumber2())) {
                 orderInfo.setTrackingNumber2(StringUtils.EMPTY);
             }
-            if(StringUtils.isBlank(orderInfo.getCountryCode())) {
-                orderInfo.setCountryCode(StringUtils.EMPTY);
-            }
             orderInfo.setGmtCreated(currentTime);
             orderInfo.setGmtModify(currentTime);
             return orderInfo;
