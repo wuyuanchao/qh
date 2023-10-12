@@ -26,6 +26,6 @@ public class ExcelDate2TimestampConverter implements Converter<Integer> {
     @Override
     public Integer convertToJavaData(ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
         String stringValue = cellData.getStringValue();
-        return Long.valueOf(DateUtils.dateToUnixTimestamp(stringValue, DateUtils.DATE_SMALL_STR) / 1000).intValue();
+        return Long.valueOf(DateUtils.dateToUnixTimestamp(stringValue, DateUtils.DATE_FULL_STR) / 1000).intValue();
     }
 }
