@@ -29,4 +29,6 @@ public interface LogisticService {
     List<LogisticChannel> getCompanyChannels(String companyCode);
 
     List<LogisticChannel> getByCodes(List<String> channelCodes);
+
+    LogisticChannel getByName(String channelName);
 }

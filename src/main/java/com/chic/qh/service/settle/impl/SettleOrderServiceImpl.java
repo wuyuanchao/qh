@@ -4,7 +4,9 @@ import com.chic.qh.repository.GoodsRepository;
 import com.chic.qh.repository.SettleOrderDetailRepository;
 import com.chic.qh.repository.SettleOrderInfoRepository;
 import com.chic.qh.repository.SkuRelationRepository;
+import com.chic.qh.repository.mapper.LogisticChannelMapper;
 import com.chic.qh.repository.model.*;
+import com.chic.qh.service.logistic.LogisticService;
 import com.chic.qh.service.quote.QuoteService;
 import com.chic.qh.service.settle.SettleOrderService;
 import com.chic.qh.service.settle.dto.SettleOrderDetailExcelVO;
@@ -45,6 +47,8 @@ public class SettleOrderServiceImpl implements SettleOrderService {
     private SkuRelationRepository skuRelationRepository;
     @Autowired
     private QuoteService quoteService;
+    @Autowired
+    private LogisticService logisticService;
 
     @Override
     public void createSettleOrder(List<OrderInfo> orderInfoList) {
@@ -108,11 +112,19 @@ public class SettleOrderServiceImpl implements SettleOrderService {
         if(goodsQuote == null){
             throw new RuntimeException("找不到商品可用报价！orderSn:" + orderInfo.getOrderSn() + ", goodsId: " + skuRelation.getGoodsId() + ", 店小蜜sku:" + orderInfo.getDxmProductCode());
         }
-        GoodsChannel goodsChannel = goodsRepository.getGoodsChannel(goods.getGoodsId(), orderInfo.getCountryCode());
-        if(goodsChannel == null){
-            throw new RuntimeException("找不到商品渠道配置！orderSn:" + orderInfo.getOrderSn() + ", goodsId: " + skuRelation.getGoodsId() + ", 店小蜜sku:" + orderInfo.getDxmProductCode());
+        String shippingMethod = orderInfo.getShippingMethod();
+        LogisticChannel channel = logisticService.getByName(shippingMethod);
+        if(channel == null){
+            throw new RuntimeException("找不到商品渠道配置！orderSn:" + orderInfo.getOrderSn()
+                    + ", goodsId: " + skuRelation.getGoodsId()
+                    + ", 店小蜜sku:" + orderInfo.getDxmProductCode()
+                    + ", shippingMethod:" + shippingMethod);
         }
-        return quoteService.getQuoteDetails(skuRelation.getSkuId(), orderInfo.getCountryCode(), orderInfo.getQuantity(), goodsChannel.getChannelType(), goodsQuote.getRecId());
+        return quoteService.getQuoteDetails(skuRelation.getSkuId(),
+                orderInfo.getCountryCode(),
+                orderInfo.getQuantity(),
+                channel.getCode(),
+                goodsQuote.getRecId());
     }
 
     @Override

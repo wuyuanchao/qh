@@ -209,12 +209,12 @@ public class QuoteServiceImpl implements QuoteService {
     }
 
     @Override
-    public GoodsQuoteDetail getQuoteDetails(Integer _skuId, String _country, Integer _quantity, Byte _channelType, Integer _quoteId) {
+    public GoodsQuoteDetail getQuoteDetails(Integer _skuId, String _country, Integer _quantity, String _channelCode, Integer _quoteId) {
         return goodsQuoteDetailMapper.selectOne(c -> c.where(GoodsQuoteDetailDynamicSqlSupport.skuId, isEqualTo(_skuId))
                 .and(GoodsQuoteDetailDynamicSqlSupport.quoteId, isEqualTo(_quoteId))
                 .and(GoodsQuoteDetailDynamicSqlSupport.country, isEqualTo(_country))
                 .and(GoodsQuoteDetailDynamicSqlSupport.qty, isEqualTo(_quantity))
-                .and(GoodsQuoteDetailDynamicSqlSupport.channelType, isEqualTo(_channelType))
+                .and(GoodsQuoteDetailDynamicSqlSupport.shippingChannel, isEqualTo(_channelCode))
                 .limit(1)).orElse(null);
     }
 
