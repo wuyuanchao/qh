@@ -4,7 +4,6 @@ import com.chic.qh.repository.GoodsRepository;
 import com.chic.qh.repository.SettleOrderDetailRepository;
 import com.chic.qh.repository.SettleOrderInfoRepository;
 import com.chic.qh.repository.SkuRelationRepository;
-import com.chic.qh.repository.mapper.LogisticChannelMapper;
 import com.chic.qh.repository.model.*;
 import com.chic.qh.service.logistic.LogisticService;
 import com.chic.qh.service.quote.QuoteService;
@@ -54,7 +53,6 @@ public class SettleOrderServiceImpl implements SettleOrderService {
     public void createSettleOrder(List<OrderInfo> orderInfoList) {
         Integer currentSecond = DateUtils.getCurrentSecond();
         List<SettleOrderDetail> settleOrderDetailList = new ArrayList<>();
-        BigDecimal totalAmount = BigDecimal.ZERO;
         orderInfoList.forEach(orderInfo -> {
             GoodsQuoteDetail quoteDetail = getQuoteDetail(orderInfo);
 
@@ -76,6 +74,7 @@ public class SettleOrderServiceImpl implements SettleOrderService {
             settleOrderDetailList.add(settleOrderDetail);
         });
 
+        BigDecimal totalAmount = settleOrderDetailList.stream().map(SettleOrderDetail::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
         SettleOrderInfo settleOrderInfo = new SettleOrderInfo();
         settleOrderInfo.setSettleOrderSn(SettleOrderSnGenerator.get());
         settleOrderInfo.setTotalAmount(totalAmount);
