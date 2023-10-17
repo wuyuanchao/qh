@@ -174,4 +174,11 @@ public class LogisticServiceImpl implements LogisticService{
         return logisticChannelMapper.select(c -> c.where(LogisticChannelDynamicSqlSupport.code, isIn(channelCodes)));
     }
 
+    @Override
+    public LogisticChannel getByName(String channelName) {
+        return logisticChannelMapper.selectOne(c ->
+                c.where(LogisticChannelDynamicSqlSupport.name, isEqualTo(channelName)))
+                .orElse(null);
+    }
+
 }

@@ -34,7 +34,7 @@ public interface QuoteService {
     GoodsQuoteDetail getQuoteDetails(SkuVO skuVO, String country, Integer quantity, Byte chanelType);
 
     GoodsQuoteDetail getQuoteDetails(SkuVO skuVO, String country, Integer quantity, Byte chanelType, String version);
-    GoodsQuoteDetail getQuoteDetails(Integer skuId, String country, Integer quantity, Byte chanelType, Integer quoteId);
+    GoodsQuoteDetail getQuoteDetails(Integer skuId, String country, Integer quantity, String chanelCode, Integer quoteId);
 
     List<GoodsQuote> selectHistory(Integer goodsId);
 
